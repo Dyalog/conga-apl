@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Conga 3.0 - Chat through sockets</title>
+</head>
+<body>
+	<div style="margin-left:auto; margin-right: auto;">
+		<label> Handle: </label>
+		<input id="_handle" type="text"> </input>
+		<label> Message: </label>
+		<input id="_message" type="text"> </input>
+		<button onclick="sendMessage()"> Send </button>
+		<label style="margin-left: auto;" id="status">Unconnected</label>
+			
+	</div>
+	<div id="output">
+		<p> [Welcome to Gil's Chat! Beware trespassers will be shot!] </p>
+	</div>
+	<script>
+		var wsuri;
+		if (document.location.origin == "file://") {
+			wsuri = "ws://127.0.0.1:8080";
+
+		} else {
+			wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
+					document.location.host;
+		}
+		var myws = new WebSocket(wsuri+"/chat");
+		myws.onopen = onWebSocketOpen;
+		myws.onclose = onWebSocketClose;
+		myws.onmessage = onWebSocketMessage;
+		myws.onerror = onWebSocketError;
+	  
+		function onWebSocketOpen(evt) { 
+			updateStatus("CONNECTED"); 
+		}  
+		
+		function onWebSocketClose(evt) {
+			updateStatus("DISCONNECTED");
+		}
+
+		function onWebSocketMessage(evt) { 
+			var new_msg = JSON.parse(evt.data);
+			writeToScreen( new_msg );
+		}
+		
+		function onWebSocketError(evt) { 
+			updateStatus('<span style="color: red;">ERROR:</span> ' + evt.data); 
+		}  
+		
+		function sendMessage(){
+			var handle = document.getElementById("_handle").value;
+			if (handle==""){
+				handle = "Anonymous";
+			}
+			var message = {
+				"text": document.getElementById("_message").value,
+				"handle": handle
+			};		
+			myws.send(JSON.stringify(message));
+		}
+
+		function writeToScreen(message) {
+			var msg = "<p>[" + message.date + "] " + message.handle + ": " + message.text + "</p>";
+			var out = document.getElementById("output");
+			out.innerHTML = msg + out.innerHTML;
+		}
+		
+		function updateStatus(message) {
+			document.getElementById("status").innerHTML=message;
+		}
+		
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+﻿ GetPid←{
+     isWindows:WinPid
+     NixPid
+ }

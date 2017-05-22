@@ -1,0 +1,1 @@
+﻿ Cert←{(⍺.Cert)⍺⍺ ⍵.Cert}

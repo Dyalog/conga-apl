@@ -1,0 +1,7 @@
+﻿DyalogTest : 0.1
+ID         : Classy
+Description: Test "classy" Conga functionality 
+
+Setup   : setup_v3
+Teardown: teardown
+Test    : test_dochttprequest
