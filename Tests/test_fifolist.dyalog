@@ -25,29 +25,29 @@
      1
  }
  cons←⍬
- :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 1
-     →fail because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
+     →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 1)check ret←iConga.GetProp'.' 'EventMode'
-     →fail because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
+ :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
+     →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
  :For mode :In 'Command' 'BlkText'
      :For fifo :In 0 1
-         :If (0)check⊃ret←iConga.Srv'' ''Port mode
-             →fail because'Srv failed: ',,⍕ret ⋄ :EndIf
+         :If (0)Check⊃ret←iConga.Srv'' ''Port mode
+             →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
          s1←2⊃ret
 
-         :If 0 check⊃ret←iConga.SetProp'.' 'ReadyStrategy' 2
-             →fail because'Set ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
+         :If 0 Check⊃ret←iConga.SetProp'.' 'ReadyStrategy' 2
+             →fail Because'Set ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
 
-         :If 0 check⊃ret←iConga.SetProp s1'FifoMode'fifo
-             →fail because'Set FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
+         :If 0 Check⊃ret←iConga.SetProp s1'FifoMode'fifo
+             →fail Because'Set FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
 
-         :If (0(,fifo))check ret←iConga.GetProp s1'FifoMode'
-             →fail because'Verify FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
+         :If (0(,fifo))Check ret←iConga.GetProp s1'FifoMode'
+             →fail Because'Verify FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
 
-         :If (0 2)check ret←iConga.GetProp'.' 'ReadyStrategy'
-             →fail because'Verify ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
+         :If (0 2)Check ret←iConga.GetProp'.' 'ReadyStrategy'
+             →fail Because'Verify ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
 
 
          now←iConga.Micros
@@ -61,8 +61,8 @@
          CntRecv←CntBlck←0
          :While 0=⊃ret←iConga.Waitt'.'maxwait
              err obj evt dat tim←5↑ret
-             :If 0 check(0≠2⊃tim)∧now>2⊃tim
-                 →fail because'not chronological '
+             :If 0 Check(0≠2⊃tim)∧now>2⊃tim
+                 →fail Because'not chronological '
              :Else
                  now←2⊃tim
              :EndIf
@@ -73,29 +73,29 @@
              :Case 'Receive'
                  CntRecv+←1
                  :If ∨/s1⍷obj
-                     :If 0 check⊃ret←iConga.Respond obj(⌽dat)
-                         →fail because' Respond failed: ',,⍕ret ⋄ :EndIf
+                     :If 0 Check⊃ret←iConga.Respond obj(⌽dat)
+                         →fail Because' Respond failed: ',,⍕ret ⋄ :EndIf
                  :Else
-                     :If (0(⌽data))check err dat
-                         →fail because'Wrong data returned: ',,⍕ret ⋄ :EndIf
+                     :If (0(⌽data))Check err dat
+                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
                  :EndIf
              :Case 'Block'
                  CntBlck+←1
                  :If ∨/s1⍷obj
-                     :If 0 check⊃ret←iConga.Send obj(⌽dat)
-                         →fail because' Send failed: ',,⍕ret ⋄ :EndIf
+                     :If 0 Check⊃ret←iConga.Send obj(⌽dat)
+                         →fail Because' Send failed: ',,⍕ret ⋄ :EndIf
                  :Else
-                     :If (0(⌽data))check err dat
-                         →fail because'Wrong data returned: ',,⍕ret ⋄ :EndIf
+                     :If (0(⌽data))Check err dat
+                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
                  :EndIf
              :EndSelect
          :EndWhile
 
-         :If ('clear')check ret←FlushPending s1 cons
-             →fail because'Flush  failed: ',,⍕ret ⋄ :EndIf
+         :If ('clear')Check ret←FlushPending s1 cons
+             →fail Because'Flush  failed: ',,⍕ret ⋄ :EndIf
 
-         :If 0 check⊃ret←iConga.Close s1
-             →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+         :If 0 Check⊃ret←iConga.Close s1
+             →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
      :EndFor ⍝ mode
  :EndFor ⍝ fifo

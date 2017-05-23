@@ -9,50 +9,50 @@
  headern←⎕UCS 72 84 84 80 47 49 46 49 32 50 48 48 32 79 75 13 10 68 97 116 101 58 32 84 117 101 44 32 49 50 32 74 97 110 32 50 48 49 54 32 49 54 58 49 49 58 53 55 32 71 77 84 13 10 83 101 114 118 101 114 58 32 65 112 97 99 104 101 47 50 46 52 46 55 32 40 85 98 117 110 116 117 41 13 10 76 97 115 116 45 77 111 100 105 102 105 101 100 58 32 83 97 116 44 32 48 55 32 77 97 114 32 50 48 49 53 32 49 54 58 49 57 58 51 51 32 71 77 84 13 10 69 84 97 103 58 32 34 51 56 56 45 53 49 48 98 53 50 97 57 100 101 50 99 56 34 13 10 65 99 99 101 112 116 45 82 97 110 103 101 115 58 32 98 121 116 101 115 13 10 86 97 114 121 58 32 65 99 99 101 112 116 45 69 110 99 111 100 105 110 103 13 10 67 111 110 116 101 110 116 45 84 121 112 101 58 32 116 101 120 116 47 104 116 109 108 13 10 13 10
 
  sets←(header body'original')((header~⎕UCS 13)body'No linefeed')((('904'⎕R'0'⎕OPT'Mode' 'D')header)'' 'Nobody')(headern'' 'No content-length')
- :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 0
-     →fail because'Set EventMode to 0 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 0
+     →fail Because'Set EventMode to 0 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 srv)check ret←iConga.Srv srv''Port'text'(8×⊃⍴header,body)
-     →fail because'Srv failed: ',,⍕ret ⋄ :EndIf
+ :If (0 srv)Check ret←iConga.Srv srv''Port'text'(8×⊃⍴header,body)
+     →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
 
  :For (hh hb testname) :In sets
      blksize←0
 
-     :If 0 check⊃⍴ret←(¯4+⍴hh)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' Block size too small failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(¯4+⍴hh)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' Block size too small failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(100000)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' Big Header buffer failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(100000)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' Big Header buffer failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←((⊃⍴hh)+⌊(⊃⍴hb)÷2)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' Middle of message body failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←((⊃⍴hh)+⌊(⊃⍴hb)÷2)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' Middle of message body failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←((⊃⍴hh,hb,hh)+⌊(⊃⍴hb)÷2)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' Middle of  second message body failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←((⊃⍴hh,hb,hh)+⌊(⊃⍴hb)÷2)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' Middle of  second message body failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(⊃⍴hh)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' just room for the header failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(⊃⍴hh)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' just room for the header failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(⊃⍴hh,hb)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),'  room for first header and body failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(⊃⍴hh,hb)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),'  room for first header and body failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(¯1+⊃⍴hh,hb)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' nearly room for first header and body failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(¯1+⊃⍴hh,hb)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' nearly room for first header and body failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),'  room for first header and body and 2nd header failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),'  room for first header and body and 2nd header failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(¯1+⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' nearly room for above failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(¯1+⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' nearly room for above failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(¯4+⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' nearly room for above (none of CRLFCRLF) failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(¯4+⊃⍴hh,hb,hh)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' nearly room for above (none of CRLFCRLF) failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(⊃⍴hh,hb,hh,hb)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' room for both headers and bodies failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(⊃⍴hh,hb,hh,hb)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' room for both headers and bodies failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃⍴ret←(¯1+⊃⍴hh,hb,hh,hb)BlockSize(Host Port srv hh hb)
-         →fail because(⍕blksize),' nearly room for both headers and bodies failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃⍴ret←(¯1+⊃⍴hh,hb,hh,hb)BlockSize(Host Port srv hh hb)
+         →fail Because(⍕blksize),' nearly room for both headers and bodies failed: ',,⍕ret ⋄ :EndIf
  :EndFor
  z←iConga.Close srv
  r←''   ⍝ surprise all worked!

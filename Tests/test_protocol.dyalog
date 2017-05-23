@@ -12,17 +12,17 @@
      ''
  }
 
- :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 1
-     →fail because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
+     →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 1)check ret←iConga.GetProp'.' 'EventMode'
-     →fail because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
+ :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
+     →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
  ⍝ Start Server
  srvs←('SA' ''Port)('S4' ''(Port+4)('Protocol' 'ipv4'))('S6' ''(Port+6)('Protocol' 'ipv6'))
 
- :If (0,¨1⌷¨srvs)check ret←iConga.Srv¨srvs
-     →fail becaues'Failed to start all servers ',,⍕ret ⋄ :EndIf
+ :If (0,¨1⌷¨srvs)Check ret←iConga.Srv¨srvs
+     →fail Because'Failed to start all servers ',,⍕ret ⋄ :EndIf
 
  tests←((⊂Host){⍺ ⍵}¨⍬'ip' 'ipv4' 'ipv6')∘.{(⍺,⍵)[1 3 4 2]}{⍵[3 1]}¨srvs
 
@@ -32,11 +32,11 @@
  expect[4;2]←0  ⍝ No ip v6 clt to ip v4 srv
 
  rr←TestConnect¨tests
- :If expect check ret←0=⊃∘⍴¨rr
-     →fail because'Tests did not provide expected results: ',,⍕(,expect≠ret)/,tests ⋄ :EndIf
+ :If expect Check ret←0=⊃∘⍴¨rr
+     →fail Because'Tests did not provide expected results: ',,⍕(,expect≠ret)/,tests ⋄ :EndIf
 
- :If ((⍴srvs)⍴0)check⊃¨ret←iConga.Close¨1⊃¨srvs
-     →fail because'Failed to close all servers: ',,⍕ret ⋄ :EndIf
+ :If ((⍴srvs)⍴0)Check⊃¨ret←iConga.Close¨1⊃¨srvs
+     →fail Because'Failed to close all servers: ',,⍕ret ⋄ :EndIf
 
  r←''   ⍝ surprise all worked!
  →0

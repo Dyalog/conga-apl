@@ -13,11 +13,11 @@
      ⍵
  }
 
- :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 1
-     →fail because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
+     →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 1)check ret←iConga.GetProp'.' 'EventMode'
-     →fail because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
+ :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
+     →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
 
 
@@ -37,31 +37,31 @@
      :EndIf
 
 
-     :If (0)check⊃ret←iConga.Srv'' ''Port mode,args
-         →fail because'Srv failed: ',,⍕ret ⋄ :EndIf
+     :If (0)Check⊃ret←iConga.Srv'' ''Port mode,args
+         →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      s1←2⊃ret
 
-     :If 0 check⊃ret←iConga.Clt''Host Port mode,args
-         →fail because'Clt failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Clt''Host Port mode,args
+         →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      c1←2⊃ret
 
-     :If (0 'Connect' 0)check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
-         →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+     :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
+         →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
 
      :For type :In types
          :For size :In sizes
              data←size⍴tdata
 
-             :If 0 check⊃ret←iConga.Send c1(type convdata data)
-                 →fail because'Send failed: ',,⍕ret ⋄ :EndIf
+             :If 0 Check⊃ret←iConga.Send c1(type convdata data)
+                 →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
              rs←0
              :While (rs<size)
-                 :If (0 'Block')check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
-                     →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
-                 :If 1 check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}tdata
-                     →fail because'filedata is wrong ' ⋄ :EndIf
+                 :If (0 'Block')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 :If 1 Check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}tdata
+                     →fail Because'filedata is wrong ' ⋄ :EndIf
                  rs+←⍴4⊃res
 
              :EndWhile
@@ -69,19 +69,19 @@
 
          :EndFor
      :EndFor
-     :If 0 check⊃ret←iConga.Close c1
-         →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Close c1
+         →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
      :If ∨/'blk'⍷mode
-         :If (0 'Closed' 1119)check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
-             →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+         :If (0 'Closed' 1119)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
+             →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
      :Else
-         :If (0 'BlockLast')check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
-             →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+         :If (0 'BlockLast')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+             →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
      :EndIf
 
-     :If 0 check⊃ret←iConga.Close s1
-         →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Close s1
+         →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
  :EndFor
  r←''   ⍝ surprise all worked!

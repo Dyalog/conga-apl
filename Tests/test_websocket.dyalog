@@ -19,58 +19,58 @@
  :For (cf sf) :In ,¯1+⍳2 2  ⍝ test all for combinations of Auto Upgrade
      testname←⊃,/'Client ' 'Server ',¨(0 0){(1+⍺)⊃⍵}¨⊂'Auto ' 'Manual '
 
-     :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 1
-         →fail because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
+         →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0)check⊃ret←iConga.Srv'' ''Port'http'MaxSize
-         →fail because'Srv failed: ',,⍕ret ⋄ :EndIf
+     :If (0)Check⊃ret←iConga.Srv'' ''Port'http'MaxSize
+         →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      srv←2⊃ret
 
  ⍝ Set feature for server applies to all incomming connections
-     :If 0 check⊃ret←iConga.SetProp srv'WSFeatures'sf
+     :If 0 Check⊃ret←iConga.SetProp srv'WSFeatures'sf
          →fail beacuse'SetProp failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 check⊃ret←iConga.Clt''Host Port'http'MaxSize
-         →fail because'Clt failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Clt''Host Port'http'MaxSize
+         →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      clt←2⊃ret
 
-     :If 0 check⊃ret←iConga.SetProp clt'WSFeatures'cf
+     :If 0 Check⊃ret←iConga.SetProp clt'WSFeatures'cf
          →fail beacuse'SetProp failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0 'Connect' 0)check(⊂1 3 4)⌷4↑ret←iConga.Wait srv maxwait
-         →fail because'Srv Wait did not produce a Connect event: ',,⍕ret ⋄ :EndIf
+     :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑ret←iConga.Wait srv maxwait
+         →fail Because'Srv Wait did not produce a Connect event: ',,⍕ret ⋄ :EndIf
 
  ⍝ Client requests to upgrade the connection 4th arg is extra headers remember to add nl
-     :If 0 check⊃ret←iConga.SetProp clt'WSUpgrade'('/' 'localhost'('BHCHeader: Gil',nl))
+     :If 0 Check⊃ret←iConga.SetProp clt'WSUpgrade'('/' 'localhost'('BHCHeader: Gil',nl))
          →fail beacuse'SetProp failed: ',,⍕ret ⋄ :EndIf
 
 
      res←iConga.Wait srv maxwait
      :If sf
          ⍝ Auto upgrade event 4⊃res is the Incomming request but connection have been upgraded
-         :If 0 'WSUpgrade'check res[1 3]
-             →fail because'Server WebSocket auto upgrade failed',,⍕res ⋄ :EndIf
+         :If 0 'WSUpgrade'Check res[1 3]
+             →fail Because'Server WebSocket auto upgrade failed',,⍕res ⋄ :EndIf
          wscon←2⊃res
      :Else
-         :If 0 'WSUpgradeReq'check res[1 3]
-             →fail because'Server WebSocket manual upgrade failed',,⍕res ⋄ :EndIf
+         :If 0 'WSUpgradeReq'Check res[1 3]
+             →fail Because'Server WebSocket manual upgrade failed',,⍕res ⋄ :EndIf
          ⍝ Negotiate inspect headers (4⊃res) and accept request with the extra headers you need.
          wscon←2⊃res
-         :If 0 check⊃ret←iConga.SetProp wscon'WSAccept'((4⊃res)('GILHeader: bhc',nl))
+         :If 0 Check⊃ret←iConga.SetProp wscon'WSAccept'((4⊃res)('GILHeader: bhc',nl))
              →fail beacuse'SetProp failed: ',,⍕ret ⋄ :EndIf
      :EndIf
 
      res←iConga.Wait clt maxwait
      :If cf
-         :If 0 'WSUpgrade'check res[1 3]
-             →fail because'Client Websocket auto upgrade failed',,⍕res ⋄ :EndIf
+         :If 0 'WSUpgrade'Check res[1 3]
+             →fail Because'Client Websocket auto upgrade failed',,⍕res ⋄ :EndIf
          ⍝ Auto upgrade event 4⊃res is the Incomming request but connection have been upgraded
      :Else
-         :If 0 'WSResponse'check res[1 3]
-             →fail because'Client Websocket maunal upgrade failed',,⍕res ⋄ :EndIf
+         :If 0 'WSResponse'Check res[1 3]
+             →fail Because'Client Websocket maunal upgrade failed',,⍕res ⋄ :EndIf
       ⍝ Negotiate inspect headers (4⊃res) and accept request by returning the headers or close the connection
-         :If 0 check⊃ret←iConga.SetProp clt'WSAccept'((4⊃res)'')
-             →fail because'SetProp failed: ',,⍕ret ⋄ :EndIf
+         :If 0 Check⊃ret←iConga.SetProp clt'WSAccept'((4⊃res)'')
+             →fail Because'SetProp failed: ',,⍕ret ⋄ :EndIf
      :EndIf
 
      :For Continuation :In 0 1
@@ -81,17 +81,17 @@
                  Fin←⊃(1(len=70000))[⎕IO+Continuation]
                  testname←' WebSocket Text APL Datatype ',(⍕⎕DR data),' buffer length ',(⍕len),Continuation/' and Continuation '
 
-                 :If (0)check⊃ret←iConga.Send clt(data Fin)
-                     →fail because'Send failed: ',,⍕ret ⋄ :EndIf
+                 :If (0)Check⊃ret←iConga.Send clt(data Fin)
+                     →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'(data Fin 1))check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
-                     →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 :If (0 'WSReceive'(data Fin 1))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
-                 :If (0)check⊃ret←iConga.Send wscon(data Fin)
-                     →fail because'Send failed: ',,⍕ret ⋄ :EndIf
+                 :If (0)Check⊃ret←iConga.Send wscon(data Fin)
+                     →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'(data Fin 1))check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
-                     →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 :If (0 'WSReceive'(data Fin 1))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
              :EndFor
          :EndFor
 
@@ -102,29 +102,29 @@
                  testname←' WebSocket Text APL Datatype ',(⍕⎕DR data),' and buffer length ',(⍕len),Continuation/' and Continuation '
                  Fin←⊃(1(len=70000))[⎕IO+Continuation]
 
-                 :If (0)check⊃ret←iConga.Send clt(data Fin)
-                     →fail because'Send failed: ',,⍕ret ⋄ :EndIf
+                 :If (0)Check⊃ret←iConga.Send clt(data Fin)
+                     →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'((to83 data)Fin 2))check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
-                     →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 :If (0 'WSReceive'((to83 data)Fin 2))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
-                 :If (0)check⊃ret←iConga.Send wscon(data Fin)
-                     →fail because'Send failed: ',,⍕ret ⋄ :EndIf
+                 :If (0)Check⊃ret←iConga.Send wscon(data Fin)
+                     →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'((to83 data)Fin 2))check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
-                     →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 :If (0 'WSReceive'((to83 data)Fin 2))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
              :EndFor
          :EndFor
      :EndFor
  ⍝ Shutdown
-     :If 0 check⊃ret←iConga.Close clt
-         →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Close clt
+         →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0 'Closed' 1119)check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
-         →fail because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+     :If (0 'Closed' 1119)Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
+         →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
-     :If 0 check⊃ret←iConga.Close srv
-         →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+     :If 0 Check⊃ret←iConga.Close srv
+         →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
  :EndFor ⍝ Features
  r←''   ⍝ surprise all worked!
  →0

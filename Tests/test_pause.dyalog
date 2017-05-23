@@ -22,54 +22,54 @@
  }
 
 
- :If 0 check⊃ret←iConga.SetProp'.' 'EventMode' 1
-     →fail because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
+     →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 1)check ret←iConga.GetProp'.' 'EventMode'
-     →fail because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
+ :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
+     →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)check⊃ret←iConga.Srv'' ''Port
-     →fail because'Srv failed: ',,⍕ret ⋄ :EndIf
+ :If (0)Check⊃ret←iConga.Srv'' ''Port
+     →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
  ⍝ Start the server thread
 ⍝ stnum←{sret←Server}&s1 maxwait
 
  tests←10⍴⊂(Host Port s1'')
 
- :If ((⍴tests)⍴0)check⊃∘⍴¨ret←TestConnect¨tests
-     →fail because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
+ :If ((⍴tests)⍴0)Check⊃∘⍴¨ret←TestConnect¨tests
+     →fail Because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
 
- :If 0 check⊃ret←iConga.SetProp s1'Pause' 1
-     →fail because'Set Pause to 1 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp s1'Pause' 1
+     →fail Because'Set Pause to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If ((⍴tests)⍴0)check 0=⊃∘⍴¨ret←TestConnect¨tests
-     →fail because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
+ :If ((⍴tests)⍴0)Check 0=⊃∘⍴¨ret←TestConnect¨tests
+     →fail Because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
 
- :If 0 check⊃ret←iConga.SetProp s1'Pause' 0
-     →fail because'Set Pause to 0 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp s1'Pause' 0
+     →fail Because'Set Pause to 0 failed: ',,⍕ret ⋄ :EndIf
 
  :While (0<⍴iConga.Names s1)∨(1<⍴iConga.Names'.')
      ret←FlushPending s1((iConga.Names'.')~⊂s1)
      ⎕←'.'
  :EndWhile
 
- :If ((⍴tests)⍴0)check⊃∘⍴¨ret←TestConnect¨tests
-     →fail because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
+ :If ((⍴tests)⍴0)Check⊃∘⍴¨ret←TestConnect¨tests
+     →fail Because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
 
- :If 0 check⊃ret←iConga.SetProp s1'Pause' 2
-     →fail because'Set Pause to 2 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp s1'Pause' 2
+     →fail Because'Set Pause to 2 failed: ',,⍕ret ⋄ :EndIf
 
- :If ((⍴tests)⍴0)check 0=⊃∘⍴¨ret←TestConnect¨tests
-     →fail because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
+ :If ((⍴tests)⍴0)Check 0=⊃∘⍴¨ret←TestConnect¨tests
+     →fail Because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
 
- :If 0 check⊃ret←iConga.SetProp s1'Pause' 0
-     →fail because'Set Pause to 0 failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.SetProp s1'Pause' 0
+     →fail Because'Set Pause to 0 failed: ',,⍕ret ⋄ :EndIf
 
- :If ((⍴tests)⍴0)check⊃∘⍴¨ret←TestConnect¨tests
-     →fail because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
+ :If ((⍴tests)⍴0)Check⊃∘⍴¨ret←TestConnect¨tests
+     →fail Because'Connection failed :',,⍕(⊃∘⍴¨ret)/ret ⋄ :EndIf
 
- :If 0 check⊃ret←iConga.Close s1
-     →fail because'Close failed: ',,⍕ret ⋄ :EndIf
+ :If 0 Check⊃ret←iConga.Close s1
+     →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
  r←''   ⍝ surprise all worked!
  →0
