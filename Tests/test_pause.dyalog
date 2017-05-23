@@ -48,7 +48,7 @@
  :If 0 check⊃ret←iConga.SetProp s1'Pause' 0
      →fail because'Set Pause to 0 failed: ',,⍕ret ⋄ :EndIf
 
- :While 0<⍴iConga.Names s1
+ :While (0<⍴iConga.Names s1)∨(1<⍴iConga.Names'.')
      ret←FlushPending s1((iConga.Names'.')~⊂s1)
      ⎕←'.'
  :EndWhile
