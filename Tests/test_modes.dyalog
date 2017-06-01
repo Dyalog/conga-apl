@@ -12,7 +12,7 @@
      ⍺=163:⍵
      ⍵
  }
-
+ s1←c1←⍬
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
@@ -82,7 +82,7 @@
 
      :If 0 Check⊃ret←iConga.Close s1
          →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
-
+     ⎕DL 0.5
  :EndFor
  r←''   ⍝ surprise all worked!
  →0

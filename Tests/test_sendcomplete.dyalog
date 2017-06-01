@@ -67,7 +67,11 @@
  :If (0 'Receive' 'test 1 2')Check(⊂1 3 4)⌷4↑res←iConga.Wait cmd2 maxwait
      →fail Because'Bad result from clt Wait: ',,⍕res ⋄ :EndIf
 
- :If (0 'Receive' 'test 1 3')Check(⊂1 3 4)⌷4↑res←iConga.Wait cmd3 maxwait
+ :If (0 'Sent' 0)≡(⊂1 3 4)⌷4↑res←iConga.Wait cmd3 maxwait
+     'test_sendcomplete'Log'Got Sent Event'
+     res←iConga.Wait cmd3 maxwait
+ :EndIf
+ :If (0 'Receive' 'test 1 3')Check(⊂1 3 4)⌷4↑res
      →fail Because'Bad result from clt Wait: ',,⍕res ⋄ :EndIf
 
  :If 0 Check⊃ret←iConga.Close c1
@@ -80,6 +84,7 @@
      →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
  testname←'Block Text mode'
+ ⎕DL 0.5
 
  :If (0)Check⊃ret←iConga.Srv'' ''Port'BlkText' 10000('Magic'(Magic'TRex'))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf

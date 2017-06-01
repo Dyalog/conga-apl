@@ -4,8 +4,12 @@
  maxwait←5000
  probe←'Request'
  data←hh,hb,hh,hb
-
- :If (0 clt)Check ret←iConga.Clt clt Host Port'http'blksize
+ :If (1009 'ERR_NAME_IN_USE')≡2↑ret←iConga.Clt clt Host Port'http'blksize
+     'BlockSize'Log'Client still there delay and retry'
+     ⎕DL 1
+     ret←iConga.Clt clt Host Port'http'blksize
+ :EndIf
+ :If (0 clt)Check ret
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
 
  :If 0 Check⊃ret←iConga.Send clt probe

@@ -1,9 +1,9 @@
 ﻿ r←test_progress dummy;Host;Port;maxwait;data;ret;srv;c1;ccmd;con1;res;scmd;lp
-⍝ Test progress
+⍝  Test progress
  Host←'localhost' ⋄ Port←5000
  maxwait←5000
  data←'Testing 1 2 3'
-
+ srv←c1←⍬
  lp←'.'∘{(1-(⌽⍵)⍳⍺)↑⍵}
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
@@ -77,9 +77,13 @@
  :If (0)Check⊃ret←iConga.Respond scmd(⌽data)
      →fail Because'Respond failed: ',,⍕ret ⋄ :EndIf
 
- ⎕DL 0.1
+ :If (0 'Progress' '50%')≡(⊂1 3 4)⌷4↑res←iConga.Wait ccmd maxwait
+     'test_progress'Log'Got 50% expected answer delay and retry'
+     ⎕DL 1
+     res←iConga.Wait ccmd maxwait
+ :EndIf
 
- :If (0 'Receive'(⌽data))Check(⊂1 3 4)⌷4↑res←iConga.Wait ccmd maxwait
+ :If (0 'Receive'(⌽data))Check(⊂1 3 4)⌷4↑res
      →fail Because'Bad result from Clt Wait: ',,⍕res ⋄ :EndIf
 
 

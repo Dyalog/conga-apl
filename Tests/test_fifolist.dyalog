@@ -96,6 +96,7 @@
 
          :If 0 Check⊃ret←iConga.Close s1
              →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
+         ⎕DL 0.1
 
      :EndFor ⍝ mode
  :EndFor ⍝ fifo

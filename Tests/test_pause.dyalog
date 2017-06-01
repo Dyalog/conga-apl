@@ -50,7 +50,7 @@
 
  :While (0<⍴iConga.Names s1)∨(1<⍴iConga.Names'.')
      ret←FlushPending s1((iConga.Names'.')~⊂s1)
-     ⎕←'.'
+     'test_pause'Log'Cleaning up'
  :EndWhile
 
  :If ((⍴tests)⍴0)Check⊃∘⍴¨ret←TestConnect¨tests
