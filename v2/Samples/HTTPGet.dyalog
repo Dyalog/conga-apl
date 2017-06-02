@@ -1,20 +1,28 @@
-﻿ r←{certs}HTTPGet url;U;DRC;protocol;wr;key;flags;pars;secure;data;z;header;datalen;host;port;done;cmd;b;page;auth;p;x509;priority;err;req;fromutf8;chunked;chunk;h2d;buffer;chunklength;len;getchunklen;split
+﻿ r←{certs}HTTPGet url;U;DRC;protocol;wr;key;flags;pars;secure;data;z;header;datalen;host;port;done;cmd;b;page;auth;p;x509;priority;err;req;fromutf8;chunked;chunk;h2d;buffer;chunklength;len;getchunklen;split;ref;found
           ⍝ Get an HTTP page, format [HTTP[S]://][user:pass@]url[:port][/page]
           ⍝ Opional Left argument: PublicCert PrivateKey SSLValidation
           ⍝ Makes secure connection if left arg provided or URL begins with https:
 
           ⍝ Result: (return code) (HTTP headers) (HTTP body) [PeerCert if secure]
 
- U←##.HTTPUtils ⍝ Uses utils from here
  fromutf8←{0::(⎕AV,'?')[⎕AVU⍳⍵] ⋄ 'UTF-8'⎕UCS ⍵} ⍝ Turn raw UTF-8 input into text
  h2d←{⎕IO←0 ⋄ 16⊥'0123456789abcdef'⍳U.lc ⍵} ⍝ hex to decimal
  getchunklen←{¯1=len←¯1+⊃(NL⍷⍵)/⍳⍴⍵:¯1 ¯1 ⋄ chunklen←h2d len↑⍵ ⋄ (⍴⍵)<len+chunklen+4:¯1 ¯1 ⋄ len chunklen}
  split←{(p↑⍵)((p←¯1+⍵⍳⍺)↓⍵)}
 
- :If 3=⎕NC'#.Conga.Init' ⋄ DRC←#.Conga.Init''              ⍝ v3 intialisation
- :ElseIf 9.1=⎕NC⊂'#.DRC' ⋄ DRC←#.DRC ⋄ {}DRC.Init'' ⋄ :EndIf ⍝ Pre-v3 NS
+ r←¯1(0 2⍴⊂'')''
+
+ :For ref :In ## #
+     :If found←3=ref.⎕NC'Conga.Init' ⋄ DRC←ref.Conga.Init''              ⍝ v3 intialisation
+     :ElseIf found←9.1=ref.⎕NC⊂'DRC' ⋄ DRC←ref.DRC ⋄ {}DRC.Init'' ⋄ :EndIf ⍝ Pre-v3 NS
+     →found⍴GET
+ :EndFor
+
+ ⎕←'Could not find Conga or DRC object'
+ →0
 
 GET:
+ U←ref.HTTPUtils ⍝ Uses utils from same place as DRC/Conga
  p←(∨/b)×1+(b←'//'⍷url)⍳1
  secure←{6::⍵ ⋄ ⍵∨0<⍴,certs}(U.lc(p-2)↑url)≡'https:'
  port←(1+secure)⊃80 443 ⍝ Default HTTP/HTTPS port
