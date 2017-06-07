@@ -105,3 +105,4 @@
  →0
 fail:
  z←iConga.Close¨c1 srv
+ ErrorCleanup

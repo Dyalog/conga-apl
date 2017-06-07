@@ -42,3 +42,4 @@
  →0
 fail:
  z←iConga.Close¨1⊃¨srvs
+ ErrorCleanup

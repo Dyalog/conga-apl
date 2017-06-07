@@ -105,3 +105,4 @@
  →0
 fail:
  z←iConga.Close¨cons,⊂s1
+ ErrorCleanup

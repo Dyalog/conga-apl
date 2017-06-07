@@ -94,3 +94,4 @@
  →0
 fail:
  z←iConga.Close¨c1 c2 s1 s2
+ ErrorCleanup

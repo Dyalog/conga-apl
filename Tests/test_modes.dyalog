@@ -88,3 +88,4 @@
  →0
 fail:
  z←iConga.Close¨c1 s1
+ ErrorCleanup

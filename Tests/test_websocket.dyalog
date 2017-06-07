@@ -131,3 +131,4 @@
 fail:
  z←iConga.Close¨clt srv
  r←r,' for ',testname
+ ErrorCleanup

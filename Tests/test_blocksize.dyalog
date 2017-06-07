@@ -58,4 +58,5 @@
  r←''   ⍝ surprise all worked!
  →0
 fail:
+ ErrorCleanup
  r←r,' for ',testname
