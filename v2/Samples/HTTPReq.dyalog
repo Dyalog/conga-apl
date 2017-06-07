@@ -1,4 +1,4 @@
-﻿ r←{certs}HTTPReq args;U;DRC;fromutf8;h2d;getchunklen;eis;getHeader;addHeader;makeHeaders;fmtHeaders;url;parms;hdrs;b;p;secure;port;host;page;x509;flags;priority;pars;auth;req;err;chunked;chunk;buffer;chunklength;header;datalen;data;done;wr;len;cmd
+﻿ r←{certs}HTTPReq args;U;DRC;fromutf8;h2d;getchunklen;eis;getHeader;addHeader;makeHeaders;fmtHeaders;url;parms;hdrs;b;p;secure;port;host;page;x509;flags;priority;pars;auth;req;err;chunked;chunk;buffer;chunklength;header;datalen;data;done;wr;len;cmd;ref;found;split
           ⍝ issue an HTTP GET or POST request
           ⍝ certs - optional PublicCert PrivateKey SSLValidation
           ⍝ args  - [1] URL in format [HTTP[S]://][user:pass@]url[:port][/page]
@@ -7,7 +7,6 @@
           ⍝ Makes secure connection if left arg provided or URL begins with https:
 
           ⍝ Result: (return code) (HTTP headers) (HTTP body) [PeerCert if secure]
- (U DRC)←##.(HTTPUtils DRC) ⍝ Uses utils from here
  fromutf8←{0::(⎕AV,'?')[⎕AVU⍳⍵] ⋄ 'UTF-8'⎕UCS ⍵} ⍝ Turn raw UTF-8 input into text
  h2d←{⎕IO←0 ⋄ 16⊥'0123456789abcdef'⍳U.lc ⍵} ⍝ hex to decimal
  getchunklen←{¯1=len←¯1+⊃(NL⍷⍵)/⍳⍴⍵:¯1 ¯1 ⋄ chunklen←h2d len↑⍵ ⋄ (⍴⍵)<len+chunklen+4:¯1 ¯1 ⋄ len chunklen}
@@ -16,7 +15,7 @@
  addHeader←{0∊⍴⍺⍺ getHeader ⍺:⍺⍺⍪⍺ ⍵ ⋄ ⍺⍺}
  makeHeaders←{⎕ML←1 ⋄ 0∊⍴⍵:0 2⍴⊂'' ⋄ 2=⍴⍴⍵:⍵ ⋄ ↑2 eis ⍵}
  fmtHeaders←{⎕ML←1 ⋄ 0∊⍴⍵:'' ⋄ ∊{NL,⍨(1⊃⍵),': ',⍕2⊃⍵}¨↓⍵}
- {}DRC.Init''
+ split←{(p↑⍵)((p←¯1+⍵⍳⍺)↓⍵)}
  args←eis args
 
  (url parms hdrs)←args,(⍴args)↓''(⎕NS'')''
@@ -27,7 +26,20 @@
 
  cmd←(1+0∊⍴parms)⊃'POST' 'GET' ⍝ set command based on whether we've passed POST parameters
 
+ r←¯1(0 2⍴⊂'')''
+
+ :For ref :In ## #
+     :If found←3=ref.⎕NC'Conga.Init' ⋄ DRC←ref.Conga.Init''              ⍝ v3 intialisation
+     :ElseIf found←9.1=ref.⎕NC⊂'DRC' ⋄ DRC←ref.DRC ⋄ {}DRC.Init'' ⋄ :EndIf ⍝ Pre-v3 NS
+     →found⍴GET
+ :EndFor
+
+ ⎕←'Could not find Conga or DRC object'
+ →0
+
 GET:
+ U←ref.HTTPUtils ⍝ Uses utils from same place as DRC/Conga
+
  p←(∨/b)×1+(b←'//'⍷url)⍳1
  secure←{6::⍵ ⋄ ⍵∨0<⍴,certs}(U.lc(p-2)↑url)≡'https:'
  port←(1+secure)⊃80 443 ⍝ Default HTTP/HTTPS port
@@ -63,7 +75,8 @@ GET:
  req,←fmtHeaders hdrs
  req,←auth
 
- :If DRC.flate.IsAvailable ⍝ if compression is available
+ :If 2=DRC.⎕NC'flate'
+ :AndIf DRC.flate.IsAvailable ⍝ if compression is available
      req,←'Accept-Encoding: deflate',NL ⍝ indicate we can accept it
  :EndIf
 
