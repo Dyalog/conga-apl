@@ -1,15 +1,18 @@
-﻿ r←test_websocket dummy;Port;Host;nl;maxwait;Features;MaxSize;to83;utf8;ret;srv;clt;res;Continuation;drt;len;data;Fin;testname;offset;z;wscon;cf;sf
+﻿ r←test_websocket dummy;Port;Host;nl;maxwait;Features;MaxSize;to83;utf8;ret;srv;clt;res;Continuation;drt;len;data;Fin;testname;offset;z;wscon;cf;sf;isUnicode
 ⍝ Test upgrade of http connection to websocket
  Port←8088 ⋄ Host←'localhost'
  nl←⎕UCS 13 10
  maxwait←5000 ⋄ MaxSize←450000
  Features←1   ⍝ Feature 0=APL negotiate 1=AutoUpgrade
  to83←{⍵+¯256×⍵>127}
+ isUnicode←{80=⎕DR' ':1 ⋄ 0}
 
  utf8←{
      b←127 2047 65535 2097151 67108863 2147483647
      us←1 2 3 4 5 6
      d←1 2 2 4 4 4
+     ⍺=82:⎕UCS ⍵⍴(256{(⍵<⍺)/⍵}⎕AVU){(⍵∊⍺)/⍵}(,⍉0 1∘.+1↑b),?⍵⍴255   ⍝ only characters in avu with codepoint under 256
+     ⍺=820:⎕UCS ⍵⍴⎕AVU{(⍵∊⍺)/⍵}(,⍉0 1∘.+1↑b),?⍵⍴255                     ⍝ also characters in avu
      ⍺=80:⎕UCS ⍵↑(,⍉0 1∘.+1↑b),?⍵⍴255
      ⍺=160:⎕UCS ⍵↑(,⍉0 1∘.+2↑b),(3⊃b),?⍵⍴65535
      ⍺=320:⎕UCS ⍵↑(,⍉0 1∘.+3↑b),1114111,?⍵⍴1114111
@@ -75,7 +78,7 @@
 
      :For Continuation :In 0 1
   ⍝ Test text (utf8) buffers
-         :For drt :In 80 160 320
+         :For drt :In (⎕IO+isUnicode ⍬)⊃(82 820)(80 160 320)
              :For len :In 0 10 124 125 126 127 128 65535 65536 70000
                  data←drt utf8 len ⍝
                  Fin←⊃(1(len=70000))[⎕IO+Continuation]

@@ -21,7 +21,7 @@
  }
 
  Load←{con data←⍵
-     0≢⊃iConga.Send con data:'Send failed: ',,⍕ret
+     0≢⊃ret←iConga.Send con data:'Send failed: ',,⍕ret
      1
  }
  cons←⍬
