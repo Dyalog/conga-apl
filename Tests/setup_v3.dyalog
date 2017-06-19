@@ -2,7 +2,12 @@
 ⍝ Setup test using v3 DRC
 ⍝ Set #.CONGALIB to point to non-default Conga DLLs
 
- Conga←#.Conga
+ :If 0=⎕NC'#.Conga'
+     →0⊣r←'#.Conga not present.'
+ :Else
+     Conga←#.Conga
+ :EndIf
+
  :Trap 0
      iConga←('CONGALIB'{0=#.⎕NC ⍺:⍵ ⋄ ⍎'#.',⍺}'')Conga.Init''
  :Else
