@@ -27,9 +27,13 @@
  tests←('localhost' '127.0.0.1' '::1' '')∘.{(⊂⍺),⍵,⊂''}{⍵[3 1]}¨srvs
 
  expect←(⍴tests)⍴1
- expect[2;3]←0  ⍝ No ip v4 clt to ip v6 srv
- expect[3;2]←0  ⍝ No ip v6 clt to ip v4 srv
-
+ :If 'IPv4'≡2 1⊃iConga.GetProp'SA' 'localAddr'
+     expect[4;]←0
+     expect[3;1 2]←0
+ :Else
+     expect[2;3]←0  ⍝ No ip v4 clt to ip v6 srv
+     expect[3;2]←0  ⍝ No ip v6 clt to ip v4 srv
+ :EndIf
  rr←TestConnect¨tests
  :If expect Check ret←0=⊃∘⍴¨rr
      →fail Because'Tests did not provide expected results: ',,⍕(,expect≠ret)/,tests ⋄ :EndIf

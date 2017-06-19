@@ -28,8 +28,12 @@
 
 
  expect←(⍴tests)⍴1
- expect[3;3]←0  ⍝ No ip v4 clt to ip v6 srv
- expect[4;2]←0  ⍝ No ip v6 clt to ip v4 srv
+ :If 'IPv4'≡2 1⊃iConga.GetProp'SA' 'localAddr'
+     expect[4;1 2]←0
+ :Else
+     expect[3;3]←0  ⍝ No ip v4 clt to ip v6 srv
+     expect[4;2]←0  ⍝ No ip v6 clt to ip v4 srv
+ :EndIf
 
  rr←TestConnect¨tests
  :If expect Check ret←0=⊃∘⍴¨rr
