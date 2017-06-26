@@ -31,7 +31,7 @@
      expect[4;]←0
      expect[3;1 2]←0
  :Else
-     expect[2;3]←0  ⍝ No ip v4 clt to ip v6 srv
+     expect[2;3]←'Win'≢3↑1⊃'.'⎕WG'AplVersion'  ⍝ No ip v4 clt to ip v6 srv
      expect[3;2]←0  ⍝ No ip v6 clt to ip v4 srv
  :EndIf
  rr←TestConnect¨tests

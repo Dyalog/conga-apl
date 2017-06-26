@@ -31,7 +31,7 @@
  :If 'IPv4'≡2 1⊃iConga.GetProp'SA' 'localAddr'
      expect[4;1 2]←0
  :Else
-     expect[3;3]←0  ⍝ No ip v4 clt to ip v6 srv
+     expect[3;3]←'Win'≢3↑1⊃'.'⎕WG'AplVersion'  ⍝ No ip v4 clt to ip v6 srv
      expect[4;2]←0  ⍝ No ip v6 clt to ip v4 srv
  :EndIf
 
