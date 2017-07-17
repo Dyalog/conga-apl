@@ -1,5 +1,5 @@
-﻿ r←test_httpchunk dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;data;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc
-⍝ Test http chunked transfere
+﻿ r←test_httpdecode dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;data;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc
+⍝  Test http chunked transfere
 
  Port←5000 ⋄ Host←'localhost'
  srv←'S1'
@@ -53,7 +53,7 @@
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
 
 
- :For test :In (crlf Header Chunks Trailer)(crlf Header Chunks'')(lf Header Chunks Trailer)(lf Header Chunks'')
+ :For test :In (crlf Header Chunks Trailer)(crlf Header Chunks(0 2⍴''))(lf Header Chunks Trailer)(lf Header Chunks(0 2⍴''))
 
      (sep header chunks trailer)←test
      testdata←sep FmtHeader header
@@ -76,6 +76,9 @@
      :If (0 clt)Check ret
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
 
+     :If 0 Check⊃ret←iConga.SetProp clt'DecodeBuffers' 15
+         →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
+
      :If 0 Check⊃ret←iConga.Send clt probe
          →fail Because'Clt Send failed: ',,⍕ret ⋄ :EndIf
 
@@ -88,16 +91,16 @@
      :If 0 Check⊃ret←iConga.Send(2⊃res)(testdata)1
          →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0 clt'HTTPHeader'((sep FmtHeader header),sep))Check 4↑res←iConga.Wait clt maxwait
+     :If (0 clt'HTTPHeader'((' '{1↓¨(⍺=⍺,⍵)⊂⍺,⍵}⊃header),⊂(1 0↓header)))Check 4↑res←iConga.Wait clt maxwait
          →fail Because'Bad result from Clt Wait: ',,⍕res ⋄ :EndIf
 
-     :For cc :In (⊂sep)FmtChunk¨chunks
+     :For cc :In chunks
 
-         :If (0 clt'HTTPChunk'(cc))Check 4↑res←iConga.Wait clt maxwait
+         :If (0 clt'HTTPChunk'(cc(0 2⍴'')))Check 4↑res←iConga.Wait clt maxwait
              →fail Because'Bad result from Clt Wait: ',,⍕res ⋄ :EndIf
      :EndFor
 
-     :If (0 clt'HTTPTrailer'('0',sep,(sep{0=≢⍵:'' ⋄ ⍺ FmtHeader ⍵}trailer),sep))Check 4↑res←iConga.Wait clt maxwait
+     :If (0 clt'HTTPTrailer'(trailer))Check 4↑res←iConga.Wait clt maxwait
          →fail Because'Bad result from Clt Wait: ',,⍕res ⋄ :EndIf
 
      :If (0 clt'Closed' 1119)Check 4↑res←iConga.Wait clt maxwait

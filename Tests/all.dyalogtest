@@ -16,4 +16,6 @@ Test    : test_modes
 Test    : test_addrinfo
 Test    : test_pause
 Test    : test_httpchunk
+Test    : test_httpdecode
+Test    : test_http_coding
 
