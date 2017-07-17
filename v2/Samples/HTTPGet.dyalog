@@ -43,7 +43,17 @@ GET:
  :Else ⋄ auth←''
  :EndIf
 
- host port←port U.HostPort host ⍝ Check for override of port number
+ :Trap 0
+     host port←port U.HostPort host ⍝ Check for override of port number
+ :Else
+     ⎕←'Invalid host/port: ',url
+     →0
+ :EndTrap
+
+ :If 0=port
+     ⎕←'Invalid port'
+     →0
+ :EndIf
 
  req←'GET ',page,' HTTP/1.1',NL,'Host: ',host,NL,'User-Agent: Dyalog/Conga',NL,'Accept: */*',auth,NL ⍝ build the request
 

@@ -60,7 +60,17 @@ GET:
  :Else ⋄ auth←''
  :EndIf
 
- host port←port U.HostPort host ⍝ Check for override of port number
+ :Trap 0
+     host port←port U.HostPort host ⍝ Check for override of port number
+ :Else
+     ⎕←'Invalid host/port: ',url
+     →0
+ :EndTrap
+
+ :If 0=port
+     ⎕←'Invalid port'
+     →0
+ :EndIf
 
  hdrs←makeHeaders hdrs
  hdrs←'User-Agent'(hdrs addHeader)'Dyalog/Conga'
