@@ -5,7 +5,7 @@
     :Field Public RootName
 
       check←{
-          0≠⊃⍵:('DLL Error: ',##.Conga.Error⊃⍵)⎕SIGNAL 999
+          0≠⊃⍵:('DLL Error: ',,⍕##.Conga.Error⊃⍵)⎕SIGNAL 999
           0≠⊃2⊃⍵:(##.Conga.Error⊃2⊃⍵),1↓2⊃⍵
           2=⍴⍵:(⎕IO+1)⊃⍵
           1↓⍵}
