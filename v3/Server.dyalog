@@ -79,14 +79,15 @@
 
         ∇ onTimeout
           :Access Public Overridable
-        ∇
-        
+        ∇      
 
         ∇ Handler name;r;newcon;err;obj;evt;data
           ⍎name,'←⎕ns '''' '
           :While ~done
-              :If 0=⊃r←LIB.Wait name timeout
-                  (err obj evt data)←4↑r
+              (err obj evt data)←4↑r←LIB.Wait name timeout  
+
+              :Select err              
+              :Case 0
                   :Select evt
                   :Case 'Connect'
                       newcon←⎕NEW conclass(obj ⎕THIS extra)
@@ -95,9 +96,12 @@
                       :EndIf
                       ⍎obj,'← newcon'
                       ⎕EX'newcon'
-                  :CaseList 'Error' 'Close'
+                  :Case 'Error'
                       (⍎obj).onError obj data
-                      Remove obj
+                      Remove obj  
+                  :Case 'Close'
+                      (⍎obj).onClose obj data
+                      Remove obj  
                   :Case 'Receive'
                       ⍎('.'{(-(⌽⍵)⍳⍺)↓⍵}obj),'.on',evt,'& obj data'
                   :Case 'Timeout'
@@ -109,11 +113,16 @@
                           _←LIB.Close name
                           'unexpected event'⎕SIGNAL 999
                       :EndIf
-                  :EndSelect
+                  :EndSelect    
+              :Case 100 ⍝ Timeout with EventMode=0
+                  onTimeout          
+              :Case 1119 ⍝ Close with EventMode=0    
+                  (⍎obj).onClose obj data
+                  Remove obj
               :Else
                   HError←⊃r
                   done←1
-              :EndIf
+              :EndSelect
           :EndWhile
           htid←0
         ∇
