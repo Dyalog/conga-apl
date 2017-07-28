@@ -38,6 +38,6 @@
          r←0('Conga loaded from: ',LibPath,filename)
      :Else
          :If 0≠≢⍙naedfns ⋄ z←⎕EX¨⍙naedfns ⋄ :EndIf
-         r←1000('Unable to find DLL "',filename,'"')('Tried: ',,⍕LibPath)
+         r←1000('Unable to find DLL "',filename,'"')((0≠≢LibPath)/'Tried: ',,⍕LibPath)
      :EndIf
  :EndIf
