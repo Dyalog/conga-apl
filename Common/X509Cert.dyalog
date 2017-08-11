@@ -305,36 +305,36 @@
 
     :Section Deprecated Shared Methods
 
-    ∇ certs←ReadCertUrls;LDRC
+    ∇ certs←ReadCertUrls;lDRC
      ⍝ NB Deprecated / for backwards compatibility
      ⍝    Use instance method CertificateUrls
       :Access Public Shared
-      LDRC←FindDRC ⍬
-      certs←LDRC.ReadCertUrls
+      lDRC←FindDRC ⍬
+      certs←lDRC.ReadCertUrls
     ∇
 
-    ∇ certs←ReadCertFromStore storename;LDRC
+    ∇ certs←ReadCertFromStore storename;lDRC
      ⍝ NB Deprecated / for backwards compatibility
      ⍝    Use instance method CertificateFromStore
       :Access Public Shared
-      LDRC←FindDRC ⍬
-      certs←LDRC.ReadCertFromStore storename
+      lDRC←FindDRC ⍬
+      certs←lDRC.ReadCertFromStore storename
     ∇
 
-    ∇ certs←ReadCertFromFolder foldername;LDRC
+    ∇ certs←ReadCertFromFolder foldername;lDRC
      ⍝ NB Deprecated / for backwards compatibility
      ⍝    Use instance method CertificateFromFolder
       :Access Public Shared
-      LDRC←FindDRC ⍬
-      certs←LDRC.ReadCertFromFolder foldername
+      lDRC←FindDRC ⍬
+      certs←lDRC.ReadCertFromFolder foldername
     ∇
 
-    ∇ certs←ReadCertFromFile filename;LDRC
+    ∇ certs←ReadCertFromFile filename;lDRC
      ⍝ NB Deprecated / for backwards compatibility
      ⍝    Use instance method CertificateFromFolder
       :Access Public Shared
-      LDRC←FindDRC ⍬
-      certs←LDRC.ReadCertFromFile filename
+      lDRC←FindDRC ⍬
+      certs←lDRC.ReadCertFromFile filename
     ∇
 
     :EndSection Deprecated Shared Methods
