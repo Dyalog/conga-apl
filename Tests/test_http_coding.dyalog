@@ -1,4 +1,4 @@
-﻿ r←test_http_coding dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc;Body;body;con;Request;Status
+﻿ r←test_http_coding dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc;Body;body;con;Request;Status;MakeFile
 ⍝  Test http chunked transfere
 
  Port←5000 ⋄ Host←'localhost'
@@ -8,6 +8,18 @@
 
  crlf←⎕UCS 13 10
  lf←⎕UCS 10
+ MakeFile←{
+     nopen←{                              ⍝ handle on null file.
+         0::⎕SIGNAL ⎕EN                  ⍝ signal error to caller.
+         22::⍵ ⎕NCREATE 0                ⍝ ~exists: create.
+         ⍵ ⎕NTIE 0                      ⍝  exists: tie.
+     }
+     (name size data)←⍵
+     tie←nopen name
+     _←0 ⎕NRESIZE tie
+     _←(size⍴data)⎕NAPPEND tie
+     ⎕NUNTIE tie
+ }
 
  hex←{⎕CT ⎕IO←0                          ⍝ Hexadecimal from decimal.
      ⍺←⊢                                 ⍝ no width specification.
@@ -56,8 +68,8 @@
  :If 0 Check⊃ret←iConga.SetProp srv'DecodeBuffers' 0
      →fail Because'Set DecodeBuffers to 0 failed: ',,⍕ret ⋄ :EndIf
 
-
- :For test :In (Header Body ⍬(0 2⍴''))(Header ⍬ Chunks Trailer)(Header ⍬ Chunks(0 2⍴''))
+ MakeFile'test.dat'(⍴Body)Body
+ :For test :In (Header Body ⍬(0 2⍴''))(Header('' 'test.dat')⍬(0 2⍴''))(Header ⍬ Chunks Trailer)(Header ⍬ Chunks(0 2⍴''))
 
      (header body chunks trailer)←test
 
@@ -75,7 +87,9 @@
      :If 0<≢body
          :If 0 Check⊃ret←iConga.Send clt(Request,header body)
              →fail Because'Clt Send failed: ',,⍕ret ⋄ :EndIf
-
+         :If (1<≡body)∧2=≢body
+             body←Body
+         :EndIf
          header⍪←'Content-Length'(⍕⍴body)
          :If (0 con'HTTPHeader'((¯1↓⊃,/Request,¨' '),crlf,(crlf FmtHeader header),crlf))Check 4↑res←iConga.Wait srv maxwait
              →fail Because'Bad result from srv Wait: ',,⍕res ⋄ :EndIf
