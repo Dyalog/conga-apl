@@ -3,8 +3,8 @@
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
  data←'May the force be with you'
- connections←2
- messages←4
+ connections←20
+ messages←40
 
  ⍝ sink all connect events on server , Close all clients and sink all Close events
  FlushPending←{⍺←0 'Connect' 0
@@ -56,10 +56,11 @@
          cons←{(0=1⊃¨⍵)/2⊃¨⍵}cons
 
          Cnt←0
-         {}{Cnt+←Load ⍵}&¨(messages/cons){⍺ ⍵}¨⊂data
+         {}{Cnt+←messages SendReceive ⍵}&¨cons{⍺ ⍵}¨⊂data
+⍝         {}{Cnt+←Load ⍵}&¨(messages/cons){⍺ ⍵}¨⊂data
 
          CntRecv←CntBlck←0
-         :While 0=⊃ret←iConga.Waitt'.'maxwait
+         :While 0=⊃ret←iConga.Waitt s1 maxwait
              err obj evt dat tim←5↑ret
              :If 0 Check(0≠2⊃tim)∧now>2⊃tim
                  →fail Because'not chronological '
@@ -72,22 +73,22 @@
              :CaseList 'Connect' 'Closed' 'Error'
              :Case 'Receive'
                  CntRecv+←1
-                 :If ∨/s1⍷obj
-                     :If 0 Check⊃ret←iConga.Respond obj(⌽dat)
-                         →fail Because' Respond failed: ',,⍕ret ⋄ :EndIf
-                 :Else
-                     :If (0(⌽data))Check err dat
-                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
-                 :EndIf
+⍝                 :If ∨/s1⍷obj
+                 :If 0 Check⊃ret←iConga.Respond obj(⌽dat)
+                     →fail Because' Respond failed: ',,⍕ret ⋄ :EndIf
+⍝                 :Else
+⍝                     :If (0(⌽data))Check err dat
+⍝                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
+⍝                 :EndIf
              :Case 'Block'
                  CntBlck+←1
-                 :If ∨/s1⍷obj
-                     :If 0 Check⊃ret←iConga.Send obj(⌽dat)
-                         →fail Because' Send failed: ',,⍕ret ⋄ :EndIf
-                 :Else
-                     :If (0(⌽data))Check err dat
-                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
-                 :EndIf
+⍝                 :If ∨/s1⍷obj
+                 :If 0 Check⊃ret←iConga.Send obj(⌽dat)
+                     →fail Because' Send failed: ',,⍕ret ⋄ :EndIf
+⍝                 :Else
+⍝                     :If (0(⌽data))Check err dat
+⍝                         →fail Because'Wrong data returned: ',,⍕ret ⋄ :EndIf
+⍝                 :EndIf
              :EndSelect
          :EndWhile
 
@@ -97,6 +98,9 @@
          :If 0 Check⊃ret←iConga.Close s1
              →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
          ⎕DL 0.1
+
+         :If (2×connections×messages)Check Cnt+CntRecv+CntBlck
+             →fail Because'No all messages was accounted for' ⋄ :EndIf
 
      :EndFor ⍝ mode
  :EndFor ⍝ fifo
