@@ -50,7 +50,7 @@
 
  :While (0<⍴iConga.Names s1)∨(1<⍴iConga.Names'.')
      ret←FlushPending s1((iConga.Names'.')~⊂s1)
-     'test_pause'Log'Cleaning up'
+    ⍝ 'test_pause'Log'Cleaning up'
  :EndWhile
 
  :If ((⍴tests)⍴0)Check⊃∘⍴¨ret←TestConnect¨tests
@@ -76,3 +76,4 @@
 fail:
  z←iConga.Close s1
  ErrorCleanup
+⍝)(!test_pause!bhc!2018 4 17 15 5 24 0!0

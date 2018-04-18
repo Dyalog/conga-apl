@@ -112,8 +112,8 @@
              :EndIf
              :If (2×connections×messages)Check Cnt+CntRecv+CntBlck
                  →fail Because'No all messages was accounted for' ⋄ :EndIf
-             ⎕←maxdel fifo mode(tend-twait)
-             ⎕←(connections×messages)(Cnt+CntRecv+CntBlck)
+⍝             ⎕←maxdel fifo mode(tend-twait)
+⍝             ⎕←(connections×messages)(Cnt+CntRecv+CntBlck)
          :EndFor ⍝ mode
      :EndFor ⍝ fifo
  :EndFor ⍝ maxdel
@@ -123,3 +123,4 @@
 fail:
  z←iConga.Close¨cons,⊂s1
  ErrorCleanup
+⍝)(!test_fifodelete!bhc!2018 4 17 15 4 13 0!0

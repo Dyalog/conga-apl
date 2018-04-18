@@ -78,7 +78,7 @@
      →fail Because'Respond failed: ',,⍕ret ⋄ :EndIf
 
  :If (0 'Progress' '50%')≡(⊂1 3 4)⌷4↑res←iConga.Wait ccmd maxwait
-     'test_progress'Log'Got 50% expected answer delay and retry'
+     ⍝'test_progress'Log'Got 50% expected answer delay and retry'
      ⎕DL 1
      res←iConga.Wait ccmd maxwait
  :EndIf
@@ -106,3 +106,4 @@
 fail:
  z←iConga.Close¨c1 srv
  ErrorCleanup
+⍝)(!test_progress!bhc!2018 4 17 15 4 51 0!0
