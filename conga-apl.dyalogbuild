@@ -1,4 +1,4 @@
-DyalogBuild: 0.1
+﻿DyalogBuild: 0.1
 ID         : CONGA, Version=3.0
 Description: Conga workspace for Dyalog v16.0
 Defaults   : ⎕IO←⎕ML←1
@@ -21,5 +21,6 @@ Class : Common/X509Cert.dyalog, Target=DRC
 Class : Common/X509Cert.dyalog, Target=Conga
 CSV   : Common/ErrorTable.csv, ColTypes=2 1 1, Target=Conga.ErrorTable
 CSV   : Common/ErrorTable.csv, ColTypes=2 1 1, Target=DRC.ErrorTable
+EXEC  : #.DRC.DllVer←#.Conga.DllVer←'30'
 
 LX    : ⎕←'This is the Conga v3.0 workspace.'

@@ -35,7 +35,7 @@
      {}⎕WA  ⍝ If there is garbage holding the shared library loaded get rid of it
      mac win bit64←∨/¨'Mac' 'Windows' '64'⍷¨⊂1⊃'.'⎕WG'APLVersion'
      ⍝ Dllname is Conga[x64 if 64-bit][Uni if Unicode][.so if UNIX]
-     filename←'conga30',(⊃'__CU'[⎕IO+unicode]),(⊃('32' '64')[⎕IO+bit64]),⊃('' '.so' '.dylib')[⎕IO+mac+~win]
+     filename←'conga',DllVer,(⊃'__CU'[⎕IO+unicode]),(⊃('32' '64')[⎕IO+bit64]),⊃('' '.so' '.dylib')[⎕IO+mac+~win]
      dirsep←'/\'[⎕IO+win]
      Path←DefPath path
      s←''
