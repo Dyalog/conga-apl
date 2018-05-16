@@ -20,11 +20,11 @@
 'test'⎕NS''
 test ⎕SE.UCMD'dbuild ',path,'/conga-apl'
 test ⎕SE.UCMD'zz←dtest ',path,'/tests/all -verbose -filter=test_core' 
-zz
+⎕←test.zz
 ⎕EX'test'
 ∇            
 
 :endnamespace
 
-⍝)(!QA!bhc!2018 4 18 8 34 14 0!0
+⍝)(!QA!bhc!2018 4 18 9 49 43 0!0
 ⍝)(!defRoot!bhc!2018 4 18 8 36 12 0!0
