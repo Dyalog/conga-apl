@@ -102,12 +102,14 @@
 
              ready←(↑results[;5])[;2]
              :If ~∧/m←1,(1↓ready)>¯1↓ready
+                 :if ##.verbose
                  maxdel mode fifo
                  results[;5]←{⍵-1 1⊃⍵}results[;5]
                  :For i :In 1⌈¯5+⍸~m
                      results[i+⍳10;]
                  :EndFor
-                 ∘∘∘
+		 :endif
+                
                  →fail Because'Results are not chronological '
              :EndIf
              :If (2×connections×messages)Check Cnt+CntRecv+CntBlck
