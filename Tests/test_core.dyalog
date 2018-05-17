@@ -20,7 +20,7 @@
          :If secure
              :Trap ##.halt↓0
                  srvx509←ReadCert'server/localhost'
-                 cltx509←ReadCert'client/john'
+                 cltx509←ReadCert'client/John Doe'
              :Else
                  →fail Because'Unable to load certificates'
              :EndTrap
@@ -91,4 +91,4 @@
 fail:
  r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
-⍝)(!test_core!bhc!2018 4 17 14 59 27 0!0
+⍝)(!test_core!bhc!2018 5 16 16 12 7 0!0
