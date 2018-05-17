@@ -1,4 +1,4 @@
-﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la
+﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
@@ -6,6 +6,8 @@
  Port←5000 ⋄ Host←'localhost'
  srv←'S1' ⋄ clt←'C1'
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
+
+ compare←{1=⍴∪1⊃¨⍵: 1=≢∪2⊃¨⍵⋄ 1=⍴∪{¯7↑ 255 255,⊃,/⍵[3 4]   }¨⍵ }
 
  maxwait←5000
  Cert←{(⍺.Cert)⍺⍺ ⍵.Cert}
@@ -63,14 +65,14 @@
              →fail Because'Unable to get Client PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp con'LocalAddr'
              →fail Because'Unable to get Server LocalAddr: ',,⍕la ⋄ :EndIf
-         :If (2 2⊃la)Check 2 2⊃pa
+         :If 1 Check compare la pa
              →fail Because'Client Peer & Server Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
 
          :If 0 Check⊃pa←iConga.GetProp con'PeerAddr'
              →fail Because'Unable to get Server PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp clt'LocalAddr'
              →fail Because'Unable to get Client LocalAddr: ',,⍕la ⋄ :EndIf
-         :If (2 2⊃la)Check 2 2⊃pa
+         :If 1 Check compare la pa
              →fail Because'Server Peer & Client Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
          :If (clt srv)Check{⍵[⍋↑⍵]}z←iConga.Names'.'
              →fail Because'List of names not as expected: ',,⍕z ⋄ :EndIf
