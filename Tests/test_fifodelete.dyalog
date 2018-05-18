@@ -101,15 +101,16 @@
              ⎕DL 0.1
 
              ready←(↑results[;5])[;2]
+             ready-←⊃ready
              :If ~∧/m←1,(1↓ready)>¯1↓ready
-                 :if ##.verbose
-                 maxdel mode fifo
-                 results[;5]←{⍵-1 1⊃⍵}results[;5]
-                 :For i :In 1⌈¯5+⍸~m
-                     results[i+⍳10;]
-                 :EndFor
-		 :endif
-                
+                 :If ##.verbose
+                     maxdel mode fifo
+                     results[;5]←{⍵-1 1⊃⍵}results[;5]
+                     :For i :In 1⌈¯5+⍸~m
+                         results[i+⍳10;]
+                     :EndFor
+                 :EndIf
+
                  →fail Because'Results are not chronological '
              :EndIf
              :If (2×connections×messages)Check Cnt+CntRecv+CntBlck
@@ -125,4 +126,3 @@
 fail:
  z←iConga.Close¨cons,⊂s1
  ErrorCleanup
-⍝)(!test_fifodelete!bhc!2018 4 17 15 4 13 0!0
