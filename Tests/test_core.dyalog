@@ -65,14 +65,14 @@
              →fail Because'Unable to get Client PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp con'LocalAddr'
              →fail Because'Unable to get Server LocalAddr: ',,⍕la ⋄ :EndIf
-         :If 1 Check compare la pa
+         :If 1 Check compare 2⊃¨la pa
              →fail Because'Client Peer & Server Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
 
          :If 0 Check⊃pa←iConga.GetProp con'PeerAddr'
              →fail Because'Unable to get Server PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp clt'LocalAddr'
              →fail Because'Unable to get Client LocalAddr: ',,⍕la ⋄ :EndIf
-         :If 1 Check compare la pa
+         :If 1 Check compare 2⊃¨la pa
              →fail Because'Server Peer & Client Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
          :If (clt srv)Check{⍵[⍋↑⍵]}z←iConga.Names'.'
              →fail Because'List of names not as expected: ',,⍕z ⋄ :EndIf
