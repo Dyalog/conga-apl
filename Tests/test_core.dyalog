@@ -1,4 +1,4 @@
-﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la
+﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
@@ -6,6 +6,8 @@
  Port←5000 ⋄ Host←'localhost'
  srv←'S1' ⋄ clt←'C1'
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
+
+ compare←{1=⍴∪1⊃¨⍵: 1=≢∪2⊃¨⍵⋄ 1=≢∪{¯7↑ 255 255,⊃,/⍵[3 4]   }¨⍵ }
 
  maxwait←5000
  Cert←{(⍺.Cert)⍺⍺ ⍵.Cert}
@@ -20,7 +22,7 @@
          :If secure
              :Trap ##.halt↓0
                  srvx509←ReadCert'server/localhost'
-                 cltx509←ReadCert'client/john'
+                 cltx509←ReadCert'client/John Doe'
              :Else
                  →fail Because'Unable to load certificates'
              :EndTrap
@@ -63,14 +65,14 @@
              →fail Because'Unable to get Client PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp con'LocalAddr'
              →fail Because'Unable to get Server LocalAddr: ',,⍕la ⋄ :EndIf
-         :If (2 2⊃la)Check 2 2⊃pa
+         :If 1 Check compare 2⊃¨la pa
              →fail Because'Client Peer & Server Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
 
          :If 0 Check⊃pa←iConga.GetProp con'PeerAddr'
              →fail Because'Unable to get Server PeerAddr: ',,⍕pa ⋄ :EndIf
          :If 0 Check⊃la←iConga.GetProp clt'LocalAddr'
              →fail Because'Unable to get Client LocalAddr: ',,⍕la ⋄ :EndIf
-         :If (2 2⊃la)Check 2 2⊃pa
+         :If 1 Check compare 2⊃¨la pa
              →fail Because'Server Peer & Client Local addresses did not match: ',,⍕(2 2∘⊃¨pa la) ⋄ :EndIf
          :If (clt srv)Check{⍵[⍋↑⍵]}z←iConga.Names'.'
              →fail Because'List of names not as expected: ',,⍕z ⋄ :EndIf
@@ -91,4 +93,4 @@
 fail:
  r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
-⍝)(!test_core!bhc!2018 4 17 14 59 27 0!0
+⍝)(!test_core!bhc!2018 5 16 16 12 7 0!0
