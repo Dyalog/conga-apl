@@ -21,6 +21,6 @@ Class : Common/X509Cert.dyalog, Target=DRC
 Class : Common/X509Cert.dyalog, Target=Conga
 CSV   : Common/ErrorTable.csv, ColTypes=2 1 1, Target=Conga.ErrorTable
 CSV   : Common/ErrorTable.csv, ColTypes=2 1 1, Target=DRC.ErrorTable
-EXEC  : #.DRC.DllVer←#.Conga.DllVer←'31'
+EXEC  : #.DRC.DllVer←#.Conga.DllVer←'32'
 
-LX    : ⎕←'This is the Conga v3.1 workspace.'
+LX    : ⎕←'This is the Conga v3.2 workspace.'
