@@ -1,0 +1,9 @@
+DyalogTest : 0.1
+ID         : Conga 3.x Cross-Version Tests
+Description: All Bjørns functionality tests for Conga v3.x
+
+Setup   : setup_v2 setup_v3 setup_v3_root
+Teardown: teardown
+Test    : test_core
+
+
