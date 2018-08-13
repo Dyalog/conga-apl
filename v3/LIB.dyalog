@@ -102,7 +102,7 @@
                   s←##.Conga.(SetXlate DefaultXlate)
               :EndIf
           :Else
-              (##.Conga.Error z)⎕SIGNAL 999
+              (,⍕##.Conga.Error z)⎕SIGNAL 999
           :EndSelect
      
           ⍝ SetProp '.' 'EventMode' 1
