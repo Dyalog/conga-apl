@@ -55,6 +55,21 @@
       data←Recv cmd      
     ∇
 
+    ∇ fut←SendWaitF req;err;cmd;obj;evt;dat;res
+      :Access Public
+      data←⍬
+      ⍝ we could connect if somebody forgot
+      :If ⍬≡name ⋄ _←Connect ⋄ :EndIf
+     
+      (err cmd)←2↑res←Send req
+      :If err≠0
+          (⍕res)⎕SIGNAL 11
+      :EndIf
+
+      fut←fWait cmd      
+    ∇
+
+
     ∇ res←Send req
       :Access Public
       :If ⍬≡name ⋄ _←Connect ⋄ :EndIf ⍝ Connect if necessary
@@ -64,7 +79,7 @@
     
     ∇ data←Recv cmd;evt;dat;obj;err
       :Access Public
-     
+      
       :Repeat
           (err obj evt dat)←4↑0 Assert LIB.Wait cmd timeout
           :If evt≢'Timeout'
@@ -72,6 +87,14 @@
               :Leave
           :EndIf
       :EndRepeat
-    ∇
+    ∇     
+    
+    ∇ r←fWait cmd;evt;dat;obj;err
+      :Access Public
+      
+       r←LIB.fWait cmd timeout
+    ∇     
+
+
 
 :EndClass

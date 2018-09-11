@@ -16,6 +16,11 @@
 
  rootname←⊃((0≠≢arg)/enc arg)defaults,⊂'DEFAULT'
  :If 0=⊃r←LoadSharedLib libpath ⍝ Sets LibPath as side-effect
+     :If 0=⎕NC'Future'
+         Future←#.⎕NS''
+         Future.⎕FX¨⎕CR¨'iSyntax' 'iEvaluate' 'fWait'
+         {}1(700⌶)Future
+     :EndIf
      :If ⍬≡ref←FindInst rootname
          ref←##.⎕NEW LIB(LibPath rootname) ⍝ NB always create instances in the parent space
      :EndIf

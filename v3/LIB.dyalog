@@ -1,5 +1,5 @@
 ﻿:Class LIB
-⍝ NB instances are always created as siblings of the Conga namespace
+⍝  NB instances are always created as siblings of the Conga namespace
 
     :Field Public LibPath
     :Field Public RootName
@@ -333,6 +333,13 @@
       :If 0<⎕NC'⍙Stat' ⋄ Stat r ⋄ :EndIf
      
     ∇
+    
+    
+    ∇r←fWait a;⎕io
+    :access public
+      r← RootName ##.Conga.Future.{⍺ fWait ⍵} a
+    ∇
+    
 
     ∇ r←Waitt a;⎕IO
       :Access public
