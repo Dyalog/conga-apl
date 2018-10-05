@@ -5,10 +5,13 @@
     :Field Public RootName
 
       check←{
-          0≠⊃⍵:('DLL Error: ',,⍕⍵)⎕SIGNAL 999
-          0≠⊃2⊃⍵:(##.Conga.Error⊃2⊃⍵),1↓2⊃⍵
+          0≠⊃⍵:('DLL Error: ',,⍕⍵)⎕SIGNAL 999  ⍝ return code from Call non zero
+          3≠10|⎕DR⊃2⊃⍵:('DLL result Error: ',,⍕⍵)⎕SIGNAL 999  ⍝ first element of Z is not numeric we expect errorcode
+          0≠⊃2⊃⍵:(##.Conga.Error⊃2⊃⍵),1↓2⊃⍵             ⍝ first element of Z is non zero, Error
           2=⍴⍵:(⎕IO+1)⊃⍵
-          1↓⍵}
+          1↓⍵
+          }
+
 
     ∇ r←arg getargix(args list);mn;mp;ixs;nix
       ⍝ Finds argumenst in a list of positional and named arguments
