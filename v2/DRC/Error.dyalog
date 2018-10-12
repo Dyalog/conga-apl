@@ -1,10 +1,8 @@
 ﻿ r←Error no;i
       ⍝ Return error text
-
- :If (1↑⍴ErrorTable)≥i←ErrorTable[;1]⍳no
-     r←ErrorTable[i;]
- :ElseIf (no<1000)∨no>10000
-     r←no('OS Error #',⍕no)'Consult TCP documentation'
+ :If 0=⊃r←GetProp'.' 'ErrorText'no
+ :AndIf no=2 1⊃r
+     r←2⊃r
  :Else
      r←no'? Unknown Error' ''
  :EndIf
