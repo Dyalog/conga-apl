@@ -26,6 +26,7 @@
              ⍙naedfns,←⊂'⍙Version'⎕NA dllname,'Version >I4[3]'
              ⍙naedfns,←⊂⎕NA'F8',2↓dllname,'Micros'
              ⍙naedfns,←⊂⎕NA dllname,'cflate  I4  =P  <U1[] =U4 >U1[] =U4 I4'
+             ⍙naedfns,←⊂⎕NA dllname,'ErrorText I4 >0T1 =I4 >0T1 =I4'
          :EndTrap
          :Trap 0
              z←InitRawIWA dllname
