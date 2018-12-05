@@ -16,6 +16,12 @@
               ⍺=⊃⍵:⍵
               ('Server error: ',⍕⍵)⎕SIGNAL 999
           }
+          obj2ref←{⍺← ⎕this
+              spilt← '.'∘{ p←⍵⍳⍺⋄ ((p-1)↑⍵) (p↓⍵)   }
+              9=⍺.⎕nc ⊃(h t)←split ⍵: (⍺⍎h) ∇ t
+              ⍺ 
+          }
+          
 
         ∇ ref←Conga
           :Access Public Shared
@@ -108,7 +114,7 @@
                       onTimeout
                   :Else
                       :If ∨/events∊⊂evt
-                          ⍎obj,'.on',evt,'& obj data'
+                          ⍎('.'{1<≢ix←⍸⍺=⍵:(¯1+2⊃ix)↑⍵⋄⍵}obj),'.on',evt,'& obj data'
                       :Else
                           _←LIB.Close name
                           'unexpected event'⎕SIGNAL 999
