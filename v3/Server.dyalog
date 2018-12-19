@@ -114,7 +114,7 @@
                       onTimeout
                   :Else
                       :If ∨/events∊⊂evt
-                          ⍎('.'{1<≢ix←⍸⍺=⍵:(¯1+2⊃ix)↑⍵⋄⍵}obj),'.on',evt,'& obj data'
+                          ⍎('.'{1<≢ix← {⍵/⍳⍴⍵}⍺=⍵:(¯1+2⊃ix)↑⍵⋄⍵}obj),'.on',evt,'& obj data'
                       :Else
                           _←LIB.Close name
                           'unexpected event'⎕SIGNAL 999
