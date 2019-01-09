@@ -104,7 +104,13 @@
               :EndIf
           :EndIf
         ∇
-    :EndProperty
+    :EndProperty 
+    
+     lcase←{                                         ⍝ Lower-casification,
+     lc←'abcdefghijklmnopqrstuvwxyzåäöàæéñøü'    ⍝ (lower case alphabet)
+     uc←'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÀÆÉÑØÜ'    ⍝ (upper case alphabet)
+     (⍴⍵)⍴(lc,,⍵)[(uc,,⍵)⍳⍵]                     ⍝ ... of simple array.
+ }
 
       base64←{⎕IO ⎕ML←0 1             ⍝ Base64 encoding and decoding as used in MIME.
      
@@ -147,7 +153,7 @@
      
           path←fixpath path
      
-          :Select ##.##.lcase ext
+          :Select lcase ext
           :CaseList 'cer' 'pem'
               filename←path,name,'.',ext
               data←⊃,/('X509 CERTIFICATE'{pre←{'-----',⍺,' ',⍵,'-----'} ⋄ (⊂'BEGIN'pre ⍺),⍵,⊂'END'pre ⍺}↓64{s←(⌈(⍴⍵)÷⍺),⍺ ⋄ s⍴(×/s)↑⍵}base64 Cert),¨⊂⎕UCS 10 13
