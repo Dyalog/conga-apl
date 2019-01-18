@@ -10,7 +10,8 @@
         :Field Private done
         :Field Private HError 
         :Field Private conclass 
-        :Field Private events
+        :Field Private events 
+        :Field Private CaptureStats
 
           Assert←{
               ⍺=⊃⍵:⍵
@@ -36,7 +37,8 @@
           done←¯1
           timeout←5000
           HError←0
-          events←⍬
+          events←⍬     
+          CaptureStats←0
           'Please use Conga.Srv to instantiate Servers' ⎕SIGNAL (Conga≡#)/11
           (LIB service conclass address extra)←(enc arg)defaults ⍬ 5000 Conga.Connection''(⎕NS'')
           :If LIB≡⍬
@@ -87,11 +89,15 @@
           :Access Public Overridable
         ∇      
 
-        ∇ Handler name;r;newcon;err;obj;evt;data
+        ∇ Handler name;r;newcon;err;obj;evt;data;tss
           ⍎name,'←⎕ns '''' '
           :While ~done
+              :if CaptureStats
+              (err obj evt data tss)←5↑r←LIB.Waitt name timeout  
+               Timings⍪←6↑tss
+              :else
               (err obj evt data)←4↑r←LIB.Wait name timeout  
-
+              :endif
               :Select err              
               :Case 0
                   :Select evt
@@ -138,5 +144,19 @@
           _←⎕EX obj
           _←LIB.Close obj
         ∇
-
+        
+        ∇EnableStats arg
+        :access public  
+        :if arg>0
+        Timings←1 6⍴0
+        CaptureStats←1
+        :else
+         CaptureStats←0
+        :endif
+        ∇  
+        
+        ∇r←GetStats 
+        :access public 
+         r←Timings
+        ∇
     :EndClass
