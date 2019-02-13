@@ -7,8 +7,8 @@ TARGET     : Distribution/ws/conga.dws
 EXEC  : ⎕EX '#.DRC' '#.Conga'
 
 NS    : v2/DRC/*.dyalog, Target=DRC
-NS    : v2/HTTPUtils/*.dyalog, Target=HTTPUtils
-NS    : v2/Samples/*.dyalog, Target=Samples
+⍝NS    : v2/HTTPUtils/*.dyalog, Target=HTTPUtils
+⍝NS    : v2/Samples/*.dyalog, Target=Samples
 
 NS    : v3/Conga/*.dyalog, Target=Conga
 NS    : v3/IWA/*.dyalog, Target=Conga.IWA

@@ -10,7 +10,7 @@
           0≠⊃2⊃⍵:(Error⊃2⊃⍵),1↓2⊃⍵             ⍝ first element of Z is non zero, Error
           2=⍴⍵:(⎕IO+1)⊃⍵
           1↓⍵
-          }
+      }
 
 
     ∇ r←arg getargix(args list);mn;mp;ixs;nix
@@ -78,6 +78,21 @@
       vc←vc~vc.ParentCert                        ⍝ remove all parents from list
     ∇
 
+    ∇ InitInstance;z;s
+      :Access public
+      :If 3=##.Conga.⎕NC'⍙InitRPC'
+          z←##.Conga.⍙InitRPC RootName LibPath
+          :Select ⊃z
+          :Case 0
+              :If 80≠⎕DR' '
+                  s←##.Conga.(SetXlate DefaultXlate)
+              :EndIf
+          :Else
+              (,⍕Error z)⎕SIGNAL 999
+          :EndSelect
+      :EndIf
+    ∇
+
     ∇ MakeN arg;rootname;z;s
       :Access Public
       :Implements Constructor
@@ -97,20 +112,7 @@
      
       (LibPath RootName)←2↑arg
      
-      :If 3=##.Conga.⎕NC'⍙InitRPC'
-          z←##.Conga.⍙InitRPC RootName LibPath
-          :Select ⊃z
-          :Case 0
-              :If 80≠⎕DR' '
-                  s←##.Conga.(SetXlate DefaultXlate)
-              :EndIf
-          :Else
-              (,⍕Error z)⎕SIGNAL 999
-          :EndSelect
-     
-          ⍝ SetProp '.' 'EventMode' 1
-      :EndIf
-     
+      InitInstance
     ∇
 
     ∇ vc←SetParentCerts vc;ix;m
@@ -321,14 +323,15 @@
           (2⊃r)←SetParentCerts{##.⎕NEW X509Cert(,⊂⍵)}¨2⊃r
       :EndIf
     ∇
-    
+
     ∇ r←Error no;i
+      :Access public
       ⍝ Return error text
       :If 0=⊃r←GetProp'.' 'ErrorText'no
       :AndIf no=2 1⊃r
-         r←2⊃r
+          r←2⊃r
       :Else
-         r←no'? Unknown Error' ''
+          r←no'? Unknown Error' ''
       :EndIf
     ∇
 
