@@ -1,14 +1,12 @@
 ﻿DyalogBuild: 0.1
-ID         : CONGA, Version=3.1
-Description: Conga workspace for Dyalog v17.0
+ID         : CONGA, Version=3.2
+Description: Conga workspace for Dyalog v17.1
 Defaults   : ⎕IO←⎕ML←1
 TARGET     : Distribution/ws/conga.dws
 
 EXEC  : ⎕EX '#.DRC' '#.Conga'
 
 NS    : v2/DRC/*.dyalog, Target=DRC
-⍝NS    : v2/HTTPUtils/*.dyalog, Target=HTTPUtils
-⍝NS    : v2/Samples/*.dyalog, Target=Samples
 
 NS    : v3/Conga/*.dyalog, Target=Conga
 NS    : v3/IWA/*.dyalog, Target=Conga.IWA
