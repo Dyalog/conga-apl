@@ -4,7 +4,7 @@
 
  prots←∪⊃¨2⊃iConga.GetProp'.' 'TCPLookup' 'localhost' 80 ⍝ Available protocols takes from IP addresses
  Port←5000 ⋄ Host←'localhost'
- srv←'S1' ⋄ clt←'C1'
+ srv←'' ⋄ clt←'C1'
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
 
  compare←{1=⍴∪1⊃¨⍵: 1=≢∪2⊃¨⍵⋄ 1=≢∪{¯7↑ 255 255,⊃,/⍵[3 4]   }¨⍵ }
@@ -35,6 +35,7 @@
          ⍝ Establish Connections & send request data
          :If 0 Check⊃ret←iConga.Srv srv''Port,protocol,secure/('X509'srvx509)('SSLValidation' 64)
              →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
+         srv←2⊃ret
          :If 0 Check⊃ret←iConga.Clt clt Host Port,protocol,secure/('x509'cltx509)('SSLValidation' 0)
              →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
          :If 0 Check⊃ret←iConga.Send clt data
@@ -93,4 +94,6 @@
 fail:
  r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
+ {} iConga.Wait '.' 0
 ⍝)(!test_core!bhc!2018 4 17 14 59 27 0!0
+
