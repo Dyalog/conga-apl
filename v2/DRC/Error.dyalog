@@ -1,8 +1,7 @@
 ﻿ r←Error no;i
       ⍝ Return error text
- :If 0=⊃r←GetProp'.' 'ErrorText'no
- :AndIf no=2 1⊃r
-     r←2⊃r
- :Else
-     r←no'? Unknown Error' ''
- :EndIf
+        :If 0≠⎕NC'ErrorText'
+          r←ErrorText no 100 100 256 256
+      :Else
+          r←no'? Unknown Error' ''
+      :EndIf

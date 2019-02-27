@@ -326,13 +326,12 @@
 
     ∇ r←Error no;i
       :Access public
-      ⍝ Return error text
-      :If 0=⊃r←GetProp'.' 'ErrorText'no
-      :AndIf no=2 1⊃r
-          r←2⊃r
-      :Else
+      ⍝ Return error text  
+      :if 0≠##.Conga.⎕nc 'ErrorText'
+          r← ##.Conga.ErrorText no 100 100 256 256
+      :else 
           r←no'? Unknown Error' ''
-      :EndIf
+      :endif   
     ∇
 
     ∇ r←Wait a;⎕IO
