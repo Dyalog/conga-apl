@@ -2,7 +2,12 @@
 ⍝ NB instances are always created as siblings of the Conga namespace
 
     :Field Public LibPath
-    :Field Public RootName
+    :Field Public RootName   
+    :Field Public WsAutoUpgrade 
+    :Field Public RawAsByte 
+    :Field Public DecodeHttp 
+    :Field Public RawAsInt
+
 
       check←{
           0≠⊃⍵:('DLL Error: ',,⍕⍵)⎕SIGNAL 999  ⍝ return code from Call non zero
@@ -96,7 +101,10 @@
     ∇ MakeN arg;rootname;z;s
       :Access Public
       :Implements Constructor
-     
+      WsAutoUpgrade ← 1
+      RawAsByte ← 2
+      DecodeHttp ← 4
+      RawAsInt ← 8
       :Trap 0
           lcase←0∘(819⌶)
           z←lcase'A' ⍝ Try to use it

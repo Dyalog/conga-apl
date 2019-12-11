@@ -2,6 +2,11 @@
  ⍝ Initialize Conga v3.0.0 (v2.x compatibility namespace)
 
  unicode←⊃80=⎕DR' '
+      WsAutoUpgrade ← 1
+      RawAsByte ← 2
+      DecodeHttp ← 4
+      RawAsInt ← 8
+
  :Trap 0
      lcase←0∘(819⌶)
      z←lcase'A' ⍝ Try to use it
@@ -67,6 +72,9 @@
          :Trap 0
              ⍙naedfns,←⊂⎕NA'F8',2↓dllname,'Micros'
              ⍙naedfns,←⊂⎕NA dllname,'cflate  I4  =P  <U1[] =U4 >U1[] =U4 I4'
+             ⍙naedfns,←⊂'⍙Version'⎕NA dllname,'Version >I4[3]'
+             ⍙naedfns,←⊂⎕NA dllname,'ErrorText I4 >0T1 <I4 >0T1 <I4'
+
          :EndTrap
          :Trap 0
              z←InitRawIWA dllname
