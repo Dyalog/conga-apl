@@ -22,7 +22,7 @@
  srvs←('SA' ''Port)('S4' ''(Port+4)('Protocol' 'ipv4'))('S6' ''(Port+6)('Protocol' 'ipv6'))
 
  :If (0,¨1⌷¨srvs)Check ret←iConga.Srv¨srvs
-     →fail becaues'Failed to start all servers ',,⍕ret ⋄ :EndIf
+     →fail Because'Failed to start all servers ',,⍕ret ⋄ :EndIf
 
  tests←('localhost' '127.0.0.1' '::1' '')∘.{(⊂⍺),⍵,⊂''}{⍵[3 1]}¨srvs
 
