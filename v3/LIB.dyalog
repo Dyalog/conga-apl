@@ -2,10 +2,10 @@
 ⍝ NB instances are always created as siblings of the Conga namespace
 
     :Field Public LibPath
-    :Field Public RootName   
-    :Field Public WsAutoUpgrade 
-    :Field Public RawAsByte 
-    :Field Public DecodeHttp 
+    :Field Public RootName
+    :Field Public WsAutoUpgrade
+    :Field Public RawAsByte
+    :Field Public DecodeHttp
     :Field Public RawAsInt
 
 
@@ -101,10 +101,10 @@
     ∇ MakeN arg;rootname;z;s
       :Access Public
       :Implements Constructor
-      WsAutoUpgrade ← 1
-      RawAsByte ← 2
-      DecodeHttp ← 4
-      RawAsInt ← 8
+      WsAutoUpgrade←1
+      RawAsByte←2
+      DecodeHttp←4
+      RawAsInt←8
       :Trap 0
           lcase←0∘(819⌶)
           z←lcase'A' ⍝ Try to use it
@@ -334,12 +334,12 @@
 
     ∇ r←Error no;i
       :Access public
-      ⍝ Return error text  
-      :if 0≠##.Conga.⎕nc 'ErrorText'
-          r← ##.Conga.ErrorText no 100 100 256 256
-      :else 
+      ⍝ Return error text
+      :If 0≠##.Conga.⎕NC'ErrorText'
+          r←##.Conga.ErrorText no 100 100 256 256
+      :Else
           r←no'? Unknown Error' ''
-      :endif   
+      :EndIf
     ∇
 
     ∇ r←Wait a;⎕IO
@@ -463,5 +463,35 @@
           cats←⊃∘(,/)∘((⊂'')∘,)              ⍝ catenate zero or more strings
           cats''∘four¨24 part 8 bits ⍵
       }
+
+    ∇ r←DecodeOptions value;bits;opts;inds;⎕IO
+    ⍝ returns the meaning of an Options value
+      :Access Public Shared
+      ⎕IO←1
+      opts←{↑⍵{(⍺⍎⍵)⍵}¨⍵.⎕NL ¯3}Options
+      'DOMAIN ERROR: Invalid Options'⎕SIGNAL((,1)≢,value∊0,⍳+/opts[;1])/11
+      bits←⌽2*¯1+⍸⌽2⊥⍣¯1⊢value
+      inds←opts[;1]⍳bits
+      r←1↓∊'+',¨opts[inds;2]
+    ∇
+
+    :Namespace Options
+        ∇ r←WSAutoUpgrade
+        ⍝ value to add to the client or server Options parameter in order to automatically access a WebSocket upgrade request on an HTTP connection
+        ⍝ this replaces the use of WSFeatures in Conga versions
+          r←1
+        ∇
+
+        ∇ r←RawAsByte
+        ⍝ value to add to the client or server Options parameter in order return type 83, single byte integer (¯128-127) on a raw or blkraw connection
+          r←2
+        ∇
+
+        ∇ r←DecodeHttp
+        ⍝ value to add to the client or server Options parameter in order to decode HTTP messages on an HTTP connection
+        ⍝ this replaces the use of DecodeBuffers in Conga versions prior to v3.3
+          r←4
+        ∇
+    :EndNamespace
 
 :EndClass
