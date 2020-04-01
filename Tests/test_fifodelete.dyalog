@@ -42,11 +42,12 @@
              :If 0 Check⊃ret←iConga.SetProp'.' 'ReadyStrategy' 2
                  →fail Because'Set ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
 
-             :If 0 Check⊃ret←iConga.SetProp s1'FifoMode'fifo
-                 →fail Because'Set FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
+⍝             :If 0 Check⊃ret←iConga.SetProp s1'FifoMode'fifo
+             :If 1005 Check⊃ret←iConga.SetProp s1'FifoMode'fifo
+                 →fail Because'The attempt to set FifoMode to ',(⍕fifo),' did not end with error 1005: ',,⍕ret ⋄ :EndIf
 
-             :If (0(,fifo))Check ret←iConga.GetProp s1'FifoMode'
-                 →fail Because'Verify FifoMode to ',(⍕fifo),' failed: ',,⍕ret ⋄ :EndIf
+             :If (0(,0))Check ret←iConga.GetProp s1'FifoMode'
+                 →fail Because'FifoMode had unexpected value ',(⍕ret) ⋄ :EndIf
 
              :If (0 2)Check ret←iConga.GetProp'.' 'ReadyStrategy'
                  →fail Because'Verify ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
