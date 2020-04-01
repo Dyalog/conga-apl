@@ -24,7 +24,7 @@
          err←1⊃ret
          :If err=0
              r2←iConga.GetProp(2⊃ret)'Options'
-             :If 0 o Check(⊃r2)(+/(2⊃r2)[;2])
+             :If 0 o Check r2
                  →fail Because'GetProp Options failed: ',,⍕r2 ⋄ :EndIf
              _←iConga.Close 2⊃ret
          :EndIf
