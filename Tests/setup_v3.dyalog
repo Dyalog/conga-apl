@@ -7,7 +7,9 @@
  :Else
      Conga←#.Conga
  :EndIf
-
+ :If 0=⎕NC'verify_empty'  ⍝ when running individual tests, make sure this fn is around!
+     ⎕FIX'file://',##.TESTSOURCE,'verify_empty.dyalog'
+ :EndIf
  :Trap 0
      iConga←('CONGALIB'{0=#.⎕NC ⍺:⍵ ⋄ ⍎'#.',⍺}'')Conga.Init''
  :Else
