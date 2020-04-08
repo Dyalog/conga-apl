@@ -17,9 +17,9 @@
      c1←2⊃ret
 
      :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
-         →fail Because'Unexpected result from Srv Wait: ',,⍕res ⋄ :EndIf
+         →fail Because'Unexpected result from Srv Wait (mode=',mode,'): ',,⍕res ⋄ :EndIf
 
-     :If 0 Check⊃ret←iConga.Send c1(''file)
+     :If 0 Check⊃ret←iConga.Send c1(''file)1
          →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
      rs←⍬
