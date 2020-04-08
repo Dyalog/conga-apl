@@ -25,17 +25,16 @@
      rs←⍬
      :Repeat
          res←iConga.Wait s1 maxwait
-             ⎕←'mode=',mode,',res=',(3↑res),', res[4]=',(⍕≢4⊃4↑res),(1=≢4⊃4↑res)/'="',(4⊃4↑res),'"'
          :If mode≡'BlkText'
              :If res[1 3 4]Check 0 'Error' 1135
                  →fail Because'Srv Wait handled big block w/o error: ',,⍕res ⋄ :EndIf
          :Else
-             :If res[1 3]IsNotElement(0 'Block')(100 'Timeout')
+             :If res[1 3]IsNotElement(0 'Block')(100 'Timeout')(0 'BlockLast')
                  →fail Because'Unexpected result from Srv Wait in mode=',mode,',: ',,⍕res[1 3] ⋄ :EndIf
          :EndIf
          :If 3<≢res
          :AndIf 0<≢4⊃res
-             :If 'Block'≡3⊃res
+             :If res[3]∊'Block' 'BlockLast'
                  rs,←4⊃res
              :EndIf
          :EndIf
@@ -43,9 +42,6 @@
      :If rs≢⍬
      :AndIf oc Check rs
          →fail Because'Content sent & received via Conga does not match original file-content' ⋄ :EndIf
-
-     :If 0 Check⊃ret←iConga.Close c1
-         →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
      :If (⊃ret←iConga.Wait s1 maxwait)IsNotElement 0 100 ⍝ Wait for srv to receive Close-event of client (0 or 100 "TIMEOUT" are ok)
          →fail Because'Error during Wait of Srv:',⍕ret ⋄ :EndIf
