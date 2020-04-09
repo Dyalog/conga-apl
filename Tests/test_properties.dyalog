@@ -35,7 +35,7 @@ fail:
 teardown:
      :If (bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf
      :If (bhdt≠2)∧0 Check⊃ret←iConga.Close clt ⋄ bhdt←2 ⋄ →fail Because'Unexpected return value closing client (',(⍕ret),')' ⋄ :EndIf
-     :If (⊃ret←iConga.Wait'.' 0)ElementOf 0 100
-      →fail Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
+     :If (⊃ret←iConga.Wait'.' 0)IsNotElement 0 100
+         →fail Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
      ⎕EX'iConga'   ⍝ delete root
  :EndFor
