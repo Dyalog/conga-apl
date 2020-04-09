@@ -70,7 +70,7 @@
          ⍝ Auto upgrade event 4⊃res is the Incomming request but connection have been upgraded
      :Else
          :If 0 'WSResponse'Check res[1 3]
-             →fail Because'Client Websocket maunal upgrade failed',,⍕res ⋄ :EndIf
+             →fail Because'Client Websocket manual upgrade failed',,⍕res ⋄ :EndIf
       ⍝ Negotiate inspect headers (4⊃res) and accept request by returning the headers or close the connection
          :If 0 Check⊃ret←iConga.SetProp clt'WSAccept'((4⊃res)'')
              →fail Because'SetProp failed: ',,⍕ret ⋄ :EndIf
