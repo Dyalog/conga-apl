@@ -23,6 +23,7 @@ Test    : test_options
 Test    : test_httpdecode2
 Test    : test_websocket2
 Test    : test_modes2
+Test    : test_properties
 Test    : test_png
 Test    : test_png_HTTP
 

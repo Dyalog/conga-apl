@@ -32,7 +32,7 @@
          exp←1037×~applicable
 
          :If exp Check err
-             →fail Because'Clt did (not) error as expected in mode ',m,' when attempting to set Options=',(⍕o),': expected result=',(⍕exp),', got ',(,⍕err) ⋄ :EndIf
+             →fail Because'Clt did ',(((err>0)/' not '),' error as expected in mode ',m,' when attempting to set Options=',(⍕o),': expected result=',(⍕exp),', got ',(,⍕err) ⋄ :EndIf
 
      :EndFor ⍝ o
  :EndFor ⍝ m
