@@ -63,6 +63,11 @@
          →fail Because'Bad result from Clt Wait: ',,⍕res ⋄ :EndIf
  :EndIf
 
+ z←iConga.Close clt
+     :While (⊂clt)∊iConga.Names'.'
+⍝        ⎕←'waiting to complete shutdown'
+        ⎕DL 0.01
+     :EndWhile
  r←''
  →0
 fail:
