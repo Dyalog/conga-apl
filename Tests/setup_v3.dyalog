@@ -1,21 +1,19 @@
- r←setup_v3 dummy
+﻿ r←setup_v3 dummy
 ⍝ Setup test using v3 DRC
 ⍝ Set #.CONGALIB to point to non-default Conga DLLs
 
  :If 0=⎕NC'#.Conga'
      ⍝→0⊣r←'#.Conga not present.'
-     #.⎕cy'Conga'
+     #.⎕CY'Conga'
      Conga←#.Conga
  :Else
      Conga←#.Conga
  :EndIf
-
+ InitCongaLog
  :Trap 0
      iConga←('CONGALIB'{0=#.⎕NC ⍺:⍵ ⋄ ⍎'#.',⍺}'')Conga.Init''
  :Else
      →0⊣r←'Conga.Init failed: ',⊃⎕DMX.DM
  :EndTrap
 
- :If 0=⎕NC'verify_empty'⋄     ⎕SE.UCMD'nul←load ',##.TESTSOURCE,'\verify_empty.dyalog'⋄ ⎕←'brought in verfifyempty, msg=',nul ⋄ :EndIf
- :if 0=⎕nc'ErrorCleanup'⋄⎕SE.UCMD'nul←load ',##.TESTSOURCE,'\ErrorCleanup.dyalog'⋄:endif
  r←verify_empty iConga

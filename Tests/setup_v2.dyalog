@@ -2,9 +2,10 @@
 ⍝ Setup test using v2 DRC
 ⍝ Set #.CONGALIB to point to non-default Conga DLLs
  :If 0=⎕NC'#.Conga'
-     #.⎕cy'Conga'
+     #.⎕CY'Conga'
      Conga←#.Conga
-     :endif
+ :EndIf
+ InitCongaLog
  :If 0=⎕NC'#.DRC'
      r←'#.DRC.Init not present.' ⋄ →0 ⋄ :EndIf
 
