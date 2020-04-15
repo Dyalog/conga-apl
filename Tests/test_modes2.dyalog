@@ -1,4 +1,4 @@
-﻿ r←test_modes2 dummy;Host;Port;maxwait;Magic;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;rdata;sdata;data;rai
+﻿ r←test_modes2 dummy;Host;Port;maxwait;Magic;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;rdata;sdata;data;rai;exp;RAB
 ⍝ Test raw blkraw text blktext
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
@@ -35,51 +35,51 @@
 
          types←(⎕DR' '),83 163
 
-         :If (0)Check⊃ret←iConga.Srv'' ''Port mode,args,(RAB≠0)/⊂('Options'RAB)
-             →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
+         exp←(1+(RAB≠0)∧mode IsNotElement'raw' 'blkraw')⊃0 1037
+         :If exp Check⊃ret←iConga.Srv'' ''Port mode,args,(RAB≠0)/⊂('Options'RAB)
+             →fail Because'Srv failed  ',((exp>0)/'not '),'with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',(⍕args),(RAB≠0)/', Options=',⍕RAB ⋄ :EndIf
          s1←2⊃ret
 
-         :If 0 Check⊃ret←iConga.Clt''Host Port mode,args,(RAB≠0)/⊂('Options'RAB)
-             →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
+         :If exp Check⊃ret←iConga.Clt''Host Port mode,args,(RAB≠0)/⊂('Options'RAB)
+             →fail Because'Clt failed ',((exp>0)/'not '),'with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',(⍕args),(RAB≠0)/', Options=',⍕RAB ⋄ :EndIf
          c1←2⊃ret
+         :If exp=0
+             :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
+                 →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
-         :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
-             →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
+             :For type :In types
+                 sdata←type convdata tdata
 
-         :For type :In types
-             sdata←type convdata tdata
-
-             :If ∨/'raw'⍷mode
-                 :If type=82
-                     rdata←(163 83[⎕IO+RAB=2])convdata sdata
+                 :If ∨/'raw'⍷mode
+                     :If type=82
+                         rdata←(163 83[⎕IO+RAB=2])convdata sdata
+                     :Else
+                         rdata←(163 83[⎕IO+RAB=2])convdata tdata
+                     :EndIf
                  :Else
-                     rdata←(163 83[⎕IO+RAB=2])convdata tdata
+                     rdata←(⎕DR' ')convdata tdata
                  :EndIf
-             :Else
-                 rdata←(⎕DR' ')convdata tdata
-             :EndIf
 
-             :For size :In sizes
-                 data←size⍴sdata
+                 :For size :In sizes
+                     data←size⍴sdata
 
-                 :If 0 Check⊃ret←iConga.Send c1 data
-                     →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
+                     :If 0 Check⊃ret←iConga.Send c1 data
+                         →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 rs←0
-                 :While (rs<size)
-                     :If (0 'Block')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
-                         →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
-                     :If ~∨/(⊃(2 2/((1+RAB≠2)↑83 163)(⎕DR' '))['raw' 'blkraw' 'text' 'blktext'⍳⊂mode])∊⎕DR 4⊃res
-                         →fail Because'datatype is wrong ' ⋄ :EndIf
-                     :If 1 Check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}rdata
-                         →fail Because'filedata is wrong ' ⋄ :EndIf
-                     rs+←⍴4⊃res
+                     rs←0
+                     :While (rs<size)
+                         :If (0 'Block')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+                             →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                         :If ~∨/(⊃(2 2/((1+RAB≠2)↑83 163)(⎕DR' '))['raw' 'blkraw' 'text' 'blktext'⍳⊂mode])∊⎕DR 4⊃res
+                             →fail Because'datatype is wrong ' ⋄ :EndIf
+                         :If 1 Check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}rdata
+                             →fail Because'filedata is wrong ' ⋄ :EndIf
+                         rs+←⍴4⊃res
 
-                 :EndWhile
+                     :EndWhile
+                 :EndFor
              :EndFor
-         :EndFor
-
          :If 0 Check⊃ret←iConga.Close c1
              →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
@@ -94,6 +94,7 @@
          :If 0 Check⊃ret←iConga.Close s1
              →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
          ⎕DL 0.5
+         :EndIf
      :EndFor
  :EndFor
  r←''   ⍝ surprise all worked!
