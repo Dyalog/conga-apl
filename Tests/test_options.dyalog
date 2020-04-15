@@ -9,7 +9,7 @@
  RawAsByte←2
  DecodeHttp←4
  ops←WSAutoUpgrade RawAsByte DecodeHttp
-
+o←'(undefined)'
  modes←'Raw' 'Text' 'BlkRaw' 'BlkText' 'http' 'Command'
 
  :If 0 Check⊃ret←iConga.Srv Srv''Port'raw'
@@ -26,6 +26,10 @@
              r2←iConga.GetProp(2⊃ret)'Options'
              :If o Check(2⊃r2)
                  →fail Because'GetProp Options did not return ',(⍕o),' (which was set before): ',,⍕r2 ⋄ :EndIf
+
+                 :if o>0
+                 :andif 1037 Check ⊃ret←iConga.SetProp(2⊃ret)'Options'(o←-o)   ⍝ Mantis 18034
+                 →fail Because'It was possible to SetProp"Options" with negative o, ret=',⍕ret ⋄:endif
              _←iConga.Close 2⊃ret
          :EndIf
          :If ~∨/0 1037∊err ⋄ →fail Because'Clt Failed: ',,⍕ret ⋄ :EndIf
@@ -34,7 +38,14 @@
          :If exp Check err
              →fail Because'Clt did ',((err>0)/' not '),' error as expected in mode ',m,' when attempting to set Options=',(⍕o),': expected result=',(⍕exp),', got ',(,⍕err) ⋄ :EndIf
 
+         :If err=0
+         :andif o>0
+         :AndIf 1037 Check ret←iConga.Clt'' '' 5000 m('Options'(-o))  ⍝ Mantis 18034
+             →fail Because'Clt did not refuse to create client with negative value in otions and returned ',⍕ret ⋄ :EndIf
+
+        _←iConga.Close 2⊃ret 
      :EndFor ⍝ o
+
  :EndFor ⍝ m
 
  _←iConga.Close srv
