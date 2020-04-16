@@ -80,11 +80,11 @@
      :If 0 Check⊃ret←iConga.SetProp clt'DecodeBuffers' 15
          →fail Because'Set DecodeBuffers to 15 failed: ',,⍕ret ⋄ :EndIf
 
-    :if (0 4) Check ret~iConga.GetProp clt 'Options'  ⍝ Mantis 18034
-        →fail Because'GetProp''Options'' did not return 0 4 as expected but ',⍕ret ⋄ :endif
+     :If (0 4)Check ret←iConga.GetProp clt'Options'  ⍝ Mantis 18034
+         →fail Because'GetProp''Options'' did not return 0 4 as expected but ',⍕ret ⋄ :EndIf
 
-    :if (0 15) Check ret~iConga.GetProp clt 'DecodeBuffers'  ⍝ Mantis 18046
-        →fail Because'GetProp''DecodeBuffers'' did not return 0 15 as expected but ',⍕ret ⋄ :endif
+     :If (0 15)Check ret←iConga.GetProp clt'DecodeBuffers'  ⍝ Mantis 18046
+         →fail Because'GetProp''DecodeBuffers'' did not return 0 15 as expected but ',⍕ret ⋄ :EndIf
 
      :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑ret←iConga.Wait srv maxwait
          →fail Because'Srv Wait did not produce a Connect event: ',,⍕ret ⋄ :EndIf

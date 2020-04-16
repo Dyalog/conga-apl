@@ -7,7 +7,7 @@
 
 
  :For clv :In ¯1+⍳10  ⍝ 0..9
-     bhdt←0
+     bhdt←0  ⍝ been here, done that => avoid being caught in a loop of problems between teardown and fail below...
      iConga←#.Conga.Init'complevel_test ',⍕clv
      ret←iConga.SetProp'.' 'CompLevel'clv ⍝ set compression level  for root
      :If 0 Check⊃ret
@@ -30,12 +30,11 @@
      :If clv Check 2⊃cc ⋄ →fail Because'Client did not inherit CompLevel of root (',(⍕clv),' vs. ',(⍕2⊃cc),')' ⋄ :EndIf
      →teardown
 fail:
-     r,←'CompLevel=',(⍕clv),' '
+     r,←', CompLevel=',(⍕clv),' '
 
 teardown:
-     :If (bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf
-     :If (bhdt≠2)∧0 Check⊃ret←iConga.Close clt ⋄ bhdt←2 ⋄ →fail Because'Unexpected return value closing client (',(⍕ret),')' ⋄ :EndIf
-     :If (⊃ret←iConga.Wait'.' 0)IsNotElement 0 100
-         →fail Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
+     :If (2=⎕nc'srv')^(bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf
+     :If 2=⎕nc'clt' ⋄ :andif (bhdt≠2)∧0 Check⊃ret←iConga.Close clt ⋄ bhdt←2 ⋄ →fail Because'Unexpected return value closing client (',(⍕ret),')' ⋄ :EndIf
+     :If (⊃ret←iConga.Wait'.' 0)IsNotElement 0 100⋄         {}0 Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
      ⎕EX'iConga'   ⍝ delete root
  :EndFor

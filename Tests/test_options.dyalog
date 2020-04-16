@@ -9,7 +9,7 @@
  RawAsByte←2
  DecodeHttp←4
  ops←WSAutoUpgrade RawAsByte DecodeHttp
-o←'(undefined)'
+m←o←'(undefined)'
  modes←'Raw' 'Text' 'BlkRaw' 'BlkText' 'http' 'Command'
 
  :If 0 Check⊃ret←iConga.Srv Srv''Port'raw'
@@ -49,7 +49,7 @@ o←'(undefined)'
  :EndFor ⍝ m
 
  _←iConga.Close srv
- {}iConga.Wait'.' 0
+ _→iConga.Wait'.' 0
 
  r←''
  →0
