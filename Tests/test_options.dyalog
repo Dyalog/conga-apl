@@ -9,7 +9,7 @@
  RawAsByte←2
  DecodeHttp←4
  ops←WSAutoUpgrade RawAsByte DecodeHttp
-m←o←'(undefined)'
+ m←o←'(undefined)'
  modes←'Raw' 'Text' 'BlkRaw' 'BlkText' 'http' 'Command'
 
  :If 0 Check⊃ret←iConga.Srv Srv''Port'raw'
@@ -19,6 +19,9 @@ m←o←'(undefined)'
 
  :For m :In modes
      :For o :In {⍵+.×((≢⍵)/2)⊤¯1+⍳(≢⍵)*2}ops
+         :If o>0
+         :AndIf o Check⍎ret←iConga.DecodeOptions o
+             →fail Because'DecodeOptions ',(⍕o),' returned ',ret,' which was evaluated as ',⍕⍎ret ⋄ :EndIf
          applicable←(o=0)∨((m≡'http')∧~⊃2 2⊤o)∨(o=2)∧(⊂m)∊'Raw' 'BlkRaw'  ⍝ can this option be set for current mode? (assuming 2 needs [Blk]Raw and everything else http)
          ret←iConga.Clt'' '' 5000 m('Options'o)
          err←1⊃ret
@@ -27,9 +30,9 @@ m←o←'(undefined)'
              :If o Check(2⊃r2)
                  →fail Because'GetProp Options did not return ',(⍕o),' (which was set before): ',,⍕r2 ⋄ :EndIf
 
-                 :if o>0
-                 :andif 1037 Check ⊃ret←iConga.SetProp(2⊃ret)'Options'(o←-o)   ⍝ Mantis 18034
-                 →fail Because'It was possible to SetProp"Options" with negative o, ret=',⍕ret ⋄:endif
+             :If o>0
+             :AndIf 1037 Check⊃ret←iConga.SetProp(2⊃ret)'Options'(o←-o)   ⍝ Mantis 18034
+                 →fail Because'It was possible to SetProp"Options" with negative o, ret=',(⍕ret),'⍝  m18034' ⋄ :EndIf
              _←iConga.Close 2⊃ret
          :EndIf
          :If ~∨/0 1037∊err ⋄ →fail Because'Clt Failed: ',,⍕ret ⋄ :EndIf
@@ -39,11 +42,11 @@ m←o←'(undefined)'
              →fail Because'Clt did ',((err>0)/' not '),' error as expected in mode ',m,' when attempting to set Options=',(⍕o),': expected result=',(⍕exp),', got ',(,⍕err) ⋄ :EndIf
 
          :If err=0
-         :andif o>0
+         :AndIf o>0
          :AndIf 1037 Check ret←iConga.Clt'' '' 5000 m('Options'(-o))  ⍝ Mantis 18034
-             →fail Because'Clt did not refuse to create client with negative value in otions and returned ',⍕ret ⋄ :EndIf
+             →fail Because'Clt did not refuse to create client with negative value in otions and returned ',(⍕ret),' ⍝18034' ⋄ :EndIf
 
-        _←iConga.Close 2⊃ret 
+         _←iConga.Close 2⊃ret
      :EndFor ⍝ o
 
  :EndFor ⍝ m
@@ -56,5 +59,4 @@ m←o←'(undefined)'
 
 fail:
  r←'Mode="',m,'", Option=',(⍕o),': ',r
- z←iConga.Close srv
- {}iConga.Wait'.' 0
+ErrorCleanup
