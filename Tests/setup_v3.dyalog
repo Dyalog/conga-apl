@@ -4,7 +4,7 @@
 
  :If 0=⎕NC'#.Conga'
      ⍝→0⊣r←'#.Conga not present.'
-     #.⎕CY'Conga'
+     #.⎕CY'conga'
      Conga←#.Conga
  :Else
      Conga←#.Conga
