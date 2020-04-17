@@ -43,12 +43,13 @@
      :AndIf oc Check rs
          →fail Because'Content sent & received via Conga does not match original file-content' ⋄ :EndIf
 
-     :If (⊃ret←iConga.Wait s1 maxwait)IsNotElement 0 100 ⍝ Wait for srv to receive Close-event of client (0 or 100 "TIMEOUT" are ok)
-         →fail Because'Error during Wait of Srv:',⍕ret ⋄ :EndIf
-
      :If 0 Check⊃ret←iConga.Close s1
          →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
-
+     
+     :While s1≡⊃iConga.Names'.'
+⍝        ⎕←'waiting to complete shutdown'
+        ⎕DL 0.01
+     :EndWhile
  :EndFor ⍝ mode
 
  r←''

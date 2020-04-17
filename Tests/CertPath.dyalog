@@ -7,11 +7,11 @@
      TestCertificates←#.TestCertificates
  :EndIf
  :If {0::0 ⋄ ⎕NEXISTS ⍵}r←TestCertificates
- :ElseIf ⎕NEXISTS r←##.TESTSOURCE,'/TestCertificates/'
+ :ElseIf ⎕NEXISTS r←##.TESTSOURCE,'TestCertificates/'
  :ElseIf ⎕NEXISTS r←##.WSFOLDER,'/TestCertificates/'
  :ElseIf ⎕NEXISTS r←##.DYALOG,'/TestCertificates/'
-     TestCertificates←r
+     TestCertificates←r  
  :Else
      ('Unable to locate TestCertificates folder')⎕SIGNAL 22
  :EndIf
-⍝)(!CertPath!bhc!2018 12 5 15 41 49 0!0
+ r←(2↑r),{(~'//'⍷⍵)/⍵}2↓r  ⍝ avoid // anywhere, except at the beginning

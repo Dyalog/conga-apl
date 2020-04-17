@@ -1,8 +1,7 @@
- r←test_png_HTTP dummy;Host;Port;maxwait;Magic;file;oc;mode;s1;c1;rs;res;len;z;lastsz;cl;ai3;ret;cpu
+﻿ r←test_png_HTTP dummy;Host;Port;maxwait;file;oc;mode;s1;c1;rs;res;len;z;lastsz;cl;ai3;ret;cpu
 ⍝ Test sending & receiving a .PNG-file in HTTP-Mode
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
- Magic←{(4/256)⊥⎕UCS 4↑⍵}
  file←(2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'),'/help/resources/dyaloglogo.png'
  oc←{r←⎕NREAD tie,(⎕DR' '),⎕NSIZE tie←⍵ ⎕NTIE 0 ⋄ sink←⎕NUNTIE tie ⋄ r}file
 
@@ -21,7 +20,7 @@
  lastsz←≢oc
  cpu←⍬
  :For cl :In ¯1+⍳10
-     :If 0=Check⊃ret←iConga.SetProp s1'CompLevel'cl ⍝ set compression level  for root
+     :If 0 Check⊃ret←iConga.SetProp s1'CompLevel'cl ⍝ set compression level  for root
          →fail Because'Error setting CompLevel=',(⍕cl),', ret=',⍕ret ⋄ :EndIf
 
      ai3←⎕AI[3]
@@ -54,13 +53,16 @@
      :AndIf oc Check rs
          →fail Because'Content sent & received via Conga does not match original file-content' ⋄ :EndIf
  :EndFor
- ⎕←'cpu=',cpu
  :If 0 Check⊃ret←iConga.Close s1
      →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
  :If 0 Check⊃ret←iConga.Close c1
      →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
+     :While s1≡⊃iConga.Names'.'
+⍝        ⎕←'waiting to complete shutdown'
+        ⎕DL 0.01
+     :EndWhile
  r←''
  →0
 fail:
