@@ -3,13 +3,13 @@
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
  file←(2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'),'/help/resources/dyaloglogo.png'
- oc←{r←⎕NREAD tie,(⎕DR' '),⎕NSIZE tie←⍵ ⎕NTIE 0 ⋄ sink←⎕NUNTIE tie ⋄ r}file
+ oc←{r←⎕NREAD tie 83,⎕NSIZE tie←⍵ ⎕NTIE 0 ⋄ sink←⎕NUNTIE tie ⋄ r}file
 
- :If 0 Check⊃ret←iConga.Srv'' ''Port'Text'(5000)
+ :If 0 Check⊃ret←iConga.Srv'' ''Port'Raw'(5000)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
 
- socket←'sock'⎕WC'TCPSocket'('Style' 'Raw')('RemoteAddr' '127.0.0.1')('RemotePort'Port)('Event' 'All' 1)⍝('Encoding' 'UTF-8')
+ socket←'sock'⎕WC'TCPSocket'('Style' 'Raw')('RemoteAddr' '127.0.0.1')('RemotePort'Port)('Event' 'All' 1)
  :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
      →fail Because'Unexpected result from Srv Wait: ',,⍕res ⋄ :EndIf
  conn←2⊃res
@@ -20,7 +20,7 @@
  :Repeat
      ret←⎕DQ socket
  :Until ret[2]∊'TCPRecv' 'TCPClose'
- :If (⎕UCS oc)Check 3⊃ret
+ :If ({(⍵×⍵>0)+(256+⍵)×⍵<0}oc)Check 3⊃ret  ⍝ negative integers ¯128..¯1 are mapped to 128..255
      →fail Because'Received data did not match expected content' ⋄ :EndIf
  {}⎕EX socket
  _←iConga.Close s1
