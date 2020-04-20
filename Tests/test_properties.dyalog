@@ -16,6 +16,12 @@
      cv←iConga.GetProp'.' 'CompLevel'  ⍝ check it...
      :If clv Check 2⊃cv ⋄ →fail Because'Root did not report the compression-level that was set (',(⍕clv),')' ⋄ :EndIf
 
+     ret←iConga.GetProp'.' 'DoesNotExist'  ⍝ how about getting a non-existent property?
+     :If 1037 Check 1⊃ret ⋄ →fail Because'Getting a non-existent property did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
+
+     ret←iConga.SetProp'.' 'DoesNotExist' 4711 ⍝ and setting it ;)
+     :If 1037 Check 1⊃ret ⋄ →fail Because'Setting a non-existent property did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
+
      srv←iConga.Srv Srv''Port'raw'  ⍝ create a server
      :If 0 Check 1⊃srv ⋄ →fail Because'Could not create server - ret=',⍕srv ⋄ :EndIf
 
@@ -33,8 +39,8 @@ fail:
      r,←', CompLevel=',(⍕clv),' '
 
 teardown:
-     :If (2=⎕nc'srv')^(bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf
-     :If 2=⎕nc'clt' ⋄ :andif (bhdt≠2)∧0 Check⊃ret←iConga.Close clt ⋄ bhdt←2 ⋄ →fail Because'Unexpected return value closing client (',(⍕ret),')' ⋄ :EndIf
-     :If (⊃ret←iConga.Wait'.' 0)IsNotElement 0 100⋄         {}0 Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
+     :If (2=⎕NC'srv')∧(bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf
+     :If 2=⎕NC'clt' ⋄ :AndIf (bhdt≠2)∧0 Check⊃ret←iConga.Close clt ⋄ bhdt←2 ⋄ →fail Because'Unexpected return value closing client (',(⍕ret),')' ⋄ :EndIf
+     :If (⊃ret←iConga.Wait'.' 0)IsNotElement 0 100 ⋄ {}0 Because'Unexpected return value on final Wait (',(⍕ret),')' ⋄ :EndIf
      ⎕EX'iConga'   ⍝ delete root
  :EndFor
