@@ -16,6 +16,19 @@
      cv←iConga.GetProp'.' 'CompLevel'  ⍝ check it...
      :If clv Check 2⊃cv ⋄ →fail Because'Root did not report the compression-level that was set (',(⍕clv),')' ⋄ :EndIf
 
+     ret←iConga.GetProp'.' 32769  ⍝ passing invalid argument
+     :If 1037 Check 1⊃ret ⋄ →fail Because'Getting a non-existent property did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
+
+     ret←iConga.SetProp'.' 'CompLevel' 'WonderIfThisWillWork' ⍝ passing invalid argument
+     :If 1084 Check 1⊃ret ⋄ →fail Because'Setting property to invalid value did not fail with err 1084, but instead with ',⍕ret ⋄ :EndIf
+
+     sc←iConga.GetProp'.' 'CompLevel'  ⍝ was value changed? (m18054)
+     :If clv Check 2⊃sc ⋄ →fail Because'Attempt to set invalid prop-value changed current value of ',⍕clv ⋄ :EndIf
+
+     
+     ret←iConga.SetProp'.' 'DecodeBuffers' 7 ⍝ another invalid option
+     :If 1037 Check 1⊃ret ⋄ →fail Because'Setting property to invalid value did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
+
      ret←iConga.GetProp'.' 'DoesNotExist'  ⍝ how about getting a non-existent property?
      :If 1037 Check 1⊃ret ⋄ →fail Because'Getting a non-existent property did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
 
