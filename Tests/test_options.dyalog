@@ -1,4 +1,4 @@
-﻿ r←test_options dummy;WSAutoUpgrade;RawAsByte;DecodeHttp;RawAsInt;ops;modes;m;o;Port;Srv;Clt;Host;ret;exp;err;srv;r2
+﻿ r←test_options dummy;WSAutoUpgrade;RawAsByte;DecodeHttp;RawAsInt;ops;modes;m;o;Port;Srv;Clt;Host;ret;exp;err;srv;r2;clt;o∆;applicable
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
@@ -25,17 +25,25 @@
          applicable←(o=0)∨((m≡'http')∧~⊃2 2⊤o)∨(o=2)∧(⊂m)∊'Raw' 'BlkRaw'  ⍝ can this option be set for current mode? (assuming 2 needs [Blk]Raw and everything else http)
          ret←iConga.Clt'' '' 5000 m('Options'o)
          err←1⊃ret
+         :If ~∨/0 1037∊err ⋄ →fail Because'Clt Failed: ',,⍕ret ⋄ :EndIf
          :If err=0
+             clt←2⊃ret
+
              r2←iConga.GetProp(2⊃ret)'Options'
              :If o Check(2⊃r2)
                  →fail Because'GetProp Options did not return ',(⍕o),' (which was set before): ',,⍕r2 ⋄ :EndIf
+             o∆←o ⍝ remember original o before messing with it ("o" is shown in err-msg..)
+             :If 1084 Check⊃ret←iConga.SetProp clt'Options'(o←+0.001)
+                 →fail Because'SetProp''Options'' did not err when called with floating point number' ⋄ :EndIf
 
+             :If 1084 Check⊃ret←iConga.SetProp clt'Options'(o←'RawAsByte')
+                 →fail Because'SetProp''Options'' did not err when called with string argument' ⋄ :EndIf
+             o←o∆
              :If o>0
-             :AndIf 1037 Check⊃ret←iConga.SetProp(2⊃ret)'Options'(o←-o)   ⍝ Mantis 18034
+             :AndIf 1037 Check⊃ret←iConga.SetProp clt'Options'(o←-o)   ⍝ Mantis 18034
                  →fail Because'It was possible to SetProp"Options" with negative o, ret=',(⍕ret),'⍝  m18034' ⋄ :EndIf
              _←iConga.Close 2⊃ret
          :EndIf
-         :If ~∨/0 1037∊err ⋄ →fail Because'Clt Failed: ',,⍕ret ⋄ :EndIf
          exp←1037×~applicable
 
          :If exp Check err
@@ -46,7 +54,7 @@
          :AndIf 1037 Check ret←iConga.Clt'' '' 5000 m('Options'(-o))  ⍝ Mantis 18034
              →fail Because'Clt did not refuse to create client with negative value in otions and returned ',(⍕ret),' ⍝18034' ⋄ :EndIf
 
-         _←iConga.Close 2⊃ret
+         _←iConga.Close clt
      :EndFor ⍝ o
 
  :EndFor ⍝ m
@@ -59,4 +67,4 @@
 
 fail:
  r←'Mode="',m,'", Option=',(⍕o),': ',r
-ErrorCleanup
+ ErrorCleanup
