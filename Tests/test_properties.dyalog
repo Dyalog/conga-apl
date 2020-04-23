@@ -49,6 +49,8 @@
      →teardown
 fail:
      r,←', CompLevel=',(⍕clv),' '
+     Log r  ⍝ log error when it happens (to get more accurate timestamp)
+     r←' '
 
 teardown:
      :If 2=⎕NC'srv' ⋄ :AndIf (bhdt=0)∧0 Check⊃ret←iConga.Close srv ⋄ bhdt←1 ⋄ →fail Because'Unexpected return value closing server (',(⍕ret),')' ⋄ :EndIf

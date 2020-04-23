@@ -1,6 +1,6 @@
 ﻿ r←test_pause dummy;Host;Port;maxwait;ret;s1;stnum;tests;z;sret
 ⍝ Test Server pause
- Host←'localhost' ⋄ Port←5010
+ Host←'localhost' ⋄ Port←5000
  maxwait←5000
 
  TestConnect←{
