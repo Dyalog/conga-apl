@@ -45,10 +45,10 @@
 
      :If 0 Check⊃ret←iConga.Close s1
          →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
-     
+
      :While s1≡⊃iConga.Names'.'
 ⍝        ⎕←'waiting to complete shutdown'
-        ⎕DL 0.01
+         ⎕DL 0.01
      :EndWhile
  :EndFor ⍝ mode
 

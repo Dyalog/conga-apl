@@ -16,6 +16,8 @@
      :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
          →fail Because'Unexpected result from Srv Wait: ',,⍕res ⋄ :EndIf
      con1←2⊃res
+     ret←⎕DQ sock
+     ⎕DL 0.2  ⍝ give it time to change state...
      :If 'Connected'Check ret←'sock'⎕WG'CurrentState'
          →fail Because'SocketState ≢ Connected after connecting (="',ret,'")' ⋄ :EndIf
 
