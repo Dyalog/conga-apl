@@ -82,6 +82,11 @@
          ⍙naedfns,←⊂'⍙InitRPC'⎕NA dllname,'Init <0T1 <0T1'
 
          z←⍙InitRPC RootName Path
+         :If 1043=z ⍝ non of the quadNA#ed functions were there but RootName was, could have been a )clear or )load
+             r←check ⍙CallR RootName'AClose' '.' 0   ⍝ Close the Root
+             z←⍙InitRPC RootName Path
+         :EndIf
+
          :If 0=⊃z
              :If ~unicode
                  s←SetXlate DefaultXlate
