@@ -70,7 +70,7 @@
          ⍝ Auto upgrade event 4⊃res is the Incomming request but connection have been upgraded
      :Else
          :If 0 'WSResponse'Check res[1 3]
-             →fail Because'Client Websocket maunal upgrade failed',,⍕res ⋄ :EndIf
+             →fail Because'Client Websocket manual upgrade failed',,⍕res ⋄ :EndIf
       ⍝ Negotiate inspect headers (4⊃res) and accept request by returning the headers or close the connection
          :If 0 Check⊃ret←iConga.SetProp clt'WSAccept'((4⊃res)'')
              →fail Because'SetProp failed: ',,⍕ret ⋄ :EndIf
@@ -79,6 +79,7 @@
      :For Continuation :In 0 1
   ⍝ Test text (utf8) buffers
          :For drt :In (⎕IO+isUnicode ⍬)⊃(82 820)(80 160 320)
+             opcode←1
              :For len :In 0 10 124 125 126 127 128 65535 65536 70000
                  data←drt utf8 len ⍝
                  Fin←⊃(1(len=70000))[⎕IO+Continuation]
@@ -87,19 +88,21 @@
                  :If (0)Check⊃ret←iConga.Send clt(data Fin)
                      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'(data Fin 1))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
+                 :If (0 'WSReceive'(data Fin opcode))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
                      →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
                  :If (0)Check⊃ret←iConga.Send wscon(data Fin)
                      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'(data Fin 1))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
+                 :If (0 'WSReceive'(data Fin opcode))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
                      →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 opcode←Fin×1
              :EndFor
          :EndFor
 
  ⍝ Test binary  buffers
          :For offset :In -⎕IO+0 128
+             opcode←2
              :For len :In 0 10 124 125 126 127 128 65535 65536 70000
                  data←offset+len⍴⍳256
                  testname←' WebSocket Text APL Datatype ',(⍕⎕DR data),' and buffer length ',(⍕len),Continuation/' and Continuation '
@@ -108,14 +111,15 @@
                  :If (0)Check⊃ret←iConga.Send clt(data Fin)
                      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'((to83 data)Fin 2))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
+                 :If (0 'WSReceive'((to83 data)Fin opcode))Check(⊂1 3 4)⌷4↑res←iConga.Wait srv maxwait
                      →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
                  :If (0)Check⊃ret←iConga.Send wscon(data Fin)
                      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
-                 :If (0 'WSReceive'((to83 data)Fin 2))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
+                 :If (0 'WSReceive'((to83 data)Fin opcode))Check(⊂1 3 4)⌷4↑res←iConga.Wait clt maxwait
                      →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+                 opcode←Fin×2
              :EndFor
          :EndFor
      :EndFor
