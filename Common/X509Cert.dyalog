@@ -289,10 +289,10 @@
     ⍝ Establish a pointer to a Conga instance or a v2 DRC namspace
       :If ''≢LDRC ⋄ ldrc←LDRC ⍝ Ref already set
       :Else
-          :If 9=⎕NC'#.Conga' ⍝ Else use Conga factory function
-              ldrc←#.Conga.Init''
-          :ElseIf 9=⎕NC'#.DRC'   ⍝ Look for v2 DRC namespace
-              ldrc←#.DRC
+          :If 9=##.⎕NC'Conga'     ⍝ Else use Conga factory function
+              ldrc←##.Conga.Init''
+          :ElseIf 9=##.⎕NC'DRC'   ⍝ Look for v2 DRC namespace
+              ldrc←##.DRC
           :EndIf
       :EndIf
     ∇
