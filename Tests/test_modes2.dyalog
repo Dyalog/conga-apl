@@ -35,7 +35,7 @@
 
          types←(⎕DR' '),83 163
 
-         exp←(1+(RAB≠0)∧mode IsNotElement'raw' 'blkraw')⊃0 1037
+         exp←(1+(RAB≠0)∧~(⊂mode)∊'raw' 'blkraw')⊃0 1037
          :If exp Check⊃ret←iConga.Srv'' ''Port mode,args,(RAB≠0)/⊂('Options'RAB)
              →fail Because'Srv failed  ',((exp>0)/'not '),'with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',(⍕args),(RAB≠0)/', Options=',⍕RAB ⋄ :EndIf
          s1←2⊃ret
