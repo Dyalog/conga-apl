@@ -492,6 +492,11 @@
         ⍝ this replaces the use of DecodeBuffers in Conga versions prior to v3.3
           r←4
         ∇
+
+        ∇ r←EnableBufferSizeHttp
+        ⍝ value to add to the client or server Options parameter to have the BufferSize parameter limit the size of data received by all HTTP mode events
+          r←16
+        ∇
     :EndNamespace
 
 :EndClass
