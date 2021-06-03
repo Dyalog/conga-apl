@@ -6,6 +6,7 @@ Setup   : setup_v2 setup_v3 setup_v3_root
 Teardown: teardown
 Test    : test_core
 Test    : test_fifolist
+Test    : test_fifodelete
 Test    : test_sendfile
 Test    : test_websocket
 Test    : test_sendcomplete
