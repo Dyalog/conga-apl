@@ -6,13 +6,10 @@ It is essentially for internal Dyalog use but visible to the public. Comments an
 
 To build a workspace from code checked out to [folder]:
 
-]dbuild [folder]\conga.dyalogbuild
-
-To build a QA workspace, follow the above with:
-
-]dbuild [folder]\congadev.dyalogbuild
+]dbuild [folder]\conga-apl.dyalogbuild
 
 At this point, you should be able to run the QA suite using:
 
 ]dtest [folder]/Tests/all
 
+Note: the appropriate Conga shared libraries need to installed in the Dyalog installation folder.

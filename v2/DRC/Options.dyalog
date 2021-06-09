@@ -16,6 +16,11 @@
       r←4
     ∇
 
+    ∇ r←EnableBufferSizeHttp
+    ⍝ value to add to the client or server Options parameter to have the BufferSize parameter limit the size of data received by all HTTP mode events
+      r←16
+    ∇
+
     ∇ r←EnableFifo
     ⍝ value to add to server Options parameter in order to enable FIFO mode. This is Conga 3.4.
       r←32

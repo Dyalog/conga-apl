@@ -1,0 +1,4 @@
+{
+    "DyalogVersions": "18.1+",
+    "Test": "./Tests/all.dyalogtest",  // BHC was going to rename that file, as assume the new name...
+}

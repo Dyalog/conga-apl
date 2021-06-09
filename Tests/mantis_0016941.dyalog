@@ -39,7 +39,7 @@
              ret←iConga.SetProp srv'Pause' 0
          :EndIf
          :If 0 Check⊃ret
-           →fail Because'Pause failed: ',,⍕ret ⋄ :EndIf
+             →fail Because'Pause failed: ',,⍕ret ⋄ :EndIf
      :EndIf
 
      :If 0 Check⊃ret←iConga.Clt Clt Host Port,protocol,secure/('x509'cltx509)('SSLValidation' 0)
@@ -78,6 +78,13 @@
  →0
 
 fail:
- r←' at the ',(⍕i),' iteration: ',r
- z←iConga.Close¨srv clt
+ :If 2=⎕NC'i'
+     r←' at the ',(⍕i),' iteration: ',r
+ :EndIf
+ :If 2=⎕NC'srv'
+     z←iConga.Close srv
+ :EndIf
+ :If 2=⎕NC'clt'
+     z←iConga.Close clt
+ :EndIf
  {}iConga.Wait'.' 0
