@@ -412,10 +412,10 @@
     ∇ certs←ReadCertFromStore storename;cs
       :Access Public Instance
      
-      cs←Certs'MSStore'storename
+      cs←Certs(⊂'MSStore'),⊆storename
       :If 0=1⊃cs
       :AndIf 0<⍴2⊃cs
-          certs←⎕NEW¨(2⊃cs){X509Cert(⍺ ⍵)}¨⊂'MSStore'storename
+          certs←⎕NEW¨(2⊃cs){X509Cert(⍺ ⍵)}¨⊂'MSStore'(⊃⊆ storename)
       :Else
           certs←⍬
       :EndIf
@@ -491,7 +491,13 @@
         ⍝ value to add to the client or server Options parameter in order to decode HTTP messages on an HTTP connection
         ⍝ this replaces the use of DecodeBuffers in Conga versions prior to v3.3
           r←4
+        ∇   
+        
+        ∇ r←EnableFifo
+        ⍝ value to add to server Options parameter in order to enable FIFO mode. This is Conga 3.4.
+          r←32
         ∇
+
     :EndNamespace
 
 :EndClass

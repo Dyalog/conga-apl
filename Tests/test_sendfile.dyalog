@@ -1,4 +1,4 @@
-﻿ r←test_sendfile dummy;Host;Port;maxwait;Magic;MakeFile;data;ret;s1;c1;s2;c2;res;size;rs;z
+﻿ r←test_sendfile dummy;Host;Port;maxwait;Magic;MakeFile;data;ret;s1;c1;s2;c2;res;size;rs;z;headersize
 ⍝ Test Send file
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
@@ -16,7 +16,7 @@
      ⎕NUNTIE tie
  }
  data←'dette er en test '
-
+ data←⊃,/,⎕D∘.,⎕A
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
@@ -47,26 +47,28 @@
      →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
 
  :For size :In ,(2*1+⍳20)∘.+¯1 0 1
-     MakeFile'test.dat'size data
-     :If (0)Check⊃ret←iConga.Send c1('' 'test.dat')
-         →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
+     :For headersize :In size{(⍺>⍵)/⍵}0 5 7 13 16
+         MakeFile'test.dat'(size-headersize)(headersize⌽data)
+         :If (0)Check⊃ret←iConga.Send c1((headersize↑data)'test.dat')
+             →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
 
-     rs←0
-     :While (rs<size)
-         :If (0 'Block')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+         rs←0
+         :While (rs<size)
+             :If (0 'Block')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+                 →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+             :If 1 Check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}data
+                 →fail Because'filedata is wrong ' ⋄ :EndIf
+             rs+←⍴4⊃res
+
+         :EndWhile
+
+         :If (0)Check⊃ret←iConga.Send c2((headersize↑data)'test.dat')
+             →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
+
+         :If (0 'Block'(size⍴data))Check(⊂1 3 4)⌷4↑res←iConga.Wait s2 maxwait
              →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
-         :If 1 Check(4⊃res){⍺≡(⍴⍺)⍴⍵}rs{((⍴⍵)|⍺)⌽⍵}data
-             →fail Because'filedata is wrong ' ⋄ :EndIf
-         rs+←⍴4⊃res
-
-     :EndWhile
-
-     :If (0)Check⊃ret←iConga.Send c2('' 'test.dat')
-         →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
-
-     :If (0 'Block'(size⍴data))Check(⊂1 3 4)⌷4↑res←iConga.Wait s2 maxwait
-         →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+     :EndFor
  :EndFor
 
  :If 0 Check⊃ret←iConga.Close c1

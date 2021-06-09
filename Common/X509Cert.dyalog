@@ -41,6 +41,16 @@
           _CertOrigin←args.NewValue
         ∇
     :EndProperty
+    
+    :Property Key
+    :Access Public Instance
+        ∇ r←Get args
+          ⎕signal 6
+        ∇
+        ∇ Set args;z
+          _Key←args.NewValue
+        ∇
+    :EndProperty
 
     :Property KeyOrigin
     :Access Public Instance

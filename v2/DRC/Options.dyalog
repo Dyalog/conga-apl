@@ -15,4 +15,10 @@
     ⍝ this replaces the use of DecodeBuffers in Conga versions prior to v3.3
       r←4
     ∇
+
+    ∇ r←EnableFifo
+    ⍝ value to add to server Options parameter in order to enable FIFO mode. This is Conga 3.4.
+      r←32
+    ∇
+
 :EndNamespace
