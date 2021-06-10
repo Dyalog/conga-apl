@@ -41,11 +41,11 @@
           _CertOrigin←args.NewValue
         ∇
     :EndProperty
-    
+
     :Property Key
     :Access Public Instance
         ∇ r←Get args
-          ⎕signal 6
+          ⎕SIGNAL 6
         ∇
         ∇ Set args;z
           _Key←args.NewValue
@@ -114,13 +114,13 @@
               :EndIf
           :EndIf
         ∇
-    :EndProperty 
-    
-     lcase←{                                         ⍝ Lower-casification,
-     lc←'abcdefghijklmnopqrstuvwxyzåäöàæéñøü'    ⍝ (lower case alphabet)
-     uc←'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÀÆÉÑØÜ'    ⍝ (upper case alphabet)
-     (⍴⍵)⍴(lc,,⍵)[(uc,,⍵)⍳⍵]                     ⍝ ... of simple array.
- }
+    :EndProperty
+
+      lcase←{                                         ⍝ Lower-casification,
+          lc←'abcdefghijklmnopqrstuvwxyzåäöàæéñøü'    ⍝ (lower case alphabet)
+          uc←'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖÀÆÉÑØÜ'    ⍝ (upper case alphabet)
+          (⍴⍵)⍴(lc,,⍵)[(uc,,⍵)⍳⍵]                     ⍝ ... of simple array.
+      }
 
       base64←{⎕IO ⎕ML←0 1             ⍝ Base64 encoding and decoding as used in MIME.
      
@@ -295,15 +295,17 @@
       LDRC←FindDRC''
     ∇
 
-    ∇ ldrc←FindDRC dummy
+    ∇ ldrc←FindDRC dummy;ref
     ⍝ Establish a pointer to a Conga instance or a v2 DRC namspace
       :If ''≢LDRC ⋄ ldrc←LDRC ⍝ Ref already set
       :Else
-          :If 9=##.⎕NC'Conga'     ⍝ Else use Conga factory function
-              ldrc←##.Conga.Init''
-          :ElseIf 9=##.⎕NC'DRC'   ⍝ Look for v2 DRC namespace
-              ldrc←##.DRC
-          :EndIf
+          :For ref :In ##,##.##        ⍝ search parent and grandparent
+              :If 9=ref.⎕NC'Conga'     ⍝ Else use Conga factory function
+                  ldrc←ref.Conga.Init''
+              :ElseIf 9=ref.⎕NC'DRC'   ⍝ Look for v2 DRC namespace
+                  ldrc←ref.DRC
+              :EndIf
+          :EndFor
       :EndIf
     ∇
 
