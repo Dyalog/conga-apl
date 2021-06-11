@@ -1,4 +1,4 @@
-﻿ r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore;cas
+ r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore;cas
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga Certificate functionality
 
@@ -100,8 +100,8 @@
  maxwait←5000
  Cert←{({⍵+¯256×⍵>127}⍺.Cert)⍺⍺{⍵+¯256×⍵>127}⍵.Cert}
 
- s←(srvx509 srvurl srvstore)~⍬
- c←(cltx509 cltx509a cltx509b cltx509c clturl cltstore)~⍬
+ s←(srvx509 srvurl srvstore)~⊂⍬
+ c←(cltx509 cltx509a cltx509b cltx509c clturl cltstore)~⊂⍬
  rcd←∪cas
 
  tests←,(,s∘.,c)∘.,⊂¨rcd

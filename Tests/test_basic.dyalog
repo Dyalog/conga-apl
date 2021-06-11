@@ -10,10 +10,10 @@
      →fail Because'Version failed',,⍕ret ⋄ :EndIf
 
  :If 3 Check 2⊃⍴2⊃ret←iConga.GetProp'.' 'ipv4addrs'
-     →fail Because'IPV4Addrs failed',,⍕ret ⋄ :EndIf   
-     
- :if 4 Check 2⊃⍴↑2⊃ret←iConga.GetProp '.' 'TCPLookup' 'localhost' 80
-     →fail Because 'TCPLookup failed :',,⍕ret ⋄:endif
+     →fail Because'IPV4Addrs failed',,⍕ret ⋄ :EndIf
+
+ :If 4 Check 2⊃⍴↑2⊃ret←iConga.GetProp'.' 'TCPLookup' 'localhost' 80
+     →fail Because'TCPLookup failed :',,⍕ret ⋄ :EndIf
 
  :If 645 Check ⎕DR ret←iConga.Micros
      →fail Because'Micros not floating point',⍕ret ⋄ :EndIf
@@ -59,7 +59,7 @@
          →fail Because'Did not get Closed event from Srv Wait: ',,⍕res ⋄ :EndIf
      :If 0 Check⊃ret←iConga.Close srv
          →fail Because'Srv close failed: ',,⍕ret ⋄ :EndIf
-
+     ⎕DL 1  ⍝ give it a moment so that the port if free indeed (when we go into the next round of our loop)
  :EndFor
 
  r←''

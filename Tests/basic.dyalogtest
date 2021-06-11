@@ -7,4 +7,3 @@ Teardown: teardown
 Test    : test_core
 Test    : test_multiroot
 Test    : test_websocket
-Test    : test_httpcommand
