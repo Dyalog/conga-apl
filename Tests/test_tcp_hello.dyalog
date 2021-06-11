@@ -44,6 +44,7 @@
          →fail Because'Error during Wait of Srv:',⍕ret ⋄ :EndIf
 
      {}iConga.Close s1
+     ⎕dl 1   ⍝ give it time to close...
  :EndFor
  r←''
  →0
