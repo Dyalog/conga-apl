@@ -17,3 +17,4 @@
  :EndTrap
 
  r←verify_empty iConga
+ iConga.X509Cert.LDRC←iConga

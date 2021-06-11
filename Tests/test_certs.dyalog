@@ -17,7 +17,8 @@
      srvx509←ReadCert'server/localhost'
      cltx509←ReadCert'client/Jane Doe' ⍝ Cert as data key as filename
      cltx509a←ReadCert'client/Jane Doe'⍝ Cert as filename and key as filname
-     cltx509b←ReadCert'client/Jane Doe'⍝ Cert as data key as data
+     cltx509b←⎕new iConga.X509Cert cltx509a.Cert ⍝ Cert as data key as data
+     ⍝cltx509b←ReadCert'client/Jane Doe'⍝ Cert as data key as data
      cltx509c←ReadCert'client/Jane Doe'⍝ Cert as filename key as data
 
      cax509←ReadCert'ca/ca'
@@ -64,22 +65,27 @@
 
      :If (+/m)≠≢ret←iConga.ReadCertFromStore'Root'('Subject'({⍵+¯256×⍵>127}cax509.Elements.Subject))
          →fail Because'ReadCertFromStore retured wrong number of certs: ' ⋄ :EndIf
-
+     :if 0<+/m
      :If ~∧/ret.Formatted.Subject∊⊂cax509.Formatted.Subject
          →fail Because'ReadCertFromStore returned wrong certificates' ⋄ :EndIf
-
+     :endif
      storeca←''
      urls←iConga.ReadCertUrls
 
-     ixs←urls.Cert⍳{⍵+¯256×⍵>127}¨(cax509 srvx509 cltx509).Cert
+     :if 0<≢,urls
+     ixs←(,urls).Cert⍳{⍵+¯256×⍵>127}¨(cax509 srvx509 cltx509).Cert
      (caurl srvurl clturl)←(urls,⍬)[ixs]
-
+     :endif
      certs←iConga.ReadCertFromStore'My'
 
      ixs←certs.Cert⍳{⍵+¯256×⍵>127}¨(srvx509 cltx509).Cert
      (srvstore cltstore)←(certs,⍬)[ixs]
 
-
+     cltx509.UseMSStoreAPI←1
+     :if 0 = ≢cltx509.Formatted.Subject
+     :orif 0=≢cltx509.Extended.Subject
+        →fail Because 'Cert decode failed:' ⋄ :endif
+     :endif
  :EndIf
 
 
@@ -115,8 +121,8 @@
 
      :If (0 1208)[1+0=≢3⊃certs]Check⊃ret←iConga.SetProp'.' 'RootCertDir'(CertPath,3⊃certs)
          →fail Because'Set RootCertDir failed: ',,⍕ret ⋄ :EndIf
-     ret
-     {(1 1⊃⍵)(2 1⊃⍵)(2 2 1⊃⍵)}¨(cltcert srvcert).AsArg
+⍝     ret
+⍝     {(1 1⊃⍵)(2 1⊃⍵)(2 2 1⊃⍵)}¨(cltcert srvcert).AsArg
 
          ⍝ Establish Connections & send request data
      :If 0 Check⊃ret←iConga.Srv Srv''Port,('X509'srvcert)('SSLValidation' 64)⍝('Priority'Priority)
@@ -182,7 +188,9 @@
          →fail Because'Did not get 1119 from Srv Wait: ',,⍕res ⋄ :EndIf
      :If 0 Check⊃ret←iConga.Close srv
          →fail Because'Srv close failed: ',,⍕ret ⋄ :EndIf
-
+     ⎕DL 0.1
+     :If 0<≢ret←iConga.Names'.'
+         ⎕DL 0.1 ⋄ :EndIf
  :EndFor ⍝ secure
  r←''
  →0

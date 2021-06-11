@@ -7,10 +7,16 @@
  maxwait←5000
 
  :If 3 Check≢ret←iConga.Version
-     →fail Because'Version failed' ⋄ :EndIf
+     →fail Because'Version failed',,⍕ret ⋄ :EndIf
+
+ :If 3 Check 2⊃⍴2⊃ret←iConga.GetProp'.' 'ipv4addrs'
+     →fail Because'IPV4Addrs failed',,⍕ret ⋄ :EndIf   
+     
+ :if 4 Check 2⊃⍴↑2⊃ret←iConga.GetProp '.' 'TCPLookup' 'localhost' 80
+     →fail Because 'TCPLookup failed :',,⍕ret ⋄:endif
 
  :If 645 Check ⎕DR ret←iConga.Micros
-     →fail Because'Micros not floating point' ⋄ :EndIf
+     →fail Because'Micros not floating point',⍕ret ⋄ :EndIf
  modes←'Text' 'BlkText' 'Command' 'Http'
 
  rootprops←'Certificates' 'CompLevel' 'DecodeCert' 'ErrorText' 'HttpDate' 'PropList' 'Protocol' 'ReadyStrategy' 'RootCertDir' 'Stores' 'TCPLookup' 'EventMode'

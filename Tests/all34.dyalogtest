@@ -34,6 +34,8 @@ Test    : test_tcp_file
 Test    : test_tcp_hello
 Test	: test_certs
 Test    : test_basic
+Test	: test_secure
+Test	: test_EOM
 
 
 
