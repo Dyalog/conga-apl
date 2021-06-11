@@ -3,7 +3,9 @@
 ⍝ Set #.CONGALIB to point to non-default Conga DLLs
 
  :If 0=⎕NC'#.Conga'
-     →0⊣r←'#.Conga not present.'
+     ⍝→0⊣r←'#.Conga not present.'
+     #.⎕CY'conga'
+     Conga←#.Conga
  :Else
      Conga←#.Conga
  :EndIf

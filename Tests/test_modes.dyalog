@@ -38,7 +38,7 @@
 
 
      :If (0)Check⊃ret←iConga.Srv'' ''Port mode,args
-         →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
+         →fail Because'Srv failed with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',⍕args ⋄ :EndIf
      s1←2⊃ret
 
      :If 0 Check⊃ret←iConga.Clt''Host Port mode,args
