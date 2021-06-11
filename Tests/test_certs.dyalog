@@ -1,4 +1,4 @@
-﻿ r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;storeca;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore
+﻿ r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore;cas
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga Certificate functionality
 
@@ -17,14 +17,14 @@
      srvx509←ReadCert'server/localhost'
      cltx509←ReadCert'client/Jane Doe' ⍝ Cert as data key as filename
      cltx509a←ReadCert'client/Jane Doe'⍝ Cert as filename and key as filname
-     cltx509b←⎕new iConga.X509Cert cltx509a.Cert ⍝ Cert as data key as data
+     cltx509b←⎕NEW iConga.X509Cert cltx509a.Cert ⍝ Cert as data key as data
      ⍝cltx509b←ReadCert'client/Jane Doe'⍝ Cert as data key as data
      cltx509c←ReadCert'client/Jane Doe'⍝ Cert as filename key as data
 
      cax509←ReadCert'ca/ca'
      cltx509a.Cert←''
      cltx509c.Cert←''
-     cltx509b.Key←cltx509c.Key←ReadKey 2⊃cltx509b.KeyOrigin
+     cltx509b.Key←cltx509c.Key←ReadKey 2⊃cltx509.KeyOrigin
 
  :Else
      →fail Because'Could not read TestCertificates'
@@ -49,7 +49,7 @@
 
  caurl←srvurl←clturl←⍬
  srvstore←cltstore←⍬
- storeca←'ca'
+ cas←,⊂'ca'
 
  :If win
      :If 0 Check⊃ret←iConga.Certs'ListMSStore'
@@ -65,28 +65,28 @@
 
      :If (+/m)≠≢ret←iConga.ReadCertFromStore'Root'('Subject'({⍵+¯256×⍵>127}cax509.Elements.Subject))
          →fail Because'ReadCertFromStore retured wrong number of certs: ' ⋄ :EndIf
-     :if 0<+/m
-     :If ~∧/ret.Formatted.Subject∊⊂cax509.Formatted.Subject
-         →fail Because'ReadCertFromStore returned wrong certificates' ⋄ :EndIf
-     :endif
-     storeca←''
+     :If 0<+/m
+         :If ~∧/ret.Formatted.Subject∊⊂cax509.Formatted.Subject
+             →fail Because'ReadCertFromStore returned wrong certificates' ⋄ :EndIf
+         cas,←,⊂''
+     :EndIf
      urls←iConga.ReadCertUrls
 
-     :if 0<≢,urls
-     ixs←(,urls).Cert⍳{⍵+¯256×⍵>127}¨(cax509 srvx509 cltx509).Cert
-     (caurl srvurl clturl)←(urls,⍬)[ixs]
-     :endif
+     :If 0<≢urls
+         ixs←urls.Cert⍳{⍵+¯256×⍵>127}¨(cax509 srvx509 cltx509).Cert
+         (caurl srvurl clturl)←(urls,⊂⍬)[ixs]
+     :EndIf
      certs←iConga.ReadCertFromStore'My'
 
      ixs←certs.Cert⍳{⍵+¯256×⍵>127}¨(srvx509 cltx509).Cert
-     (srvstore cltstore)←(certs,⍬)[ixs]
+     (srvstore cltstore)←(certs,⊂⍬)[ixs]
 
      cltx509.UseMSStoreAPI←1
-     :if 0 = ≢cltx509.Formatted.Subject
-     :orif 0=≢cltx509.Extended.Subject
-        →fail Because 'Cert decode failed:' ⋄ :endif
-     :endif
+     :If 0=≢cltx509.Formatted.Subject
+     :OrIf 0=≢cltx509.Extended.Subject
+         →fail Because'Cert decode failed:' ⋄ :EndIf
  :EndIf
+
 
 
  prots←∪⊃¨2⊃iConga.GetProp'.' 'TCPLookup' 'localhost' 80 ⍝ Available protocols takes from IP addresses
@@ -102,7 +102,7 @@
 
  s←(srvx509 srvurl srvstore)~⍬
  c←(cltx509 cltx509a cltx509b cltx509c clturl cltstore)~⍬
- rcd←∪'ca'storeca
+ rcd←∪cas
 
  tests←,(,s∘.,c)∘.,⊂¨rcd
  ⍝tests←(srvx509 cltx509'ca')(srvx509 clturl'')
