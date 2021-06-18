@@ -415,7 +415,7 @@
       cs←Certs(⊂'MSStore'),⊆storename
       :If 0=1⊃cs
       :AndIf 0<⍴2⊃cs
-          certs←⎕NEW¨(2⊃cs){X509Cert(⍺ ⍵)}¨⊂'MSStore'(⊃⊆ storename)
+          certs←⎕NEW¨(2⊃cs){X509Cert(⍺ ⍵)}¨⊂'MSStore'(⊃⊆storename)
       :Else
           certs←⍬
       :EndIf
@@ -432,7 +432,52 @@
           certs←⍬
       :EndIf
     ∇
-
+    ∇ r←ClientAuth arg;con;tok;cmd;rc;rr;kp;err;se;sk;st
+    :Access Public Instance
+      :If 1=≡arg
+          arg←,⊂arg
+      :EndIf
+      con←1⊃arg
+      err←SetProp con'IWA'('NTLM' '',1↓arg)
+      :Repeat
+          kp tok←2⊃GetProp con'Token'
+          rc cmd←Send con(err kp tok)
+          rr←Wait cmd 10000
+          :If 0=⊃rr
+              (se sk st)←3↑4⊃rr
+     
+              :If 0<⍴st
+              :AndIf se=0
+                  err←SetProp con'Token'(st)
+              :Else
+                  kp←0
+              :EndIf
+          :EndIf
+      :Until (0=kp)∨(sk=0)
+      r←GetProp con'IWA'
+    ∇
+    ∇ r←ServerAuth con;tok;rr;kp;err;rc;ct;ck;ce
+      :Access Public Instance
+      err←SetProp con'IWA'('NTLM' '')
+      :Repeat
+          rr←Wait con 1000
+          :If 0=⊃rr
+              (ce ck ct)←3↑4⊃rr
+              :If 0<⍴ct
+              :AndIf ce=0
+                  err←SetProp con'Token'(ct)
+                  kp tok←2⊃GetProp con'Token'
+                  rc←Respond(2⊃rr)(err kp tok)
+              :Else
+                  rc←Respond(2⊃rr)(0 0 ⍬)
+                  kp←0
+              :EndIf
+          :Else
+              kp←1
+          :EndIf
+      :Until (0=kp)∨(ck=0)
+      r←GetProp con'IWA'
+    ∇
     ∇ r←base Decode code;ix;bits;size;s
       ix←¯1+base⍳code
      
@@ -491,8 +536,8 @@
         ⍝ value to add to the client or server Options parameter in order to decode HTTP messages on an HTTP connection
         ⍝ this replaces the use of DecodeBuffers in Conga versions prior to v3.3
           r←4
-        ∇   
-        
+        ∇
+
         ∇ r←EnableFifo
         ⍝ value to add to server Options parameter in order to enable FIFO mode. This is Conga 3.4.
           r←32
