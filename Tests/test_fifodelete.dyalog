@@ -1,4 +1,4 @@
-﻿ r←test_fifodelete dummy;Host;Port;maxwait;data;connections;messages;Connect;Load;ret;s1;now;cons;Cnt;CntRecv;CntBlck;err;obj;evt;dat;tim;z;FlushPending;mode;fifo;scon;scons;Ready;maxdel;ready;results;m;SendRecv;Wait;i;twait;tend
+﻿ r←test_fifodelete dummy;Host;Port;maxwait;data;connections;messages;Connect;Load;ret;s1;now;cons;Cnt;CntRecv;CntBlck;err;obj;evt;dat;tim;z;FlushPending;mode;fifo;scon;scons;Ready;maxdel;ready;results;m;SendRecv;Wait;i;twait;tend;tids
 ⍝  Test Fifo list
  Host←'localhost' ⋄ Port←5000
  maxwait←1000
@@ -59,7 +59,7 @@
              cons←{(0=1⊃¨⍵)/2⊃¨⍵}cons
 
              Cnt←0
-             {}{Cnt+←messages SendReceive ⍵}&¨cons{⍺ ⍵}¨⊂data
+             tids←{Cnt+←messages SendReceive ⍵}&¨cons{⍺ ⍵}¨⊂data
 
              results←0 5⍴⍬
              CntRecv←CntBlck←0
@@ -114,6 +114,7 @@
 
                  →fail Because'Results are not chronological '
              :EndIf
+             ⎕TSYNC tids
              :If (2×connections×messages)Check Cnt+CntRecv+CntBlck
                  →fail Because'No all messages was accounted for' ⋄ :EndIf
 ⍝             ⎕←maxdel fifo mode(tend-twait)
