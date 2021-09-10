@@ -1,6 +1,6 @@
-﻿ r←test_progress dummy;Host;Port;maxwait;data;ret;srv;c1;ccmd;con1;res;scmd;lp
+﻿ r←test_progress dummy;Host;Port;maxwait;data;ret;srv;c1;ccmd;con1;res;scmd;lp;port
 ⍝  Test progress
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←5000
  data←'Testing 1 2 3'
  srv←c1←⍬
@@ -11,11 +11,12 @@
  :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
      →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port
+ :If (0)Check⊃ret←NewSrv'' ''Port
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
+ port←3⊃ret
 
- :If 0 Check⊃ret←iConga.Clt''Host Port
+ :If 0 Check⊃ret←iConga.Clt''Host port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 
@@ -106,4 +107,3 @@
 fail:
  z←iConga.Close¨c1 srv
  ErrorCleanup
-⍝)(!test_progress!bhc!2018 4 17 15 4 51 0!0

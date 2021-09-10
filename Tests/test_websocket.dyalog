@@ -1,6 +1,6 @@
-﻿ r←test_websocket dummy;Port;Host;nl;maxwait;Features;MaxSize;to83;utf8;ret;srv;clt;res;Continuation;drt;len;data;Fin;testname;offset;z;wscon;cf;sf;isUnicode;opcode
+﻿ r←test_websocket dummy;Port;Host;nl;maxwait;Features;MaxSize;to83;utf8;ret;srv;clt;res;Continuation;drt;len;data;Fin;testname;offset;z;wscon;cf;sf;isUnicode;opcode;port
 ⍝ Test upgrade of http connection to websocket
- Port←8088 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  nl←⎕UCS 13 10
  maxwait←5000 ⋄ MaxSize←450000
  Features←1   ⍝ Feature 0=APL negotiate 1=AutoUpgrade
@@ -25,15 +25,16 @@
      :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
          →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0)Check⊃ret←iConga.Srv'' ''Port'http'MaxSize
+     :If (0)Check⊃ret←NewSrv'' ''Port'http'MaxSize
          →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      srv←2⊃ret
+     port←3⊃ret
 
  ⍝ Set feature for server applies to all incomming connections
      :If 0 Check⊃ret←iConga.SetProp srv'WSFeatures'sf
          →fail beacuse'SetProp failed: ',,⍕ret ⋄ :EndIf
 
-     :If 0 Check⊃ret←iConga.Clt''Host Port'http'MaxSize
+     :If 0 Check⊃ret←iConga.Clt''Host port'http'MaxSize
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      clt←2⊃ret
 

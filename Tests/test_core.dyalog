@@ -1,13 +1,13 @@
-﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare;Clt;Srv
+﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare;Clt;Srv;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
  prots←∪⊃¨2⊃iConga.GetProp'.' 'TCPLookup' 'localhost' 80 ⍝ Available protocols takes from IP addresses
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
 
- compare←{1=⍴∪1⊃¨⍵: 1=≢∪2⊃¨⍵⋄ 1=≢∪{¯7↑ 255 255,⊃,/⍵[3 4]   }¨⍵ }
+ compare←{1=⍴∪1⊃¨⍵:1=≢∪2⊃¨⍵ ⋄ 1=≢∪{¯7↑255 255,⊃,/⍵[3 4]}¨⍵}
 
  maxwait←5000
  Cert←{(⍺.Cert)⍺⍺ ⍵.Cert}
@@ -33,10 +33,11 @@
          :EndIf
 
          ⍝ Establish Connections & send request data
-         :If 0 Check⊃ret←iConga.Srv Srv''Port,protocol,secure/('X509'srvx509)('SSLValidation' 64)
+         :If 0 Check⊃ret←NewSrv Srv''Port,protocol,secure/('X509'srvx509)('SSLValidation' 64)
              →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
          srv←2⊃ret
-         :If 0 Check⊃ret←iConga.Clt Clt Host Port,protocol,secure/('x509'cltx509)('SSLValidation' 0)
+         port←3⊃ret
+         :If 0 Check⊃ret←iConga.Clt Clt Host port,protocol,secure/('x509'cltx509)('SSLValidation' 0)
              →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
          clt←2⊃ret
          :If 0 Check⊃ret←iConga.Send clt data
@@ -95,5 +96,4 @@
 fail:
  r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
- {} iConga.Wait '.' 0
-⍝)(!test_core!bhc!2018 5 16 16 12 7 0!0
+ {}iConga.Wait'.' 0

@@ -1,6 +1,6 @@
-﻿ r←test_endpoints dummy;Host;Port;maxwait;Magic;ret;EndPoints;Allowed;s1;s2;ep;c1;c2;res
+﻿ r←test_endpoints dummy;Host;Port;maxwait;Magic;ret;EndPoints;Allowed;s1;s2;ep;c1;c2;res;P0;P1
  ⍝ Test endpoints
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
 
@@ -24,9 +24,10 @@
  EndPoints←⍬~⍨{'IPv6'≡1⊃⍵:(1⊃⍵)(1↓¯4↓2⊃⍵) ⋄ 'IPv4'≡1⊃⍵:(1⊃⍵)(¯3↓2⊃⍵) ⋄ ⍬}¨2⊃ret
  Allowed←((⍴EndPoints)⍴1 0)/EndPoints
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port'BlkText' 10000('Magic'(Magic'TRex'))
+ :If (0)Check⊃ret←NewSrv'' ''Port'BlkText' 10000('Magic'(Magic'TRex'))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
+ P0←3⊃ret
 
  :If 0 Check⊃res←iConga.SetProp s1'KeepAlive'(17 47)
      →fail Because'SetProp Keepalive failed: ',,⍕ret ⋄ :EndIf
@@ -34,16 +35,17 @@
  :If 0(17 47)Check res←iConga.GetProp s1'KeepAlive'
      →fail Because'GetProp Keepalive failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←iConga.Srv'' ''(1+Port)'BlkText' 10000('Magic'(Magic'TRex'))('AllowEndpoints'(↓{(⊃⍺)(¯1↓⊃,/(2⊃¨Allowed[⍵]),¨('/29,' '/120,')[⎕IO+⍺≡⊂'IPv6'])}⌸1⊃¨Allowed))
+ :If (0)Check⊃ret←NewSrv'' ''(Port+1×|×Port)'BlkText' 10000('Magic'(Magic'TRex'))('AllowEndpoints'(↓{(⊃⍺)(¯1↓⊃,/(2⊃¨Allowed[⍵]),¨('/29,' '/120,')[⎕IO+⍺≡⊂'IPv6'])}⌸1⊃¨Allowed))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s2←2⊃ret
+ P1←3⊃ret
 
  :For ep :In EndPoints
-     :If 0 Check⊃ret←iConga.Clt''(2⊃ep)Port'BlkText' 10000('Magic'(Magic'TRex'))
+     :If 0 Check⊃ret←iConga.Clt''(2⊃ep)P0'BlkText' 10000('Magic'(Magic'TRex'))
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      c1←2⊃ret
 
-     :If 0 Check⊃ret←iConga.Clt''(2⊃ep)(Port+1)'BlkText' 10000('Magic'(Magic'TRex'))
+     :If 0 Check⊃ret←iConga.Clt''(2⊃ep)(P1)'BlkText' 10000('Magic'(Magic'TRex'))
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      c2←2⊃ret
 

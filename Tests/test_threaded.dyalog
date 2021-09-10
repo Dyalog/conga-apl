@@ -1,6 +1,6 @@
-﻿ r←test_threaded dummy;Host;maxwait;Port;ret;srv;c1;c2;c3;res;con1;con2;con3;z
+﻿ r←test_threaded dummy;Host;maxwait;Port;ret;srv;c1;c2;c3;res;con1;con2;con3;z;port
  ⍝ Test ConnectionOnly from threaded APL Application
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←5000
 
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
@@ -15,17 +15,17 @@
  :If (0 4)Check ret←iConga.GetProp'.' 'ReadyStrategy'
      →fail Because'Verify ReadyStrategy failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port
+ :If (0)Check⊃ret←NewSrv'' ''Port
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
-
+ port←3⊃ret
  :If 0 Check⊃ret←iConga.SetProp srv'ConnectionOnly' 1
      →fail Because'Set ConnectionOnly to 1 failed: ',,⍕ret ⋄ :EndIf
 
  :If (0(,1))Check ret←iConga.GetProp srv'ConnectionOnly'
      →fail Because'Verify ConnectionOnly failed: ',,⍕ret ⋄ :EndIf
 
- :If 0 Check⊃ret←iConga.Clt''Host Port
+ :If 0 Check⊃ret←iConga.Clt''Host port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 
@@ -35,7 +35,7 @@
  :If (0)Check⊃ret←iConga.Send c1'test 1 2'
      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
- :If 0 Check⊃ret←iConga.Clt''Host Port
+ :If 0 Check⊃ret←iConga.Clt''Host port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c2←2⊃ret
 
@@ -45,7 +45,7 @@
  :If (0)Check⊃ret←iConga.Send c2'test 2 2'
      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
- :If 0 Check⊃ret←iConga.Clt''Host Port
+ :If 0 Check⊃ret←iConga.Clt''Host port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c3←2⊃ret
 

@@ -1,6 +1,6 @@
-﻿ r←test_modes dummy;Host;Port;maxwait;Magic;data;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs
+﻿ r←test_modes dummy;Host;Port;maxwait;Magic;data;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;port
 ⍝ Test raw blkraw text blktext
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
  sizes←,(2*1+⍳20)∘.+¯1 0 1
@@ -37,11 +37,12 @@
      :EndIf
 
 
-     :If (0)Check⊃ret←iConga.Srv'' ''Port mode,args
+     :If (0)Check⊃ret←NewSrv'' ''Port mode,args
          →fail Because'Srv failed with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',⍕args ⋄ :EndIf
      s1←2⊃ret
+     port←3⊃ret
 
-     :If 0 Check⊃ret←iConga.Clt''Host Port mode,args
+     :If 0 Check⊃ret←iConga.Clt''Host port mode,args
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      c1←2⊃ret
 

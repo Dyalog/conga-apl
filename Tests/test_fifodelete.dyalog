@@ -1,6 +1,6 @@
-﻿ r←test_fifodelete dummy;Host;Port;maxwait;data;connections;messages;Connect;Load;ret;s1;now;cons;Cnt;CntRecv;CntBlck;err;obj;evt;dat;tim;z;FlushPending;mode;fifo;scon;scons;Ready;maxdel;ready;results;m;SendRecv;Wait;i;twait;tend;tids
+﻿ r←test_fifodelete dummy;Host;Port;maxwait;data;connections;messages;Connect;Load;ret;s1;now;cons;Cnt;CntRecv;CntBlck;err;obj;evt;dat;tim;z;FlushPending;mode;fifo;scon;scons;Ready;maxdel;ready;results;m;SendRecv;Wait;i;twait;tend;tids;port
 ⍝  Test Fifo list
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  data←'May the force be with you'
  connections←20
@@ -35,10 +35,10 @@
  :For maxdel :In 0 1 3
      :For mode :In ⊆'Command' 'BlkText'
          :For fifo :In 0 1
-             :If (0)Check⊃ret←iConga.Srv'' ''Port mode
+             :If (0)Check⊃ret←NewSrv'' ''Port mode
                  →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
              s1←2⊃ret
-
+             port←3⊃ret
              :If 0 Check⊃ret←iConga.SetProp'.' 'ReadyStrategy' 2
                  →fail Because'Set ReadyStategy to 2  failed: ',,⍕ret ⋄ :EndIf
 
@@ -55,7 +55,7 @@
 
              now←iConga.Micros
 
-             cons←Connect¨connections⍴⊂(Host Port mode)
+             cons←Connect¨connections⍴⊂(Host port mode)
              cons←{(0=1⊃¨⍵)/2⊃¨⍵}cons
 
              Cnt←0

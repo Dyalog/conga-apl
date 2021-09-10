@@ -1,15 +1,16 @@
-﻿ r←test_tcp_hello dummy;Host;Port;maxwait;s1;con1;ret;res;hello;sock;mode
+﻿ r←test_tcp_hello dummy;Host;Port;maxwait;s1;con1;ret;res;hello;sock;mode;port
 ⍝ Test communication between Conga and a Dyalog TCP-Socket
 
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
 
  :For mode :In 'Raw' 'Text'
-     :If 0 Check⊃ret←iConga.Srv'' ''Port mode 5000
+     :If 0 Check⊃ret←NewSrv'' ''Port mode 5000
          →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      s1←2⊃ret
+     port←3⊃ret
 
-     'sock'⎕WC'TCPSocket'('Style'(mode{⍺≡'Text':⍵ ⋄ ⍺}'Char'))('Encoding'((1+mode≡'Text')⊃'None' 'UTF-8'))('RemoteAddr' '127.0.0.1')('RemotePort'Port)('Event' 'All' 1)
+     'sock'⎕WC'TCPSocket'('Style'(mode{⍺≡'Text':⍵ ⋄ ⍺}'Char'))('Encoding'((1+mode≡'Text')⊃'None' 'UTF-8'))('RemoteAddr' '127.0.0.1')('RemotePort'port)('Event' 'All' 1)
      :If (ret←'sock'⎕WG'CurrentState')IsNotElement'Open' 'Connected'
          →fail Because'SocketState ≢ Connected after creation (="',ret,'")' ⋄ :EndIf
 

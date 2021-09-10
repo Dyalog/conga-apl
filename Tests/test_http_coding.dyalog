@@ -1,7 +1,7 @@
 ﻿ r←test_http_coding dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc;Body;body;con;Request;Status;MakeFile
 ⍝  Test http chunked transfere
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  srv←'S1'
  maxwait←5000
  size←10000
@@ -62,9 +62,9 @@
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 srv)Check ret←iConga.Srv srv''Port'http'(8×size)
+ :If (0 srv)Check 2↑ret←NewSrv srv''Port'http'(8×size)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
-
+ Port←3⊃ret
  :If 0 Check⊃ret←iConga.SetProp srv'DecodeBuffers' 0
      →fail Because'Set DecodeBuffers to 0 failed: ',,⍕ret ⋄ :EndIf
 
@@ -80,10 +80,10 @@
      :If 0 Check⊃ret←iConga.SetProp clt'DecodeBuffers' 15
          →fail Because'Set DecodeBuffers to 15 failed: ',,⍕ret ⋄ :EndIf
 
-     :If (0 4)Check ret←iConga.GetProp clt'Options'  
+     :If (0 4)Check ret←iConga.GetProp clt'Options'
          →fail Because'GetProp''Options'' did not return 0 4 as expected but ',(⍕ret),' ⍝ m18034' ⋄ :EndIf
 
-⍝     :If (0 15)Check ret←iConga.GetProp clt'DecodeBuffers'  
+⍝     :If (0 15)Check ret←iConga.GetProp clt'DecodeBuffers'
 ⍝         →fail Because'GetProp''DecodeBuffers'' did not return 0 15 as expected but ',(⍕ret),' ⍝ m18046' ⋄ :EndIf   ⍝ 18046 won't bne fixed
 
      :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑ret←iConga.Wait srv maxwait

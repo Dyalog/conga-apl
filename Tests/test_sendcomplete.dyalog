@@ -1,6 +1,6 @@
-﻿ r←test_sendcomplete dummy;Host;Port;maxwait;ret;srv;c1;cmd1;cmd2;cmd3;res;z;Magic
+﻿ r←test_sendcomplete dummy;Host;Port;maxwait;ret;srv;c1;cmd1;cmd2;cmd3;res;z;Magic;port
  ⍝ Test Send complete event
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←5000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
 
@@ -17,11 +17,11 @@
      →fail Because'Verify ReadyStrategy failed: ',,⍕ret ⋄ :EndIf
 
  testname←'Command mode'
- :If (0)Check⊃ret←iConga.Srv'' ''Port
+ :If (0)Check⊃ret←NewSrv'' ''Port
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
-
- :If 0 Check⊃ret←iConga.Clt''Host Port
+ port←3⊃ret
+ :If 0 Check⊃ret←iConga.Clt''Host port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 
@@ -86,11 +86,11 @@
  testname←'Block Text mode'
  ⎕DL 0.5
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port'BlkText' 10000('Magic'(Magic'TRex'))
+ :If (0)Check⊃ret←NewSrv'' ''Port'BlkText' 10000('Magic'(Magic'TRex'))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
-
- :If 0 Check⊃ret←iConga.Clt''Host Port'BlkText' 10000('Magic'(Magic'TRex'))
+ port←3⊃ret
+ :If 0 Check⊃ret←iConga.Clt''Host port'BlkText' 10000('Magic'(Magic'TRex'))
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 

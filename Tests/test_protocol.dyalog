@@ -1,6 +1,6 @@
 ﻿ r←test_protocol dummy;Host;Port;TestConnect;ret;srvs;tests;expect;rr;z;maxwait
 ⍝ Test Protocol
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←5000
 
  TestConnect←{
@@ -19,11 +19,11 @@
      →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
  ⍝ Start Server
- srvs←('SA' ''Port)('S4' ''(Port+4)('Protocol' 'ipv4'))('S6' ''(Port+6)('Protocol' 'ipv6'))
+ srvs←('SA' ''Port)('S4' ''(Port+4×|×Port)('Protocol' 'ipv4'))('S6' ''(Port+6×|×Port)('Protocol' 'ipv6'))
 
- :If (0,¨1⌷¨srvs)Check ret←iConga.Srv¨srvs
+ :If (0,¨1⌷¨srvs)Check 2↑¨ret←NewSrv¨srvs
      →fail Because'Failed to start all servers ',,⍕ret ⋄ :EndIf
-
+ (3⊃¨srvs)←3⊃¨ret
  tests←((⊂Host){⍺ ⍵}¨⍬'ip' 'ipv4' 'ipv6')∘.{(⍺,⍵)[1 3 4 2]}{⍵[3 1]}¨srvs
 
 

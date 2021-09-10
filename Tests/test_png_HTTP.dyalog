@@ -1,16 +1,17 @@
-﻿ r←test_png_HTTP dummy;Host;Port;maxwait;file;oc;mode;s1;c1;rs;res;len;z;lastsz;cl;ai3;ret;cpu
+﻿ r←test_png_HTTP dummy;Host;Port;maxwait;file;oc;mode;s1;c1;rs;res;len;z;lastsz;cl;ai3;ret;cpu;port
 ⍝ Test sending & receiving a .PNG-file in HTTP-Mode
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  file←(2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'),'/help/resources/dyaloglogo.png'
  oc←{r←⎕NREAD tie,(⎕DR' '),⎕NSIZE tie←⍵ ⎕NTIE 0 ⋄ sink←⎕NUNTIE tie ⋄ r}file
 
  mode←'HTTP'
- :If 0 Check⊃ret←iConga.Srv'' ''Port mode(5000)
+ :If 0 Check⊃ret←NewSrv'' ''Port mode(5000)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
+ port←3⊃ret
 
- :If 0 Check⊃ret←iConga.Clt''Host Port mode(5000)
+ :If 0 Check⊃ret←iConga.Clt''Host port mode(5000)
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 
@@ -59,10 +60,10 @@
  :If 0 Check⊃ret←iConga.Close c1
      →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
-     :While s1≡⊃iConga.Names'.'
+ :While s1≡⊃iConga.Names'.'
 ⍝        ⎕←'waiting to complete shutdown'
-        ⎕DL 0.01
-     :EndWhile
+     ⎕DL 0.01
+ :EndWhile
  r←''
  →0
 fail:

@@ -1,8 +1,8 @@
-﻿ r←test_secure dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare;Clt;Srv;priority
+﻿ r←test_secure dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare;Clt;Srv;priority;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
  priority←'PERFORMANCE:-ARCFOUR-128:-3DES-CBC:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-TLS1.3'
@@ -26,13 +26,13 @@
 
 
          ⍝ Establish Connections & send request data
- :If 0 Check⊃ret←iConga.Srv Srv''Port,protocol,secure/('X509'srvx509)('SSLValidation'(64+128))('Priority'priority)
+ :If 0 Check⊃ret←NewSrv Srv''Port,protocol,secure/('X509'srvx509)('SSLValidation'(64+128))('Priority'priority)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
-
+ port←3⊃ret
  :For i :In ⍳3
 
-     :If 0 Check⊃ret←iConga.Clt Clt Host Port,protocol,secure/('x509'cltx509)('SSLValidation' 0)('Priority'priority)
+     :If 0 Check⊃ret←iConga.Clt Clt Host port,protocol,secure/('x509'cltx509)('SSLValidation' 0)('Priority'priority)
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      clt←2⊃ret
      :If 0 Check⊃ret←iConga.Send clt data

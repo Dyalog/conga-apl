@@ -1,6 +1,6 @@
-﻿ r←test_sendfile dummy;Host;Port;maxwait;Magic;MakeFile;data;ret;s1;c1;s2;c2;res;size;rs;z;headersize
+﻿ r←test_sendfile dummy;Host;Port;maxwait;Magic;MakeFile;data;ret;s1;c1;s2;c2;res;size;rs;z;headersize;p1;p0
 ⍝ Test Send file
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
  MakeFile←{
@@ -23,19 +23,19 @@
  :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
      →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port'Text'(2*16)
+ :If (0)Check⊃ret←NewSrv'' ''Port'Text'(2*16)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
-
- :If 0 Check⊃ret←iConga.Clt''Host Port'Text'(2*16)
+ p0←3⊃ret
+ :If 0 Check⊃ret←iConga.Clt''Host p0'Text'(2*16)
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c1←2⊃ret
 
- :If (0)Check⊃ret←iConga.Srv'' ''(Port+1)'BlkText'(2*30)('Magic'(Magic'BlkT'))
+ :If (0)Check⊃ret←NewSrv'' ''(Port+1×|×Port)'BlkText'(2*30)('Magic'(Magic'BlkT'))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s2←2⊃ret
-
- :If 0 Check⊃ret←iConga.Clt''Host(Port+1)'BlkText'(2*30)('Magic'(Magic'BlkT'))
+ p1←3⊃ret
+ :If 0 Check⊃ret←iConga.Clt''Host(p1)'BlkText'(2*30)('Magic'(Magic'BlkT'))
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  c2←2⊃ret
 

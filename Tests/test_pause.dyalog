@@ -1,6 +1,6 @@
 ﻿ r←test_pause dummy;Host;Port;maxwait;ret;s1;stnum;tests;z;sret
 ⍝ Test Server pause
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←5000
 
  TestConnect←{
@@ -28,9 +28,10 @@
  :If (0 1)Check ret←iConga.GetProp'.' 'EventMode'
      →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←iConga.Srv'' ''Port
+ :If (0)Check⊃ret←NewSrv'' ''Port
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
+ Port←3⊃ret
  ⍝ Start the server thread
 ⍝ stnum←{sret←Server}&s1 maxwait
 
@@ -76,4 +77,3 @@
 fail:
  z←iConga.Close s1
  ErrorCleanup
-⍝)(!test_pause!bhc!2018 4 17 15 5 24 0!0

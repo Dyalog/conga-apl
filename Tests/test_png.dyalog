@@ -1,6 +1,6 @@
-﻿ r←test_png dummy;Host;Port;maxwait;Magic;MakeFile;ret;s1;c1;res;size;rs;z;mode;s2;c2;oc;file
+﻿ r←test_png dummy;Host;Port;maxwait;Magic;MakeFile;ret;s1;c1;res;size;rs;z;mode;s2;c2;oc;file;port
 ⍝ Test sending & receiving a .PNG-file
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
  file←(2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'),'/help/resources/dyaloglogo.png'
@@ -8,11 +8,12 @@
 
  :For mode :In 'BlkText' 'Text'
      ⍝Log'mode=',mode
-     :If 0 Check⊃ret←iConga.Srv'' ''Port mode(5000)
+     :If 0 Check⊃ret←NewSrv'' ''Port mode(5000)
          →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      s1←2⊃ret
+     port←3⊃ret
 
-     :If 0 Check⊃ret←iConga.Clt''Host Port mode(5000)
+     :If 0 Check⊃ret←iConga.Clt''Host port mode(5000)
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      c1←2⊃ret
 

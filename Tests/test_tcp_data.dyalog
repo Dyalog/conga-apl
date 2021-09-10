@@ -1,13 +1,13 @@
 ﻿ r←test_tcp_data dummy;Host;Port;maxwait;MakeFile;ret;s1;c1;res;size;rs;z;mode;s2;c2;sock
 ⍝ Test communication between Conga and a Dyalog TCP-Socket: any translation happening?
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
 
- :If 0 Check⊃ret←iConga.Srv'' ''Port'Text'(5000)
+ :If 0 Check⊃ret←NewSrv'' ''Port'Text'(5000)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s1←2⊃ret
-
- 'sock'⎕WC'TCPSocket'('Style' 'Char')('RemoteAddr' '127.0.0.1')('RemotePort'Port)
+ port←3⊃ret
+ 'sock'⎕WC'TCPSocket'('Style' 'Char')('RemoteAddr' '127.0.0.1')('RemotePort'port)
 
  :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
      →fail Because'Unexpected result from Srv Wait: ',,⍕res ⋄ :EndIf

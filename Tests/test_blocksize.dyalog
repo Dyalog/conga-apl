@@ -1,6 +1,6 @@
 ﻿ r←test_blocksize dummy;hh;hb;hhnc;blksize;ret;Port;srv;maxwait;Host;z;testname;body;header;headern;sets
 ⍝ Test different boundries of the http protocol
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  srv←'S1'
  maxwait←5000
 
@@ -12,9 +12,9 @@
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 0
      →fail Because'Set EventMode to 0 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 srv)Check ret←iConga.Srv srv''Port'text'(8×⊃⍴header,body)
+ :If (0 srv)Check 2↑ret←NewSrv srv''Port'text'(8×⊃⍴header,body)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
-
+ Port←3⊃ret
  :For (hh hb testname) :In sets
      blksize←0
 

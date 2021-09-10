@@ -1,8 +1,8 @@
-﻿ r←test_basic dummy;z;clt;srv;rootprops;ret;Port;Host;Clt;Srv;mode;maxwait;modes;propsmode;modeix;con;res
+﻿ r←test_basic dummy;z;clt;srv;rootprops;ret;Port;Host;Clt;Srv;mode;maxwait;modes;propsmode;modeix;con;res;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga Certificate functionality
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
  maxwait←5000
 
@@ -35,10 +35,11 @@
      →fail Because'Set EventMode to 0 failed: ',,⍕ret ⋄ :EndIf
 
  :For modeix :In ⍳≢modes
-     :If 0 Check⊃ret←iConga.Srv Srv''Port(modeix⊃modes)
+     :If 0 Check⊃ret←NewSrv Srv''Port(modeix⊃modes)
          →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      srv←2⊃ret
-     :If 0 Check⊃ret←iConga.Clt Clt Host Port(modeix⊃modes)
+     port←3⊃ret
+     :If 0 Check⊃ret←iConga.Clt Clt Host port(modeix⊃modes)
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      clt←2⊃ret
      :If (0 'Connect' 0)Check(⊂1 3 4)⌷4↑ret←iConga.Wait srv maxwait

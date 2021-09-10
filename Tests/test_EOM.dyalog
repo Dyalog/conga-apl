@@ -1,6 +1,6 @@
-﻿ r←test_EOM dummy;Host;Port;maxwait;Magic;data;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;seps;smode;cmode;ns;remain;blockcnt;eot;expected;ic;ignorecase
+﻿ r←test_EOM dummy;Host;Port;maxwait;Magic;data;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;seps;smode;cmode;ns;remain;blockcnt;eot;expected;ic;ignorecase;tc;port
 ⍝ Test raw  text EOM
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  ic←{⍵⍵=0:⍺ ⍺⍺ ⍵ ⋄ ((819⌶)⍺)⍺⍺((819⌶)⍵)}
  s1←c1←⍬
@@ -15,7 +15,19 @@
 
  data←,4{cnt←⍺×≢⍵ ⋄ (((20+cnt?100)↑¨⊂'Messages '),¨⍕¨⍳cnt),[1.5]cnt⍴⍵}seps
 
+⍝  convdata←{
+⍝     ⍺=83:⍵-256×⍵>127
+⍝     (⍺=80)∧(80≠⎕DR ⍵):⎕UCS ⍵
+⍝     (⍺=82)∧(82≠⎕DR ⍵):⎕AV[⎕IO+⍵]
+⍝     ⍺=163:⍵
+⍝     ⍵
+⍝ }
 
+ tc←{⎕AV[((1+⎕NXLATE 0)⍳⍳256)⍳⎕AV⍳⍵]}
+
+ convdata←{(⍺≡'raw')∧(80=⎕DR ⍵):⎕UCS ⍵ ⋄
+     (⍺≡'raw')∧(82=⎕DR ⍵):⎕AVU[⎕AV⍳⍵] ⋄
+     ⍵}
 
  args←⍬
  ⍝ Server modes
@@ -29,11 +41,13 @@
 
                  args←('EOM'((⊂eot),ns⍴seps))('ignorecase'ignorecase)
 
-                 :If (0)Check⊃ret←iConga.Srv'' ''Port smode,args
+                 :If (0)Check⊃ret←NewSrv'' ''Port smode,args
+⍝                 :If (0)Check⊃ret←NewSrv'' ''Port smode('EOM'(tc¨(⊂eot),ns⍴seps))('ignorecase'ignorecase)
                      →fail Because'Srv failed with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',⍕args ⋄ :EndIf
                  s1←2⊃ret
-
-                 :If 0 Check⊃ret←iConga.Clt''Host Port cmode,args
+                 port←3⊃ret
+                 :If 0 Check⊃ret←iConga.Clt''Host port cmode,args
+⍝                 :If 0 Check⊃ret←iConga.Clt''Host port cmode('EOM'(tc¨(⊂eot),ns⍴seps))('ignorecase'ignorecase)
                      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
                  c1←2⊃ret
 
@@ -46,6 +60,7 @@
                  ⍝ Calculate expected messages to receive
                  expected←(1 2⊃args){(⊃∨/(-≢¨⍺)⌽¨⍺(⍷ic ignorecase)¨⊂⍵)⊂⍵}tdata
                  ⍝ send all the data in one go
+⍝                 :If 0 Check⊃ret←iConga.Send c1(cmode convdata tdata)
                  :If 0 Check⊃ret←iConga.Send c1(tdata)
                      →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
 
@@ -54,7 +69,7 @@
                  ⍝ receive blocks on the server side and send them back
                  :While remain>0
                      blockcnt+←1
-                     :If (0 'Block'(smode{⍺≡'raw':⎕UCS ⍵ ⋄ ⍵}blockcnt⊃expected))Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
+                     :If (0 'Block'(smode convdata blockcnt⊃expected))Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
                          →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
                      :If 0 Check⊃ret←iConga.Send(2⊃res)(4⊃res)
                          →fail Because'Send failed: ',,⍕ret ⋄ :EndIf
@@ -67,7 +82,7 @@
                  ⍝ Receive blocks on the client side
                  :While remain>0
                      blockcnt+←1
-                     :If (0 'Block'(cmode{⍺≡'raw':⎕UCS ⍵ ⋄ ⍵}blockcnt⊃expected))Check(⊂1 3 4)⌷4↑res←iConga.Wait c1 maxwait
+                     :If (0 'Block'(cmode convdata blockcnt⊃expected))Check(⊂1 3 4)⌷4↑res←iConga.Wait c1 maxwait
                          →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
                      remain-←≢4⊃res
                  :EndWhile
@@ -95,5 +110,6 @@
  r←''   ⍝ surprise all worked!
  →0
 fail:
+ r←'smode=',(smode),' cmode=',(cmode),' ignorecase=',(⍕ignorecase),' count seps=',(⍕ns),': ',r
  z←iConga.Close¨c1 s1
  ErrorCleanup

@@ -1,6 +1,6 @@
-﻿ r←test_modes2 dummy;Host;Port;maxwait;Magic;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;rdata;sdata;data;rai;exp;RAB
+﻿ r←test_modes2 dummy;Host;Port;maxwait;Magic;sizes;convdata;ret;mode;args;tdata;types;s1;c1;res;type;size;rs;rdata;sdata;data;rai;exp;RAB;port
 ⍝ Test raw blkraw text blktext
- Host←'localhost' ⋄ Port←5000
+ Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
  sizes←,(2*1+⍳20)∘.+¯1 0 1
@@ -36,11 +36,11 @@
          types←(⎕DR' '),83 163
 
          exp←(1+(RAB≠0)∧~(⊂mode)∊'raw' 'blkraw')⊃0 1037
-         :If exp Check⊃ret←iConga.Srv'' ''Port mode,args,(RAB≠0)/⊂('Options'RAB)
+         :If exp Check⊃ret←NewSrv'' ''Port mode,args,(RAB≠0)/⊂('Options'RAB)
              →fail Because'Srv failed  ',((exp>0)/'not '),'with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',(⍕args),(RAB≠0)/', Options=',⍕RAB ⋄ :EndIf
          s1←2⊃ret
-
-         :If exp Check⊃ret←iConga.Clt''Host Port mode,args,(RAB≠0)/⊂('Options'RAB)
+         port←3⊃ret
+         :If exp Check⊃ret←iConga.Clt''Host port mode,args,(RAB≠0)/⊂('Options'RAB)
              →fail Because'Clt failed ',((exp>0)/'not '),'with ret=',(,⍕ret),' for mode=',(⍕mode),', args=',(⍕args),(RAB≠0)/', Options=',⍕RAB ⋄ :EndIf
          c1←2⊃ret
          :If exp=0
@@ -80,20 +80,20 @@
                      :EndWhile
                  :EndFor
              :EndFor
-         :If 0 Check⊃ret←iConga.Close c1
-             →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
+             :If 0 Check⊃ret←iConga.Close c1
+                 →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
 
-         :If ∨/'blk'⍷mode
-             :If (0 'Closed' 1119)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
-                 →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
-         :Else
-             :If (0 'BlockLast')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
-                 →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
-         :EndIf
+             :If ∨/'blk'⍷mode
+                 :If (0 'Closed' 1119)Check(⊂1 3 4)⌷4↑res←iConga.Wait s1 maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+             :Else
+                 :If (0 'BlockLast')Check(⊂1 3)⌷4↑res←iConga.Wait s1 maxwait
+                     →fail Because'Bad result from Srv Wait: ',,⍕res ⋄ :EndIf
+             :EndIf
 
-         :If 0 Check⊃ret←iConga.Close s1
-             →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
-         ⎕DL 0.5
+             :If 0 Check⊃ret←iConga.Close s1
+                 →fail Because'Close failed: ',,⍕ret ⋄ :EndIf
+             ⎕DL 0.5
          :EndIf
      :EndFor
  :EndFor

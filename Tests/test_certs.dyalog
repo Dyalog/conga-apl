@@ -1,4 +1,4 @@
- r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore;cas
+﻿ r←test_certs dummy;ret;win;srvx509;cltx509;cltx509a;cltx509b;cltx509c;cax509;raw;format;caurl;srvurl;clturl;m;count;urls;ixs;prots;Port;Srv;Host;Clt;data;compare;maxwait;Cert;s;c;rcd;tests;certs;srvcert;cltcert;srv;clt;con;srvcertp;cltcertp;res;pa;la;z;Priority;cltstore;srvstore;cas;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga Certificate functionality
 
@@ -90,7 +90,7 @@
 
 
  prots←∪⊃¨2⊃iConga.GetProp'.' 'TCPLookup' 'localhost' 80 ⍝ Available protocols takes from IP addresses
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Priority←''
  Srv←'' ⋄ Clt←''
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
@@ -125,10 +125,11 @@
 ⍝     {(1 1⊃⍵)(2 1⊃⍵)(2 2 1⊃⍵)}¨(cltcert srvcert).AsArg
 
          ⍝ Establish Connections & send request data
-     :If 0 Check⊃ret←iConga.Srv Srv''Port,('X509'srvcert)('SSLValidation' 64)⍝('Priority'Priority)
+     :If 0 Check⊃ret←NewSrv Srv''Port,('X509'srvcert)('SSLValidation' 64)⍝('Priority'Priority)
          →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
      srv←2⊃ret
-     :If 0 Check⊃ret←iConga.Clt Clt Host Port,('x509'cltcert)('SSLValidation' 0)⍝('Priority'Priority)
+     port←3⊃ret
+     :If 0 Check⊃ret←iConga.Clt Clt Host port,('x509'cltcert)('SSLValidation' 0)⍝('Priority'Priority)
          →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
      clt←2⊃ret
      ⍝CongaTrace 0 0

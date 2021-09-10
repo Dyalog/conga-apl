@@ -2,7 +2,7 @@
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
 
  WSAutoUpgrade←1
@@ -12,9 +12,10 @@
  m←o←'(undefined)'
  modes←'Raw' 'Text' 'BlkRaw' 'BlkText' 'http' 'Command'
 
- :If 0 Check⊃ret←iConga.Srv Srv''Port'raw'
+ :If 0 Check⊃ret←NewSrv Srv''Port'raw'
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
+ Port←3⊃ret
 
 
  :For m :In modes
@@ -26,7 +27,7 @@
          applicable←(o=0)∨((m≡'http')∧~⊃2 2⊤o)∨(o=2)∧(⊂m)∊'Raw' 'BlkRaw' ⍝ can this option be set for current mode? (assuming 2 needs [Blk]Raw (or http! *undocumented*) and everything else http)
          ⍝applicable←(o=0)∨()∧((⊂m)∊'Raw' 'BlkRaw' 'http') ⍝ can this option be set for current mode? (assuming 2 needs [Blk]Raw (or http! *undocumented*) and everything else http)
          ⍝applicable←(o=0)∨((o=2)∧((⊂m)∊'Raw' 'BlkRaw'))∨m≡'http' ⍝ can this option be set for current mode? (assuming 2 needs [Blk]Raw (or http! *undocumented*) and everything else http)
-         ret←iConga.Clt'' '' 5000 m('Options'o)
+         ret←iConga.Clt'' ''Port m('Options'o)
          err←1⊃ret
          :If ~∨/0 1037∊err ⋄ →fail Because'Clt Failed with unexpected return-code: ',,⍕ret ⋄ :EndIf
          :If err=0
@@ -54,7 +55,7 @@
 
          :If err=0
          :AndIf o>0
-         :AndIf 1037 Check⊃ret←iConga.Clt'' '' 5000 m('Options'(-o))  ⍝ Mantis 18034
+         :AndIf 1037 Check⊃ret←iConga.Clt'' ''Port m('Options'(-o))  ⍝ Mantis 18034
              →fail Because'Clt did not refuse to create client with negative value in options and returned ',(⍕ret),' ⍝18034' ⋄ :EndIf
 
          _←iConga.Close clt

@@ -1,6 +1,6 @@
 ﻿ r←test_errorhandling dummy;Host;Port;TestConnect;ret;srvs;tests;expect;rr;z;maxwait
 ⍝ Test errorhandling when providing invalid or implausbible param
- Port←5000
+ Port←0
  maxwait←5000
 
  TestConnect←{
@@ -19,11 +19,12 @@
      →fail Because'Verify EventMode failed: ',,⍕ret ⋄ :EndIf
 
  ⍝ Start Server
- srvs←('SA' ''Port)('S4' ''(Port+4)('Protocol' 'ipv4'))('S6' ''(Port+6)('Protocol' 'ipv6'))
+ srvs←('SA' ''Port)('S4' ''(Port+4×|×Port)('Protocol' 'ipv4'))('S6' ''(Port+6×|×Port)('Protocol' 'ipv6'))
 
- :If (0,¨1⌷¨srvs)Check ret←iConga.Srv¨srvs
+ :If (0,¨1⌷¨srvs)Check 2↑¨ret←NewSrv¨srvs
      →fail Because'Failed to start all servers ',,⍕ret ⋄ :EndIf
 
+ (3⊃¨srvs)←3⊃¨ret
  tests←('localhost' '127.0.0.1' '::1' '')∘.{(⊂⍺),⍵,⊂''}{⍵[3 1]}¨srvs
 
  expect←(⍴tests)⍴1

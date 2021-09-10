@@ -1,7 +1,7 @@
 ﻿ r←test_httpdecode2 dummy;Port;Host;srv;maxwait;crlf;lf;hex;hr;FmtHeader;SplitInChunks;FmtChunk;size;data;Header;Trailer;chunkext;Chunks;ret;test;sep;header;chunks;trailer;testdata;clt;probe;res;cc
 ⍝  Test http chunked transfere
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  srv←'S1'
  maxwait←5000
  size←10000
@@ -49,9 +49,9 @@
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
 
- :If (0 srv)Check ret←iConga.Srv srv''Port'text'(8×size)
+ :If (0 srv)Check 2↑ret←NewSrv srv''Port'text'(8×size)
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
-
+ Port←3⊃ret
 
  :For test :In (crlf Header Chunks Trailer)(crlf Header Chunks(0 2⍴''))(lf Header Chunks Trailer)(lf Header Chunks(0 2⍴''))
 

@@ -2,7 +2,7 @@
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
  data←'hello' '⍺∊⍵'(1 2 3)(○1 2 3)(0J1×⍳100) ⍝ test data
 
@@ -16,9 +16,10 @@
 
 
          ⍝ Establish Connections & send request data
- :If 0 Check⊃ret←iConga.Srv Srv''Port
+ :If 0 Check⊃ret←NewSrv Srv''Port
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  srv←2⊃ret
+ Port←3⊃ret
  :If 0 Check⊃ret←iConga.Clt Clt Host Port
      →fail Because'Clt failed: ',,⍕ret ⋄ :EndIf
  clt←2⊃ret

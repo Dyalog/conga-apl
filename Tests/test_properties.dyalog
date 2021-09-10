@@ -1,8 +1,8 @@
-﻿ r←test_properties dummy;iConga;Port;Host;Srv;Clt;clv;cv;srv;sc;clt;cc;ret;bhdt
+﻿ r←test_properties dummy;iConga;Port;Host;Srv;Clt;clv;cv;srv;sc;clt;cc;ret;bhdt;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
 
- Port←5000 ⋄ Host←'localhost'
+ Port←0 ⋄ Host←'localhost'
  r←Srv←Clt←''
 
 
@@ -34,14 +34,15 @@
      ret←iConga.SetProp'.' 'DoesNotExist' 4711 ⍝ and setting it ;)
      :If 1037 Check 1⊃ret ⋄ →fail Because'Setting a non-existent property did not fail with err 1037, but instead with ',⍕ret ⋄ :EndIf
 
-     srv←iConga.Srv Srv''Port'raw'  ⍝ create a server
+     srv←NewSrv Srv''Port'raw'  ⍝ create a server
      :If 0 Check 1⊃srv ⋄ →fail Because'Could not create server - ret=',⍕srv ⋄ :EndIf
 
+     port←3⊃srv
      srv←2⊃srv
      sc←iConga.GetProp srv'complevel'  ⍝ retrieve it (using different casing)
      :If clv Check 2⊃sc ⋄ →fail Because'Server did not inherit CompLevel of root (',(⍕clv),' vs. ',(⍕2⊃sc),')' ⋄ :EndIf
 
-     clt←iConga.Clt'' ''Port'raw'   ⍝ create a clienbt
+     clt←iConga.Clt'' ''port'raw'   ⍝ create a clienbt
      :If 0 Check 1⊃clt ⋄ →fail Because'Could not create client  - ret=',⍕clt ⋄ :EndIf
      clt←2⊃clt
      cc←iConga.GetProp clt'complevel'  ⍝ retrieve it (using different casing)
