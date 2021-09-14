@@ -1,6 +1,7 @@
-DyalogTest : 1.25
+DyalogTest : 1.6 
 ID         : Conga 3.0 Cross-Version Tests
 Description: All Bjørns functionality tests for Conga v3.0
+CodeCoverage_Subject: #.Conga
 
 Setup   : setup_v2 setup_v3 setup_v3_root
 Teardown: teardown
@@ -16,7 +17,6 @@ Test    : test_blocksize
 Test    : test_protocol
 Test    : test_modes
 Test    : test_addrinfo
-Test    : test_addrname
 Test    : test_pause
 Test    : test_httpchunk
 Test    : test_httpdecode
@@ -39,6 +39,7 @@ Test	: test_secure
 Test	: test_EOM
 Test    : test_endpoints
 Test	: test_IWA
+
 
 
 
