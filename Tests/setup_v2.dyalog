@@ -12,6 +12,7 @@
  :If 0≠⊃ret←#.DRC.Init'CONGALIB'{0=#.⎕NC ⍺:⍵ ⋄ ⍎'#.',⍺}''
      r←'#.DRC.Init failed: ',⍕ret ⋄ →0 ⋄ :EndIf
  r←verify_empty iConga←#.DRC
+ :if ##.verbose ⋄ ⎕←'Initialised Conga v',⍕#.DRC.Version ⋄:endif
  iConga.X509Cert.LDRC←iConga
 
 
