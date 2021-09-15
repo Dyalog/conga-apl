@@ -1,4 +1,4 @@
 {
-    "DyalogVersions": "18.0",
+    "DyalogVersions": "18.0",           // Conga 3.3 is tested against 18.0
     "Test": "./Tests/all.dyalogtest",  // BHC was going to rename that file, as assume the new name...
 }
