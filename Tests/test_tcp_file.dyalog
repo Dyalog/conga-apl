@@ -27,5 +27,7 @@
  r←''
  →0
 fail:
+:if 2=⎕nc's1'
  z←iConga.Close s1
+ :endif
  ErrorCleanup

@@ -1,5 +1,6 @@
 {
     "DyalogVersions": "18.1+", // trunk needs the latest interpreters
     "Test": "./Tests/all.dyalogtest",  
-    "secondstimeout":900
-}
+    "secondstimeout":900,
+    "DTestModifiers":"-v"
+}     

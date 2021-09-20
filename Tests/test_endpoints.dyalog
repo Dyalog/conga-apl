@@ -3,6 +3,7 @@
  Host←'localhost' ⋄ Port←0
  maxwait←1000
  Magic←{(4/256)⊥⎕UCS 4↑⍵}
+c1←c2←s1←s2←⍬
 
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf

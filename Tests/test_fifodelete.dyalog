@@ -5,7 +5,7 @@
  data←'May the force be with you'
  connections←20
  messages←40
-
+s1←⍬  ⍝ avoid VALUE ERROR on s1
  Ready←{0≠⊃⍵:⍬
      {0=≢⍵:⍬ ⋄ s←↑1⊃¨⍵ ⋄ (s[;3]=5)/s[;1]}2 2⊃⍵}
 
