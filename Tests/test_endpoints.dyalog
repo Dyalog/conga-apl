@@ -35,7 +35,7 @@
  :If 0(17 47)Check res←iConga.GetProp s1'KeepAlive'
      →fail Because'GetProp Keepalive failed: ',,⍕ret ⋄ :EndIf
 
- :If (0)Check⊃ret←NewSrv'' ''(Port+1×|×Port)'BlkText' 10000('Magic'(Magic'TRex'))('AllowEndpoints'(↓{(⊃⍺)(¯1↓⊃,/(2⊃¨Allowed[⍵]),¨('/29,' '/120,')[⎕IO+⍺≡⊂'IPv6'])}⌸1⊃¨Allowed))
+ :If (0)Check⊃ret←NewSrv'' ''(Port+1×|×Port)'BlkText' 10000('Magic'(Magic'TRex'))('AllowEndpoints'(↓{(⊃⍺)(¯1↓⊃,/(2⊃¨Allowed[⍵]),¨('/32,' '/128,')[⎕IO+⍺≡⊂'IPv6'])}⌸1⊃¨Allowed))
      →fail Because'Srv failed: ',,⍕ret ⋄ :EndIf
  s2←2⊃ret
  P1←3⊃ret

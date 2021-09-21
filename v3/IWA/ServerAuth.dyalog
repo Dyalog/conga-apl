@@ -1,5 +1,6 @@
 ﻿ r←ServerAuth con;tok;rr;kp;err;rc;ct;ck;ce
  err←SetProp con'IWA'('NTLM' '')
+ ck←kp←1
  :Repeat
      rr←Wait con 1000
      :If 0=⊃rr
