@@ -37,5 +37,7 @@
  r←''
  →0
 fail:
+:if 2=⎕nc's1'  ⍝ avoid VALUE ERROR if we have an early failure
  z←iConga.Close s1
+ :endif 
  ErrorCleanup

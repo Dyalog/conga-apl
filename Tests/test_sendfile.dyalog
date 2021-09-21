@@ -15,6 +15,7 @@
      _←(size⍴data)⎕NAPPEND tie
      ⎕NUNTIE tie
  }
+ c1←c2←s1←s2←⍬
  data←'dette er en test '
  data←⊃,/,⎕D∘.,⎕A
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1

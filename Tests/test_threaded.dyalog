@@ -2,6 +2,7 @@
  ⍝ Test ConnectionOnly from threaded APL Application
  Host←'localhost' ⋄ Port←0
  maxwait←5000
+c1←c2←c3←⍬
 
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf

@@ -88,6 +88,6 @@
  →0
 
 fail:
- r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
+ r←'with protocol="',protocol,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
  {}iConga.Wait'.' 0

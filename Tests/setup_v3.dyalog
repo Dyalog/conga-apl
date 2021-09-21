@@ -18,4 +18,6 @@
 
  r←verify_empty iConga
   iConga.X509Cert.LDRC←iConga
+ :if ##.verbose ⋄ ⎕←'Initialised Conga v',⍕#.DRC.Version ⋄:endif
+
 
