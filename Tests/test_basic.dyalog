@@ -19,7 +19,7 @@
      →fail Because'Micros not floating point',⍕ret ⋄ :EndIf
  modes←'Text' 'BlkText' 'Command' 'Http'
 
- rootprops←'Certificates' 'CompLevel' 'DecodeCert' 'ErrorText' 'HttpDate' 'PropList' 'Protocol' 'ReadyStrategy' 'RootCertDir' 'Stores' 'TCPLookup' 'EventMode'
+ rootprops←'Certificates' 'CompLevel' 'DecodeCert' 'DOSLimit' 'ErrorText' 'HttpDate' 'PropList' 'Protocol' 'ReadyStrategy' 'RootCertDir' 'Stores' 'TCPLookup' 'EventMode'
  propsmode←(≢modes)2⍴⍬
 
  propsmode[1;1]←⊂'CompLevel' 'ConnectionOnly' 'Hostname' 'LocalAddr' 'KeepAlive' 'Options' 'OwnCert' 'Pause' 'PropList'
