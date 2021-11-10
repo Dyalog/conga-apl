@@ -17,7 +17,6 @@
  :EndTrap
 
  r←verify_empty iConga
-  iConga.X509Cert.LDRC←iConga
- :if ##.verbose ⋄ ⎕←'Initialised Conga v',⍕#.DRC.Version ⋄:endif
-
+ iConga.X509Cert.LDRC←iConga
+ :If ##.verbose ⋄ ⎕←'Initialised Conga v',⍕iConga.Version ⋄ :EndIf
 
