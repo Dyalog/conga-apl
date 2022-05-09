@@ -21,6 +21,8 @@ Test    : test_pause
 Test    : test_httpchunk
 Test    : test_httpdecode
 Test    : test_http_coding
+Test    : test_http_closing
+Test    : test_http_jetty
 Test    : test_httpdecode2
 Test    : test_websocket2
 Test    : test_modes2
