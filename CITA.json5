@@ -1,6 +1,16 @@
 {
-    "DyalogVersions": "18.1+", // trunk needs the latest interpreters
-    "Test": "./Tests/all.dyalogtest",  
-    "secondstimeout":900,
-    "DTestModifiers":"-v"
+    "Tests":
+    [{
+    "DyalogVersions": "18.2+", // trunk needs the latest interpreters
+    "Test": "./Tests/basic.dyalogtest",  
+        "secondstimeout":9000,  // test_pause needs time
+        "dtestmodifiers":"-h"
+    },
+    {
+    "DyalogVersions": "18.2+", // trunk needs the latest interpreters
+    "Test": "./Tests/basic.dyalogtest",  
+    "secondstimeout":900,  
+    }],
+    "EMail": {"All":"mbaas@dyalog.com"},
+    "CodeCoverage":1
 }     
