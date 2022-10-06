@@ -11,10 +11,10 @@
  :Else
      →fail⊣r←'Conga.Init of 2nd root failed: ',⊃⎕DMX.DM
  :EndTrap
-
- :If 0≠⊃ret←iConga.Srv'S1' '' 5000 'Text'
+ :If 0≠⊃ret←iConga.Srv'S1' '' 0 'Text'
      →fail⊣r←'Srv failed: ',,⍕ret ⋄ :EndIf
- :If 0≠⊃ret←iC2.Clt'C1' '127.0.0.1' 5000 'Text'
+     Port←3⊃ret
+ :If 0≠⊃ret←iC2.Clt'C1' '127.0.0.1' Port 'Text'
      →fail⊣r←'Clt failed: ',,⍕ret ⋄ :EndIf
  :If (0 'Connect')≢(⊂1 3)⌷ret←iConga.Wait'S1' 10000
      →fail⊣r←'Wait for Connect failed: ',,⍕ret ⋄ :EndIf

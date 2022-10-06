@@ -1,0 +1,14 @@
+{
+    "Tests":
+    [{
+    "DyalogVersions": "18.2", // trunk needs the latest interpreters
+    "Test": "./Tests/basic.dyalogtest",  
+        "secondstimeout":9000,  // test_pause needs time (on AIX)
+    },
+    {
+    "DyalogVersions": "18.2", // trunk needs the latest interpreters
+    "Test": "./Tests/basic.dyalogtest",  
+    "secondstimeout":900,  
+    }],
+    "EMail": {"All":"mbaas@dyalog.com"}
+}     
