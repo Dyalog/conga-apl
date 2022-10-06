@@ -4,7 +4,7 @@
     "DyalogVersions": "18.2+", // trunk needs the latest interpreters
     "Test": "./Tests/basic.dyalogtest",  
         "secondstimeout":9000,  // test_pause needs time
-    },
+    }],
     "EMail": {"All":"mbaas@dyalog.com"},
     "CodeCoverage":1
 }     
