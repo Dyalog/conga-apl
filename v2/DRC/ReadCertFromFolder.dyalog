@@ -1,10 +1,14 @@
-﻿ certs←ReadCertFromFolder wildcardfilename;files;f;filelist
+ certs←ReadCertFromFolder wildcardfilename;fnames;ftypes;f
  :Access Public Instance
-
- filelist←1 0(⎕NINFO ⎕OPT 1)wildcardfilename
- files←filelist[;1]
+ :If ~∨/'?*'∊wildcardfilename
+     wildcardfilename,←'/*' ⍝ add wildcard if none present
+ :EndIf
+ (fnames ftypes)←0 1(⎕NINFO ⎕OPT 1)wildcardfilename
+ fnames/⍨←ftypes=2 ⍝ keep files only
  certs←⍬
 
- :For f :In files
-     certs,←ReadCertFromFile f
+ :For f :In fnames
+     :Trap 11
+         certs,←ReadCertFromFile f
+     :EndTrap
  :EndFor

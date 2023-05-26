@@ -1,4 +1,4 @@
-﻿:Class LIB
+:Class LIB
 ⍝ NB instances are always created as siblings of the Conga namespace
 
     :Field Public LibPath
@@ -397,15 +397,19 @@
       certs←SetParents certs
     ∇
 
-    ∇ certs←ReadCertFromFolder wildcardfilename;files;f;filelist
+    ∇ certs←ReadCertFromFolder wildcardfilename;fnames;ftypes;f
       :Access Public Instance
-     
-      filelist←1 0(⎕NINFO ⎕OPT 1)wildcardfilename
-      files←filelist[;1]
+      :If ~∨/'?*'∊wildcardfilename
+          wildcardfilename,←'/*' ⍝ add wildcard if none present
+      :EndIf
+      (fnames ftypes)←0 1(⎕NINFO ⎕OPT 1)wildcardfilename
+      fnames/⍨←ftypes=2 ⍝ keep files only
       certs←⍬
      
-      :For f :In files
-          certs,←ReadCertFromFile f
+      :For f :In fnames
+          :Trap 11
+              certs,←ReadCertFromFile f
+          :EndTrap
       :EndFor
     ∇
 
@@ -433,7 +437,7 @@
       :EndIf
     ∇
     ∇ r←ClientAuth arg;con;tok;cmd;rc;rr;kp;err;se;sk;st
-    :Access Public Instance
+      :Access Public Instance
       :If 1=≡arg
           arg←,⊂arg
       :EndIf
