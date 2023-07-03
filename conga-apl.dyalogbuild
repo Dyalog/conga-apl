@@ -9,7 +9,6 @@ EXEC  : ⎕EX '#.DRC' '#.Conga'
 NS    : v2/DRC/*.dyalog, Target=DRC
 
 NS    : v3/Conga/*.dyalog, Target=Conga
-NS    : v3/IWA/*.dyalog, Target=Conga.IWA
 Class : v3/LIB.dyalog, Target=Conga
 Class : v3/Client.dyalog, Target=Conga
 Class : v3/Connection.dyalog, Target=Conga
