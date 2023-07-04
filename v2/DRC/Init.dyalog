@@ -1,11 +1,11 @@
-﻿ r←{reset}Init path;dllname;z;Path;ZSetHeader;unicode;bit64;filename;Paths;win;s;dirsep;mac;rootarg;n
+ r←{reset}Init path;dllname;z;Path;ZSetHeader;unicode;bit64;filename;Paths;win;s;dirsep;mac;rootarg;n
  ⍝ Initialize Conga v3.0.0 (v2.x compatibility namespace)
 
  unicode←⊃80=⎕DR' '
-      WsAutoUpgrade ← 1
-      RawAsByte ← 2
-      DecodeHttp ← 4
-      RawAsInt ← 8
+ WsAutoUpgrade←1
+ RawAsByte←2
+ DecodeHttp←4
+ RawAsInt←8
 
  :Trap 0
      lcase←0∘(819⌶)
@@ -74,13 +74,9 @@
              ⍙naedfns,←⊂⎕NA dllname,'cflate  I4  =P  <U1[] =U4 >U1[] =U4 I4'
              ⍙naedfns,←⊂'⍙Version'⎕NA dllname,'Version >I4[3]'
              ⍙naedfns,←⊂⎕NA dllname,'ErrorText I4 >0T1 <I4 >0T1 <I4'
+         :EndTrap
 
-         :EndTrap
-         :Trap 0
-             z←InitRawIWA dllname
-         :EndTrap
          ⍙naedfns,←⊂'⍙InitRPC'⎕NA dllname,'Init <0T1 <0T1'
-
          z←⍙InitRPC RootName Path
          :If 1043=z ⍝ non of the quadNA#ed functions were there but RootName was, could have been a )clear or )load
              r←check ⍙CallR RootName'AClose' '.' 0   ⍝ Close the Root
@@ -95,12 +91,9 @@
          :Else
              r←Error z
          :EndIf
-
      :EndTrap
 
-
      :If 3=⎕NC'⍙InitRPC'
-
          :If 0=⊃r
              r←0('Conga loaded from: ',Path,filename,s)
              X509Cert.LDRC←⎕THIS      ⍝ Set LDRC so X509Cert can find DRC

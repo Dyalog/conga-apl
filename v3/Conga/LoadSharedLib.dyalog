@@ -1,4 +1,4 @@
-﻿ r←LoadSharedLib path;unicode;mac;win;bit64;filename;dirsep;z;dllname;s
+ r←LoadSharedLib path;unicode;mac;win;bit64;filename;dirsep;z;dllname;s
  :If 3=⎕NC'⍙InitRPC' ⍝ Library already loaded
      r←0 'Conga already loaded'
  :Else ⍝ Not loaded
@@ -28,11 +28,7 @@
              ⍙naedfns,←⊂⎕NA dllname,'cflate  I4  =P  <U1[] =U4 >U1[] =U4 I4'
              ⍙naedfns,←⊂⎕NA dllname,'ErrorText I4 >0T1 <I4 >0T1 <I4'
          :EndTrap
-         :Trap 0
-             z←InitRawIWA dllname
-         :EndTrap
          ⍙naedfns,←⊂'⍙InitRPC'⎕NA dllname,'Init <0T1 <0T1'
-
      :EndTrap
 
      :If 3=⎕NC'⍙InitRPC'
