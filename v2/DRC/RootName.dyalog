@@ -1,2 +1,2 @@
-﻿⌷RootName←
-<array><shape>3</shape><string>DRC</string></array>
+R←RootName
+R←'DRC'
