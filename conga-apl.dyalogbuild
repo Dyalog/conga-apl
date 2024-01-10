@@ -17,6 +17,6 @@ Class : v3/Server.dyalog, Target=Conga
 Class : Common/X509Cert.dyalog, Target=DRC
 Class : Common/X509Cert.dyalog, Target=Conga
 EXEC  : #.DRC.DllVer←#.Conga.DllVer←'36'
-EXEC  : #.DRC.RootName←'DRC'
+
 
 LX    : ⎕←'This is the Conga v3.6 workspace.'
