@@ -6,7 +6,7 @@
          secondstimeout:600,
          Bits:32,
          Editions: 'classic',
-         platforms:["win ","macx86 "]
+         platforms:["win","macx86"]
      },
      {
          DyalogVersions:'18.2',//trunk needs the latest interpreters
