@@ -1,7 +1,7 @@
 {
      Tests:[
      {
-         DyalogVersions:'18.2+',//trunk needs the latest interpreters
+         DyalogVersions:'18.2',//trunk needs the latest interpreters
          Test:'./Tests/basic.dyalogtest',
          secondstimeout:600,
          Bits:32,
@@ -9,7 +9,7 @@
          platforms:["win","macx86"]
      },
      {
-         DyalogVersions:'18.2',//trunk needs the latest interpreters
+         DyalogVersions:'18.2+',//trunk needs the latest interpreters
          Test:'./Tests/all.dyalogtest',
          secondstimeout:9000,//test_pause needs time
          disabled:true,//running those takes time...
