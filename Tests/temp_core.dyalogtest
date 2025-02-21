@@ -7,3 +7,4 @@ Setup   : setup_v2 setup_v3 setup_v3_root
 Teardown: teardown
 
 Test    : test_temp
+Test    : test_core
