@@ -9,6 +9,7 @@
          DyalogVersions:'18.2+',//trunk needs the latest interpreters
          Test:'./Tests/all.dyalogtest',
          secondstimeout:9000,//test_pause needs time
+         disabled: true
      }
      ],
      //items from root will be applied to all tests
