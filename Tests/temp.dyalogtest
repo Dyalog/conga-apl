@@ -1,0 +1,7 @@
+﻿DyalogTest : 0.1
+ID         : Conga 3.0 Cross-Version Tests
+Description: Basic functionality tests for Conga v3.0
+⍝CodeCoverage_Subject: #.Conga
+CodeCoverage_Subject: #.Conga,#.Conga.LIB
+
+Test    : test_temp

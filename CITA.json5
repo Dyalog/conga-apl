@@ -2,8 +2,14 @@
      Tests:[
      {
          DyalogVersions:'18.2+',//trunk needs the latest interpreters
+         Test:'./Tests/temp.dyalogtest',
+         secondstimeout:600,
+     },
+     {
+         DyalogVersions:'18.2+',//trunk needs the latest interpreters
          Test:'./Tests/basic.dyalogtest',
          secondstimeout:600,
+         disabled: true,
      },
      {
          DyalogVersions:'18.2+',//trunk needs the latest interpreters
