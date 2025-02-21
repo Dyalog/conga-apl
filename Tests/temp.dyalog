@@ -1,2 +1,2 @@
-﻿ r←test_temp dummy;;local
+﻿ r←test_temp dummy;local
  r←''
