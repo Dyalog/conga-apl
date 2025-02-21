@@ -3,5 +3,6 @@ ID         : Conga 3.0 Cross-Version Tests
 Description: Basic functionality tests for Conga v3.0
 ⍝CodeCoverage_Subject: #.Conga
 CodeCoverage_Subject: #.Conga,#.Conga.LIB
-
+Setup   : setup_v2 setup_v3 setup_v3_root
+Teardown: teardown
 Test    : test_temp
