@@ -4,6 +4,13 @@
          DyalogVersions:'18.2+',//trunk needs the latest interpreters
          Test:'./Tests/temp.dyalogtest',
          secondstimeout:600,
+         id: "temp"
+     },
+     {
+         DyalogVersions:'18.2+',//trunk needs the latest interpreters
+         Test:'./Tests/temp_core.dyalogtest',
+         secondstimeout:600,
+         id: "Core"
      },
      {
          DyalogVersions:'18.2+',//trunk needs the latest interpreters
