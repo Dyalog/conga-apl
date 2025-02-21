@@ -8,3 +8,5 @@ Teardown: teardown
 
 Test    : test_temp
 Test    : test_core
+Test    : test_websocket
+
