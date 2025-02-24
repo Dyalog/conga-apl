@@ -5,7 +5,7 @@
          Test:'./Tests/basic.dyalogtest',
          secondstimeout:600,
          platforms: ['win'],
-         editions: 'classic',
+         editions: ['classic','unicode'],
          bits: 64
      },
      {
