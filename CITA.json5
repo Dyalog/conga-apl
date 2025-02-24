@@ -4,7 +4,7 @@
          DyalogVersions:'18.2',//trunk needs the latest interpreters
          Test:'./Tests/basic.dyalogtest',
          secondstimeout:600,
-         platforms: ['win'],
+         platforms: ['win','linux'],
          editions: ['classic','unicode'],
          bits: 64
      },
