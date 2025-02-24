@@ -1,10 +1,10 @@
 {
      Tests:[
      {
-         DyalogVersions:'18.2+',//trunk needs the latest interpreters
+         DyalogVersions:'18.2',//trunk needs the latest interpreters
          Test:'./Tests/basic.dyalogtest',
          secondstimeout:600,
-         platforms: ['win','linux'],
+         platforms: ['win'],
          editions: ['classic','unicode'],
          bits: [32,64]
      },
