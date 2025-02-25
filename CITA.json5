@@ -1,21 +1,18 @@
 {
-     Tests:[
-     {
-         DyalogVersions:'18.2',//trunk needs the latest interpreters
-         Test:'./Tests/basic.dyalogtest',
-         secondstimeout:600,
-         platforms: ['win'],
-         editions: ['classic','unicode'],
-         bits: [32,64]
-     },
-     {
-         DyalogVersions:'18.2+',//trunk needs the latest interpreters
-         Test:'./Tests/all.dyalogtest',
-         secondstimeout:9000,//test_pause needs time
-         disabled: true
-     }
-     ],
-     //items from root will be applied to all tests
-     EMail:{All:'mbaas@dyalog.com'},
-     CodeCoverage:1
- }
+  Tests: [
+    {
+      DyalogVersions: '18.2+', // trunk needs the latest interpreters
+      Test: './Tests/basic.dyalogtest',
+      secondstimeout: 600
+    },
+    {
+      DyalogVersions: '18.2+', // trunk needs the latest interpreters
+      Test: './Tests/all.dyalogtest',
+      secondstimeout: 9000, // test_pause needs time
+      disabled: true, // running those takes time...
+    }
+  ],
+  // items from root will be applied to all tests
+  EMail: { All: 'mbaas@dyalog.com' },
+  CodeCoverage: 1
+}
