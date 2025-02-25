@@ -1,7 +1,7 @@
 ﻿ r←test_core dummy;prots;Port;Host;srv;clt;maxwait;Cert;secure;prot;ret;srvx509;cltx509;con;srvcert;cltcert;protocol;z;res;data;pa;la;compare;Clt;Srv;port
 ⍝∇Test: group=Basic
 ⍝ Test fundamental Conga functionality
-
+ ⎕SE._cita._pLog'started test_core'
  prots←∪⊃¨2⊃iConga.GetProp'.' 'TCPLookup' 'localhost' 80 ⍝ Available protocols takes from IP addresses
  Port←0 ⋄ Host←'localhost'
  Srv←'' ⋄ Clt←''
@@ -13,7 +13,9 @@
  Cert←{(⍺.Cert)⍺⍺ ⍵.Cert}
 
  :For secure :In 0 1             ⍝ insecure tests, then secure
+     ⎕SE._cita._pLog'secure=',⍕secure
      :For prot :In (⊂''),prots   ⍝ all protocol variants, but first "auto"
+         ⎕SE._cita._pLog'prot=',⍕prot
          protocol←(prot≢'')/⊂('Protocol'prot)
 
          :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 0
@@ -46,7 +48,7 @@
              →fail Because'Srv Wait did not produce a Connect event: ',,⍕ret ⋄ :EndIf
 
          con←2⊃ret ⍝ Server-side connection name
-
+         ⎕SE._cita._pLog'con=',⍕con
          :If secure ⍝ Validate Peer Certificates
              srvcert←iConga.GetProp clt'PeerCert' ⍝ debug: 'server' FormatCert srvcert
              cltcert←iConga.GetProp con'PeerCert'
@@ -91,9 +93,11 @@
      :EndFor ⍝ protocol
  :EndFor ⍝ secure
  r←''
+ ⎕SE._cita._pLog'end of test'
  →0
 
 fail:
+ ⎕SE._cita._pLog'with protocol="',prot,'", secure=',(⍕secure),': ',r
  r←'with protocol="',prot,'", secure=',(⍕secure),': ',r
  z←iConga.Close¨srv clt
  {}iConga.Wait'.' 0
