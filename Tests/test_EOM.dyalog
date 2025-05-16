@@ -2,7 +2,7 @@
 ⍝ Test raw  text EOM
  Host←'localhost' ⋄ Port←0
  maxwait←1000
- ic←{⍵⍵=0:⍺ ⍺⍺ ⍵ ⋄ ((819⌶)⍺)⍺⍺((819⌶)⍵)}
+ ic←{⍵⍵=0:⍺ ⍺⍺ ⍵ ⋄ (¯1 ⎕C ⍺)⍺⍺(¯1 ⎕C ⍵)}
  s1←c1←⍬
  :If 0 Check⊃ret←iConga.SetProp'.' 'EventMode' 1
      →fail Because'Set EventMode to 1 failed: ',,⍕ret ⋄ :EndIf
