@@ -1,6 +1,6 @@
 ﻿DyalogBuild: 0.1
-ID         : CONGA, Version=3.7
-Description: Conga workspace for Dyalog v20.0
+ID         : CONGA, Version=3.6
+Description: Conga workspace for Dyalog v19.0
 Defaults   : ⎕IO←⎕ML←1
 TARGET     : Distribution/ws/conga.dws
 
@@ -16,7 +16,7 @@ Class : v3/Server.dyalog, Target=Conga
 
 Class : Common/X509Cert.dyalog, Target=DRC
 Class : Common/X509Cert.dyalog, Target=Conga
-EXEC  : #.DRC.DllVer←#.Conga.DllVer←'37'
+EXEC  : #.DRC.DllVer←#.Conga.DllVer←'36'
 
 
-LX    : ⎕←'This is the Conga v3.7 workspace.'
+LX    : ⎕←'This is the Conga v3.6 workspace.'
