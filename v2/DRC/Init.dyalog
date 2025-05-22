@@ -8,7 +8,7 @@
  RawAsInt←8
 
  :Trap 0
-     lcase←0∘(819⌶)
+     lcase←¯1∘⎕c
      z←lcase'A' ⍝ Try to use it
  :Else
      lowerAlphabet←'abcdefghijklmnopqrstuvwxyzáâãçèêëìíîïðòóôõùúûýàäåæéñöøü'
