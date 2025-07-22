@@ -18,7 +18,7 @@
      p←trunkds ⎕IO⊃+2 ⎕NQ'.' 'GetCommandlineArgs'
  :CaseList ⍬''
      :If ~0∊⍴t←+2 ⎕NQ'.' 'GetEnvironment' 'CONGA_LIBPATH'
-         p←t
+         p←addds((isWin ⍬)⌽'/\')subst t
      :EndIf
  :Else
      p←addds((isWin ⍬)⌽'/\')subst p
