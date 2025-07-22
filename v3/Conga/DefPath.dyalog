@@ -1,4 +1,4 @@
-﻿ p←DefPath p;ds;trunkds;addds;isWin;subst
+ p←DefPath p;ds;trunkds;addds;isWin;subst;t
  subst←{((1⊃⍺),⍵)[1+(⍳⍴⍵)×⍵≠2⊃⍺]}
  isWin←{'Window'{⍺≡(⍴⍺)↑⍵}⎕IO⊃'.'⎕WG'aplversion'}
  ds←'/\'[⎕IO+isWin ⍬]
@@ -16,8 +16,10 @@
      :EndIf
  :Case '⍺' ⍝ means the path of the interpreter
      p←trunkds ⎕IO⊃+2 ⎕NQ'.' 'GetCommandlineArgs'
- :CaseList ⍬ ''
-     p←p
+ :CaseList ⍬''
+     :If ~0∊⍴t←+2 ⎕NQ'.' 'GetEnvironment' 'CONGA_LIBPATH'
+         p←t
+     :EndIf
  :Else
      p←addds((isWin ⍬)⌽'/\')subst p
  :EndSelect
