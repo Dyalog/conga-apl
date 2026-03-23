@@ -1,18 +1,31 @@
 {
+  DyalogVersions: '18.2-',
+  secondstimeout: 600,          // default; will be overwritten by individual tests
   Tests: [
     {
       DyalogVersions: '18.2-', // trunk needs the latest interpreters
       Test: './Tests/basic.dyalogtest',
-      secondstimeout: 600
+      EMail: { Change: 'mbaas@dyalog.com' },
     },
     {
-      DyalogVersions: '18.2+', // trunk needs the latest interpreters
+      context: 'mc',
       Test: './Tests/all.dyalogtest',
-      secondstimeout: 9000, // test_pause needs time
-      disabled: true, // running those takes time...
-    }
+      secondstimeout: 9000,
+      disabled: true,
+      EMail: { Change: 'mbaas@dyalog.com' },
+    },
+    {//────QA tests
+      context: 'q',
+      Test: './Tests/basic.dyalogtest',
+      EMail: { All: 'cita-support@dyalog.com' },
+    },
+    {
+      context: 'q',
+      Test: './Tests/all.dyalogtest',
+      secondstimeout: 9000,
+      disabled: true,
+      EMail: { All: 'cita-support@dyalog.com' },
+    },
   ],
-  // items from root will be applied to all tests
-  EMail: { All: 'mbaas@dyalog.com' },
-  CodeCoverage: 1
+  CodeCoverage: 1,
 }
