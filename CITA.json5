@@ -27,5 +27,5 @@
       EMail: { All: 'cita-support@dyalog.com' },
     },
   ],
-  CodeCoverage: 1,
+  // CodeCoverage: 1,
 }
