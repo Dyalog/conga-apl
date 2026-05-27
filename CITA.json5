@@ -5,7 +5,8 @@
     {
       DyalogVersions: '18.2-', // trunk needs the latest interpreters
       Test: './Tests/basic.dyalogtest',
-      EMail: { Change: 'mbaas@dyalog.com' },
+      EMail: { Change: 'mbaas@dyalog.com' }, 
+      CodeCoverage: 1,      
     },
     {
       context: 'mc',
@@ -18,6 +19,7 @@
       context: 'q',
       Test: './Tests/basic.dyalogtest',
       EMail: { All: 'cita-support@dyalog.com' },
+      CodeCoverage: 0,      
     },
     {
       context: 'q',
@@ -25,7 +27,7 @@
       secondstimeout: 9000,
       disabled: true,
       EMail: { All: 'cita-support@dyalog.com' },
+      CodeCoverage: 0,      
     },
   ],
-  // CodeCoverage: 1,
 }
