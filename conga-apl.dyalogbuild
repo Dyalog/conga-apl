@@ -1,6 +1,6 @@
 ﻿DyalogBuild: 0.1
 ID         : CONGA, Version=3.7
-Description: Conga workspace for Dyalog v20.0
+Description: Conga workspace for Dyalog v21.0
 Defaults   : ⎕IO←⎕ML←1
 TARGET     : Distribution/ws/conga.dws
 
